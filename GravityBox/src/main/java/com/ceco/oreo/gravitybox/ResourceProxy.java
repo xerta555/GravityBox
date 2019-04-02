@@ -100,14 +100,14 @@ public class ResourceProxy {
             ResourceSpec spec = getOrCreateResourceSpec((Resources)param.thisObject,
                     (int)param.args[0], param.getResult());
             if (spec != null) {
-                if (spec.isOverridden) {
-                    param.setResult(spec.value);
-                    return;
-                } else if (spec.isProcessed) {
+                if (spec.isProcessed) {
+                    if (spec.isOverridden) {
+                        param.setResult(spec.value);
+                    }
                     return;
                 }
                 synchronized (mInterceptors) {
-                    if (mInterceptors.get(spec.pkgName) != null) {
+                    if (mInterceptors.containsKey(spec.pkgName)) {
                         if (mInterceptors.get(spec.pkgName).onIntercept(spec)) {
                             if (DEBUG) log(param.method.getName() + ": " + spec.toString());
                             spec.isOverridden = true;
@@ -124,7 +124,7 @@ public class ResourceProxy {
         final String resPkgName = getResourcePackageName(res, id);
         if (resPkgName == null)
             return null;
-        if (sCache.get(resPkgName) != null && sCache.get(resPkgName).get(id) != null)
+        if (sCache.containsKey(resPkgName) && sCache.get(resPkgName).get(id) != null)
             return sCache.get(resPkgName).get(id);
 
         final String name = getResourceEntryName(res, id);
@@ -147,7 +147,7 @@ public class ResourceProxy {
                 if (DEBUG) log("Using android interceptor for " + resPkgName + ": " + spec.toString());
             }
             if (spec != null) {
-                if (sCache.get(resPkgName) == null) {
+                if (!sCache.containsKey(resPkgName)) {
                     sCache.put(resPkgName, new SparseArray<>());
                 }
                 sCache.get(resPkgName).put(id, spec);
