@@ -138,6 +138,7 @@ public class ResourceProxy {
                             if (value != null) {
                                 if (DEBUG) log("onGetFakeResource: resId=" + resId + "; value=" + value);
                                 param.setResult(value);
+                                param.getExtra().putBoolean("returnEarly", true);
                                 return;
                             }
                         }
@@ -147,6 +148,10 @@ public class ResourceProxy {
         }
         @Override
         protected void afterHookedMethod(MethodHookParam param) {
+            if (param.getExtra().getBoolean("returnEarly")) {
+                if (DEBUG) log(param.method.getName() + " after hook suppressed by before hook");
+                return;
+            }
             Object value = param.getResult();
             ResourceSpec spec = getOrCreateResourceSpec((Resources)param.thisObject,
                     (int)param.args[0], value);
