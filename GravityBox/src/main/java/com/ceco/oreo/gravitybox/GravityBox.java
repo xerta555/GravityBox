@@ -59,6 +59,12 @@ public class GravityBox implements IXposedHookZygoteInit, IXposedHookLoadPackage
 
     @Override
     public void initZygote(StartupParam startupParam) {
+        if (Build.VERSION.SDK_INT < 26 || Build.VERSION.SDK_INT > 27) {
+            XposedBridge.log("!!! GravityBox you are running is not designed for "
+                    + "Android SDK " + Build.VERSION.SDK_INT + " !!!");
+            return;
+        }
+
         MODULE_PATH = startupParam.modulePath;
         if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
             prefs = new XSharedPreferences(prefsFileProt);
@@ -73,29 +79,23 @@ public class GravityBox implements IXposedHookZygoteInit, IXposedHookLoadPackage
         }
         LOG_ERRORS = prefs.getBoolean(GravityBoxSettings.PREF_KEY_LOG_ERRORS, false);
 
-        if (!startupParam.startsSystemServer) return;
-
-        XposedBridge.log("GB:Hardware: " + Build.HARDWARE);
-        XposedBridge.log("GB:Product: " + Build.PRODUCT);
-        XposedBridge.log("GB:Device manufacturer: " + Build.MANUFACTURER);
-        XposedBridge.log("GB:Device brand: " + Build.BRAND);
-        XposedBridge.log("GB:Device model: " + Build.MODEL);
-        XposedBridge.log("GB:Device type: " + (Utils.isTablet() ? "tablet" : "phone"));
-        XposedBridge.log("GB:Is MTK device: " + Utils.isMtkDevice());
-        XposedBridge.log("GB:Is Xperia device: " + Utils.isXperiaDevice());
-        XposedBridge.log("GB:Is Moto XT device: " + Utils.isMotoXtDevice());
-        XposedBridge.log("GB:Is OxygenOS ROM: " + Utils.isOxygenOsRom());
-        XposedBridge.log("GB:Has telephony support: " + Utils.hasTelephonySupport());
-        XposedBridge.log("GB:Has Gemini support: " + Utils.hasGeminiSupport());
-        XposedBridge.log("GB:Android SDK: " + Build.VERSION.SDK_INT);
-        XposedBridge.log("GB:Android Release: " + Build.VERSION.RELEASE);
-        XposedBridge.log("GB:ROM: " + Build.DISPLAY);
-        XposedBridge.log("GB:Error logging: " + LOG_ERRORS);
-
-        if (Build.VERSION.SDK_INT < 26 || Build.VERSION.SDK_INT > 27) {
-            XposedBridge.log("!!! GravityBox you are running is not designed for "
-                    + "Android SDK " + Build.VERSION.SDK_INT + " !!!");
-            return;
+        if (startupParam.startsSystemServer) {
+            XposedBridge.log("GB:Hardware: " + Build.HARDWARE);
+            XposedBridge.log("GB:Product: " + Build.PRODUCT);
+            XposedBridge.log("GB:Device manufacturer: " + Build.MANUFACTURER);
+            XposedBridge.log("GB:Device brand: " + Build.BRAND);
+            XposedBridge.log("GB:Device model: " + Build.MODEL);
+            XposedBridge.log("GB:Device type: " + (Utils.isTablet() ? "tablet" : "phone"));
+            XposedBridge.log("GB:Is MTK device: " + Utils.isMtkDevice());
+            XposedBridge.log("GB:Is Xperia device: " + Utils.isXperiaDevice());
+            XposedBridge.log("GB:Is Moto XT device: " + Utils.isMotoXtDevice());
+            XposedBridge.log("GB:Is OxygenOS ROM: " + Utils.isOxygenOsRom());
+            XposedBridge.log("GB:Has telephony support: " + Utils.hasTelephonySupport());
+            XposedBridge.log("GB:Has Gemini support: " + Utils.hasGeminiSupport());
+            XposedBridge.log("GB:Android SDK: " + Build.VERSION.SDK_INT);
+            XposedBridge.log("GB:Android Release: " + Build.VERSION.RELEASE);
+            XposedBridge.log("GB:ROM: " + Build.DISPLAY);
+            XposedBridge.log("GB:Error logging: " + LOG_ERRORS);
         }
 
         TunerManager.initUserItemsCache(tunerPrefs);
@@ -125,10 +125,6 @@ public class GravityBox implements IXposedHookZygoteInit, IXposedHookLoadPackage
 
         if (resparam.packageName.equals(ModLockscreen.PACKAGE_NAME)) {
             ModLockscreen.initResources(prefs, resparam);
-        }
-
-        if (resparam.packageName.equals(ModVolumePanel.PACKAGE_NAME)) {
-            ModVolumePanel.initResources(prefs, resparam);
         }
 
         if (resparam.packageName.equals(ModQsTiles.PACKAGE_NAME) &&

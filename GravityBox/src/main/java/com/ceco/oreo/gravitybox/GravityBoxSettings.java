@@ -1750,7 +1750,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             // Remove EdXposed unsupported preferences
             Preference pEdXp = findPreference(PREF_KEY_SIGNAL_CLUSTER_HPLUS);
             if (pEdXp != null) mPrefCatSignalCluster.removePreference(pEdXp);
-            mPrefCatMedia.removePreference(mPrefLinkVolumes);
 
             // Disable features not applicable to 8.1 / 8.0
             if (Build.VERSION.SDK_INT >= 27) {

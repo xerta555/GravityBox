@@ -65,14 +65,11 @@ public class ModAudio {
                 if (DEBUG) log("Swap volume keys set to: " + mSwapVolumeKeys);
             } else if (intent.getAction().equals(QuietHoursActivity.ACTION_QUIET_HOURS_CHANGED)) {
                 mQh = new QuietHours(intent.getExtras());
-            }
-            // EdXposed unsupported
-            /*
-            else if (intent.getAction().equals(GravityBoxSettings.ACTION_PREF_LINK_VOLUMES_CHANGED)) {
+            } else if (intent.getAction().equals(GravityBoxSettings.ACTION_PREF_LINK_VOLUMES_CHANGED)) {
                 mVolumesLinked = intent.getBooleanExtra(GravityBoxSettings.EXTRA_LINKED, true);
                 if (DEBUG) log("mVolumesLinked set to: " + mVolumesLinked);
                 updateStreamVolumeAlias();
-            */
+            }
         }
     };
 
@@ -186,8 +183,6 @@ public class ModAudio {
                 } 
             });
 
-            // EdXposed unsupported
-            /*
             XposedHelpers.findAndHookMethod(classAudioService, "updateStreamVolumeAlias",
                     boolean.class, String.class, new XC_MethodHook() {
                 @Override
@@ -202,14 +197,11 @@ public class ModAudio {
                     }
                 }
             });
-            */
         } catch(Throwable t) {
             GravityBox.log(TAG, t);
         }
     }
 
-    // EdXposed unsupported
-    /*
     private static void updateStreamVolumeAlias() {
         if (mAudioService == null) {
             if (DEBUG) log("updateStreamVolumeAlias: AudioService is null");
@@ -222,7 +214,6 @@ public class ModAudio {
             GravityBox.log(TAG, t);
         }
     }
-    */
 
     private static class HandleChangeVolume extends XC_MethodHook {
         private static List<String> sBlackList = new ArrayList<>(Arrays.asList(

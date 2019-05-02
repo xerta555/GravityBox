@@ -18,7 +18,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
+import android.os.Build;
+import android.view.View;
 import android.widget.ImageButton;
+
+import java.util.List;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
@@ -40,8 +46,6 @@ public class ModVolumePanel {
     private static boolean mAutoExpand;
     private static int mTimeout;
     private static boolean mVolumesLinked;
-    private static int mIconNotifResId;
-    private static int mIconNotifMuteResId;
 
     private static void log(String message) {
         XposedBridge.log(TAG + ": " + message);
@@ -69,18 +73,6 @@ public class ModVolumePanel {
         
     };
 
-    // EdXposed unsupported
-    /*
-    public static void initResources(XSharedPreferences prefs, InitPackageResourcesParam resparam) {
-        XModuleResources modRes = XModuleResources.createInstance(GravityBox.MODULE_PATH, resparam.res);
-
-        mIconNotifResId = XResources.getFakeResId(modRes, R.drawable.ic_audio_notification);
-        resparam.res.setReplacement(mIconNotifResId, modRes.fwd(R.drawable.ic_audio_notification));
-        mIconNotifMuteResId = XResources.getFakeResId(modRes, R.drawable.ic_audio_notification_mute);
-        resparam.res.setReplacement(mIconNotifMuteResId, modRes.fwd(R.drawable.ic_audio_notification_mute));
-    }
-    */
-
     public static void init(final XSharedPreferences prefs, final ClassLoader classLoader) {
         try {
             final Class<?> classVolumePanel = XposedHelpers.findClass(CLASS_VOLUME_PANEL, classLoader);
@@ -107,8 +99,6 @@ public class ModVolumePanel {
                 }
             });
 
-            // EdXposed unsupported
-            /*
             XposedHelpers.findAndHookMethod(classVolumePanel, "initDialog", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(final MethodHookParam param) {
@@ -117,7 +107,6 @@ public class ModVolumePanel {
                     }
                 }
             });
-            */
 
             XposedHelpers.findAndHookMethod(CLASS_VOLUME_DIALOG_MOTION, classLoader,
                     "setShowing", boolean.class, new XC_MethodHook() {
@@ -152,8 +141,6 @@ public class ModVolumePanel {
                 });
             }
 
-            // EdXposed unsupported
-            /*
             XC_MethodHook shouldBeVisibleHook = new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(final MethodHookParam param) {
@@ -186,21 +173,20 @@ public class ModVolumePanel {
                     }
                 }
             });
-            */
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
         }
     }
 
-    // EdXposed unsupported
-    /*
     private static void prepareNotificationRow() {
         try {
             XposedHelpers.callMethod(mVolumePanel, "addRow",
                     AudioManager.STREAM_NOTIFICATION,
-                    mIconNotifResId, mIconNotifMuteResId, true);
+                    ResourceProxy.getFakeResId("ic_audio_notification"),
+                    ResourceProxy.getFakeResId("ic_audio_notification_mute"),
+                    true);
             List<?> rows = (List<?>) XposedHelpers.getObjectField(mVolumePanel, "mRows");
-            Object row = rows.get(rows.size()-1);
+            Object row = rows.get(rows.size() - 1);
             XposedHelpers.setAdditionalInstanceField(row, "gbNotifSlider", true);
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
@@ -221,5 +207,4 @@ public class ModVolumePanel {
             return true;
         }
     }
-    */
 }
