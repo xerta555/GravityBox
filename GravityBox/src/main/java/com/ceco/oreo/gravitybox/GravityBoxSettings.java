@@ -187,6 +187,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String PREF_KEY_CALLER_UNKNOWN_PHOTO = "pref_caller_unknown_photo";
     public static final String PREF_KEY_DIALER_SHOW_DIALPAD = "pref_dialer_show_dialpad";
     public static final String PREF_KEY_NATIONAL_ROAMING = "pref_national_roaming";
+    public static final String PREF_KEY_PHONE_FIX_MISSED_CALL_LED = "pref_phone_fix_missed_call_led";
     public static final String PREF_CAT_KEY_STATUSBAR = "pref_cat_statusbar";
     public static final String PREF_CAT_KEY_STATUSBAR_QS = "pref_cat_statusbar_qs";
     public static final String PREF_CAT_KEY_QS_TILE_SETTINGS = "pref_cat_qs_tile_settings";
@@ -957,7 +958,8 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             PREF_KEY_BATTERY_TWEAKS_ENABLED,
             PREF_KEY_VISUALIZER_ENABLE,
             PREF_KEY_CORNER_PADDING_REMOVE,
-            PREF_KEY_DISPLAY_ALLOW_ALL_ROTATIONS
+            PREF_KEY_DISPLAY_ALLOW_ALL_ROTATIONS,
+            PREF_KEY_PHONE_FIX_MISSED_CALL_LED
     ));
 
     private static final List<String> customAppKeys = new ArrayList<String>(Arrays.asList(

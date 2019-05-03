@@ -2156,4 +2156,8 @@
     <string name="pref_tuneable_value_int_error">Invalid value. Integer expected</string>
     <string name="tuner_manager_not_responding">Tuning manager is not responding</string>
 
+    <!-- Phone: fix LED mor missed calls -->
+    <string name="pref_phone_fix_missed_call_led_title">Fix missed call LED</string>
+    <string name="pref_phone_fix_missed_call_led_summary">Attempts to fix missing LED for missed call notifications (requires reboot)</string>
+
 </resources>

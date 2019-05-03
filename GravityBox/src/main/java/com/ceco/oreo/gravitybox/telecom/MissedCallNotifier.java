@@ -70,22 +70,8 @@ public class MissedCallNotifier {
 
     private void createHooks(ClassLoader classLoader) {
         try {
-            XposedHelpers.findAndHookMethod(NotificationManager.class, "notify",
-                    String.class, int.class, Notification.class, notifyHook);
-        } catch (Throwable t) {
-            GravityBox.log(TAG, t);
-        }
-
-        try {
             XposedHelpers.findAndHookMethod(NotificationManager.class, "notifyAsUser",
                     String.class, int.class, Notification.class, UserHandle.class, notifyHook);
-        } catch (Throwable t) {
-            GravityBox.log(TAG, t);
-        }
-
-        try {
-            XposedHelpers.findAndHookMethod(NotificationManager.class, "cancel",
-                    String.class, int.class, cancelHook);
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
         }

@@ -33,10 +33,12 @@ public class ModTelecom {
     public static void init(final XSharedPreferences prefs, final ClassLoader classLoader) {
         if (DEBUG) log("init");
 
-        try {
-            MissedCallNotifier.init(classLoader);
-        } catch (Throwable t) {
-            GravityBox.log(TAG, "Error initializing MissedCallNotifier: ", t);
+        if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_PHONE_FIX_MISSED_CALL_LED, false)) {
+            try {
+                MissedCallNotifier.init(classLoader);
+            } catch (Throwable t) {
+                GravityBox.log(TAG, "Error initializing MissedCallNotifier: ", t);
+            }
         }
 
         try {

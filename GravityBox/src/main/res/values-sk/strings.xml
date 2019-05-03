@@ -2058,4 +2058,8 @@
     <!-- BatteryBar: lock screen only -->
     <string name="pref_battery_bar_lockscreen_only_title">Len na obrazovke uzamknutia</string>
 
+    <!-- Phone: fix LED mor missed calls -->
+    <string name="pref_phone_fix_missed_call_led_title">Opraviť LED zmeškaných hovorov</string>
+    <string name="pref_phone_fix_missed_call_led_summary">Pokúsi sa opraviť chýbajúce LED upozornenie pre oznámenia zmeškaných hovorov (vyžaduje reštart)</string>
+
 </resources>

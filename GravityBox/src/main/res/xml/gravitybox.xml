@@ -1969,6 +1969,12 @@
                 android:summaryOn="@string/pref_oos_call_recording_summary"
                 android:defaultValue="false" />
 
+            <CheckBoxPreference
+                android:key="pref_phone_fix_missed_call_led"
+                android:title="@string/pref_phone_fix_missed_call_led_title"
+                android:summary="@string/pref_phone_fix_missed_call_led_summary"
+                android:defaultValue="false" />
+
         </PreferenceCategory>
 
         <PreferenceCategory
