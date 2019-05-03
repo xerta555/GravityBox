@@ -37,6 +37,7 @@ import de.robv.android.xposed.XposedHelpers;
 public class ModAudio {
     private static final String TAG = "GB:ModAudio";
     private static final String CLASS_AUDIO_SERVICE = "com.android.server.audio.AudioService";
+    private static final String CLASS_AUDIO_SYSTEM = "android.media.AudioSystem";
     private static final boolean DEBUG = false;
 
     private static boolean mVolForceMusicControl;
@@ -78,6 +79,7 @@ public class ModAudio {
     public static void initAndroid(final XSharedPreferences prefs, final XSharedPreferences qhPrefs, final ClassLoader classLoader) {
         try {
             final Class<?> classAudioService = XposedHelpers.findClass(CLASS_AUDIO_SERVICE, classLoader);
+            final Class<?> classAudioSystem = XposedHelpers.findClass(CLASS_AUDIO_SYSTEM, classLoader);
 
             mQh = new QuietHours(qhPrefs);
 
@@ -85,18 +87,6 @@ public class ModAudio {
             mVolumesLinked = prefs.getBoolean(GravityBoxSettings.PREF_KEY_LINK_VOLUMES, true);
 
             XposedBridge.hookAllConstructors(classAudioService, new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) {
-                    if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_MUSIC_VOLUME_STEPS, false)) {
-                        int[] maxStreamVolume = (int[])
-                                XposedHelpers.getStaticObjectField(classAudioService, "MAX_STREAM_VOLUME");
-                        maxStreamVolume[AudioManager.STREAM_MUSIC] = prefs.getInt(
-                                GravityBoxSettings.PREF_KEY_MUSIC_VOLUME_STEPS_VALUE, 30);
-                        if (DEBUG) log("MAX_STREAM_VOLUME for music stream set to " + 
-                                maxStreamVolume[AudioManager.STREAM_MUSIC]);
-                    }
-                }
-
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
                     mAudioService = param.thisObject;
@@ -114,10 +104,6 @@ public class ModAudio {
                         XposedHelpers.findAndHookMethod(classAudioService, "adjustStreamVolume", 
                                 int.class, int.class, int.class, String.class, String.class, int.class,
                                 mHandleChangeVolume);
-                    }
-                    if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_MUSIC_VOLUME_STEPS, false)) {
-                        XposedHelpers.setIntField(param.thisObject, "mSafeMediaVolumeIndex", 150);
-                        if (DEBUG) log("Default mSafeMediaVolumeIndex set to 150");
                     }
                 }
             });
@@ -143,21 +129,32 @@ public class ModAudio {
             }
             
             if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_MUSIC_VOLUME_STEPS, false)) {
+                XposedHelpers.findAndHookMethod(classAudioService, "createStreamStates",
+                        new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) {
+                        int[] maxStreamVolume = (int[])
+                                XposedHelpers.getStaticObjectField(classAudioService, "MAX_STREAM_VOLUME");
+                        maxStreamVolume[AudioManager.STREAM_MUSIC] = prefs.getInt(
+                                GravityBoxSettings.PREF_KEY_MUSIC_VOLUME_STEPS_VALUE, 30);
+                        if (DEBUG) log("createStreamStates: MAX_STREAM_VOLUME for music stream set to " +
+                                maxStreamVolume[AudioManager.STREAM_MUSIC]);
+                        int [] defaultStreamVolume = (int[])
+                                XposedHelpers.getStaticObjectField(classAudioSystem, "DEFAULT_STREAM_VOLUME");
+                        defaultStreamVolume[AudioManager.STREAM_MUSIC] = maxStreamVolume[AudioManager.STREAM_MUSIC] / 3;
+                        if (DEBUG) log("createStreamStates: DEFAULT_STREAM_VOLUME for music stream set to " +
+                                defaultStreamVolume[AudioManager.STREAM_MUSIC]);
+                    }
+                });
+
                 XposedHelpers.findAndHookMethod(classAudioService, "onConfigureSafeVolume",
                         boolean.class, String.class, new XC_MethodHook() {
                     @Override
-                    protected void beforeHookedMethod(MethodHookParam param) {
-                        param.setObjectExtra("gbCurSafeMediaVolIndex",
-                                XposedHelpers.getIntField(param.thisObject, "mSafeMediaVolumeIndex"));
-                    }
-                    @Override
                     protected void afterHookedMethod(MethodHookParam param) {
-                        if ((Integer) param.getObjectExtra("gbCurSafeMediaVolIndex") !=
-                                XposedHelpers.getIntField(param.thisObject, "mSafeMediaVolumeIndex")) {
-                            int safeMediaVolIndex = XposedHelpers.getIntField(param.thisObject, "mSafeMediaVolumeIndex") * 2;
-                            XposedHelpers.setIntField(param.thisObject, "mSafeMediaVolumeIndex", safeMediaVolIndex);
-                            if (DEBUG) log("onConfigureSafeVolume: mSafeMediaVolumeIndex set to " + safeMediaVolIndex);
-                        }
+                        int safeIndex = Math.round(prefs.getInt(
+                                GravityBoxSettings.PREF_KEY_MUSIC_VOLUME_STEPS_VALUE, 30) * (2f / 3f)) * 10;
+                        XposedHelpers.setIntField(param.thisObject, "mSafeMediaVolumeIndex", safeIndex);
+                        if (DEBUG) log("onConfigureSafeVolume: mSafeMediaVolumeIndex set to " + safeIndex);
                     }
                 });
             }
