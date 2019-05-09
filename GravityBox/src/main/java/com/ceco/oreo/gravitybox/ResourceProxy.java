@@ -20,8 +20,8 @@ import android.content.res.Resources;
 import android.util.SparseArray;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -56,7 +56,7 @@ public class ResourceProxy {
         }
 
         public String getPackageName() {
-            return interceptor.supportedPackageNames.get(0);
+            return interceptor.supportedPackageName;
         }
 
         @Override
@@ -71,18 +71,19 @@ public class ResourceProxy {
     }
 
     static abstract class Interceptor {
-        private List<String> supportedPackageNames;
+        private String supportedPackageName;
         private List<String> supportedResourceNames;
         private List<Integer> supportedFakeResIds;
         private boolean isFramework;
+        private Pattern packageNamePattern;
 
         Interceptor(String packageName ,List<String> supportedResourceNames,
                     List<Integer> supportedFakeResIds) {
-            this.supportedPackageNames = new ArrayList<>(Collections.singletonList(packageName));
-            if ("android".equals(packageName)) {
-                this.isFramework = true;
-                this.supportedPackageNames.add("android.auto_generated_rro__");
-            }
+            this.supportedPackageName = packageName;
+            this.packageNamePattern = Pattern.compile("^" +
+                    this.supportedPackageName.replace(".", "\\.") +
+                    "+((?:\\.\\w+)+)?$");
+            this.isFramework = "android".equals(packageName);
             this.supportedResourceNames = supportedResourceNames;
             this.supportedFakeResIds = supportedFakeResIds;
         }
@@ -143,7 +144,7 @@ public class ResourceProxy {
         Interceptor fwi = findInterceptorForFramework();
         synchronized (mInterceptors) {
             for (Interceptor i : mInterceptors) {
-                if (i.supportedPackageNames.contains(packageName)) {
+                if (i.packageNamePattern.matcher(packageName).matches()) {
                     if (i.supportedResourceNames.contains(resName)) {
                         return i;
                     } else if (fwi != null && fwi.supportedResourceNames.contains(resName)) {
