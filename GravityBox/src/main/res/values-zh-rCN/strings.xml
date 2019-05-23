@@ -2156,4 +2156,8 @@
     <string name="pref_tuneable_value_int_error">无效的值,应为整数</string>
     <string name="tuner_manager_not_responding">调谐管理器没有响应</string>
 
+    <!-- Phone: fix LED mor missed calls -->
+    <string name="pref_phone_fix_missed_call_led_title">修复未接来电LED</string>
+    <string name="pref_phone_fix_missed_call_led_summary">尝试修复丢失的LED未接来电通知(需要重新启动)</string>
+
 </resources>
