@@ -168,6 +168,7 @@ public class ModHwKeys {
     private static PowerManager mPowerManager;
     private static Class<?> mWindowStateClass;
     private static boolean mPowerLongPressInterceptedByTorch;
+    private static PowerManager.WakeLock mWakeLock;
 
     private static List<String> mKillIgnoreList = new ArrayList<>(Arrays.asList(
             "com.android.systemui"
@@ -546,7 +547,9 @@ public class ModHwKeys {
                     if (DEBUG) log("interceptKeyBeforeQueueing: keyCode=" + keyCode +
                             "; action=" + event.getAction() + "; repeatCount=" + event.getRepeatCount() +
                             "; flags=0x" + Integer.toHexString(event.getFlags()) +
-                            "; source=" + event.getSource());
+                            "; source=" + event.getSource() +
+                            "; interactive=" + getPowerManager().isInteractive() +
+                            "; repeatCount=" + event.getRepeatCount());
 
                     if (event.getSource() == InputDevice.SOURCE_UNKNOWN ||
                             event.getSource() == PA_SOURCE_CUSTOM) {
@@ -579,12 +582,20 @@ public class ModHwKeys {
                                 injectKey(KeyEvent.KEYCODE_POWER);
                                 if (DEBUG) log("Injecting original down/up event");
                             }
-                        } else if (event.getRepeatCount() == 0) {
-                            mPowerLongPressInterceptedByTorch = false;
-                            handler.postDelayed(mLockscreenTorchRunnable, getLongpressTimeoutForAction(
-                                    GravityBoxSettings.HWKEY_ACTION_TORCH));
+                            if (mWakeLock != null && mWakeLock.isHeld()) {
+                                mWakeLock.release();
+                            }
+                            mWakeLock = null;
+                        } else {
+                            if (event.getRepeatCount() == 0) {
+                                mPowerLongPressInterceptedByTorch = false;
+                                mWakeLock = getPowerManager().newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "GB:PowerKeyTorch");
+                                mWakeLock.acquire(1000);
+                                handler.postDelayed(mLockscreenTorchRunnable, getLongpressTimeoutForAction(
+                                        GravityBoxSettings.HWKEY_ACTION_TORCH));
+                                if (DEBUG) log("Scheduled torch runnable, ignoring original event");
+                            }
                             param.setResult(0);
-                            if (DEBUG) log("Scheduled torch runnable, ignoring original event");
                         }
                         return;
                     }
