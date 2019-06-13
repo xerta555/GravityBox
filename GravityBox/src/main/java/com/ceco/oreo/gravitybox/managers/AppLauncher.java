@@ -44,6 +44,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -82,6 +83,7 @@ public class AppLauncher implements BroadcastSubReceiver {
     private Object mStatusBar;
     private DialogTheme mDialogTheme;
     private boolean mIsFirstShow = true;
+    private Configuration mCurrentConfig = new Configuration();
 
     private static void log(String message) {
         XposedBridge.log(TAG + ": " + message);
@@ -110,8 +112,9 @@ public class AppLauncher implements BroadcastSubReceiver {
     public AppLauncher(Context context, XSharedPreferences prefs) throws Throwable {
         mContext = context;
         mResources = mContext.getResources();
+        mCurrentConfig.setTo(mResources.getConfiguration());
         mPrefs = prefs;
-        mGbContext = Utils.getGbContext(mContext);
+        mGbContext = Utils.getGbContext(mContext, mCurrentConfig);
         mGbResources = mGbContext.getResources();
         mHandler = new Handler();
         mPm = mContext.getPackageManager();
@@ -136,6 +139,22 @@ public class AppLauncher implements BroadcastSubReceiver {
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED);
         intentFilter.addDataScheme("package");
         mContext.registerReceiver(mPackageRemoveReceiver, intentFilter);
+
+        mContext.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Configuration newConfig = context.getResources().getConfiguration();
+                if ((mCurrentConfig.updateFrom(newConfig) & ActivityInfo.CONFIG_DENSITY) != 0) {
+                    try {
+                        mGbContext = Utils.getGbContext(mContext, newConfig);
+                        mGbResources = mGbContext.getResources();
+                        mIsFirstShow = true;
+                    } catch (Throwable t) {
+                        GravityBox.log(TAG, t);
+                    }
+                }
+            }
+        }, new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
     }
 
     @Override
@@ -335,10 +354,7 @@ public class AppLauncher implements BroadcastSubReceiver {
     }
 
     private void updateAppSlot(int slot, String value) {
-        AppInfo ai = mAppSlots.get(slot);
-        if (ai.getValue() == null || !ai.getValue().equals(value)) {
-            ai.initAppInfo(value);
-        }
+        mAppSlots.get(slot).initAppInfo(value);
     }
 
     public AppInfo createAppInfo() {
