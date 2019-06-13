@@ -63,7 +63,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AppLauncher implements BroadcastSubReceiver {
+public class AppLauncher implements BroadcastSubReceiver, ConfigurationChangeMonitor.ConfigChangeListener {
     private static final String TAG = "GB:AppLauncher";
     private static final boolean DEBUG = false;
 
@@ -83,15 +83,9 @@ public class AppLauncher implements BroadcastSubReceiver {
     private Object mStatusBar;
     private DialogTheme mDialogTheme;
     private boolean mIsFirstShow = true;
-    private Configuration mCurrentConfig = new Configuration();
-    private final List<ConfigChangeListener> mConfigChangeListeners = new ArrayList<>();
 
     private static void log(String message) {
         XposedBridge.log(TAG + ": " + message);
-    }
-
-    public interface ConfigChangeListener {
-        void onDensityDpiChanged(Configuration config);
     }
 
     private Runnable mDismissAppDialogRunnable = this::dismissDialog;
@@ -117,9 +111,8 @@ public class AppLauncher implements BroadcastSubReceiver {
     public AppLauncher(Context context, XSharedPreferences prefs) throws Throwable {
         mContext = context;
         mResources = mContext.getResources();
-        mCurrentConfig.setTo(mResources.getConfiguration());
         mPrefs = prefs;
-        mGbContext = Utils.getGbContext(mContext, mCurrentConfig);
+        mGbContext = Utils.getGbContext(mContext, mResources.getConfiguration());
         mGbResources = mGbContext.getResources();
         mHandler = new Handler();
         mPm = mContext.getPackageManager();
@@ -144,26 +137,17 @@ public class AppLauncher implements BroadcastSubReceiver {
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED);
         intentFilter.addDataScheme("package");
         mContext.registerReceiver(mPackageRemoveReceiver, intentFilter);
+    }
 
-        mContext.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Configuration newConfig = context.getResources().getConfiguration();
-                if ((mCurrentConfig.updateFrom(newConfig) & ActivityInfo.CONFIG_DENSITY) != 0) {
-                    try {
-                        mGbContext = Utils.getGbContext(mContext, newConfig);
-                        mGbResources = mGbContext.getResources();
-                        mIsFirstShow = true;
-                    } catch (Throwable t) {
-                        GravityBox.log(TAG, t);
-                    }
-                    synchronized (mConfigChangeListeners) {
-                        mConfigChangeListeners.forEach(
-                                (l) -> l.onDensityDpiChanged(newConfig));
-                    }
-                }
-            }
-        }, new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
+    @Override
+    public void onDensityDpiChanged(Configuration config) {
+        try {
+            mGbContext = Utils.getGbContext(mContext, config);
+            mGbResources = mGbContext.getResources();
+            mIsFirstShow = true;
+        } catch (Throwable t) {
+            GravityBox.log(TAG, t);
+        }
     }
 
     @Override
@@ -184,14 +168,6 @@ public class AppLauncher implements BroadcastSubReceiver {
         }
         if (intent.getAction().equals(ACTION_SHOW_APP_LAUCNHER)) {
             showDialog();
-        }
-    }
-
-    public void addConfigChangeListener(ConfigChangeListener listener) {
-        synchronized (mConfigChangeListeners) {
-            if (!mConfigChangeListeners.contains(listener)) {
-                mConfigChangeListeners.add(listener);
-            }
         }
     }
 

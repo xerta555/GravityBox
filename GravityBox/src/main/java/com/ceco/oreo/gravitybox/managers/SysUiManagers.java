@@ -41,12 +41,19 @@ public class SysUiManagers {
     public static GpsStatusMonitor GpsMonitor;
     public static SubscriptionManager SubscriptionMgr;
     public static TunerManager TunerMgr;
+    public static ConfigurationChangeMonitor ConfigChangeMonitor;
 
     public static void init(Context context, XSharedPreferences prefs, XSharedPreferences qhPrefs, XSharedPreferences tunerPrefs) {
         if (context == null)
             throw new IllegalArgumentException("Context cannot be null");
         if (prefs == null)
             throw new IllegalArgumentException("Prefs cannot be null");
+
+        try {
+            ConfigChangeMonitor = new ConfigurationChangeMonitor(context);
+        } catch (Throwable t) {
+            GravityBox.log(TAG, "Error creating ConfigurationChangeMonitor: ", t);
+        }
 
         createKeyguardMonitor(context, prefs);
 
@@ -70,6 +77,9 @@ public class SysUiManagers {
 
         try {
             AppLauncher = new AppLauncher(context, prefs);
+            if (ConfigChangeMonitor != null) {
+                ConfigChangeMonitor.addConfigChangeListener(AppLauncher);
+            }
         } catch (Throwable t) {
             GravityBox.log(TAG, "Error creating AppLauncher: ", t);
         }
@@ -114,6 +124,10 @@ public class SysUiManagers {
         }
 
         IntentFilter intentFilter = new IntentFilter();
+
+        // Configuration change monitor
+        intentFilter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+
         // battery info manager
         intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
         intentFilter.addAction(GravityBoxSettings.ACTION_PREF_BATTERY_SOUND_CHANGED);
@@ -177,6 +191,9 @@ public class SysUiManagers {
     private static BroadcastReceiver sBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (ConfigChangeMonitor != null) {
+                ConfigChangeMonitor.onBroadcastReceived(context, intent);
+            }
             if (BatteryInfoManager != null) {
                 BatteryInfoManager.onBroadcastReceived(context, intent);
             }
