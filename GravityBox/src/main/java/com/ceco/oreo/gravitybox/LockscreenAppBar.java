@@ -19,10 +19,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -46,6 +44,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.ceco.oreo.gravitybox.managers.AppLauncher;
 import com.ceco.oreo.gravitybox.managers.KeyguardStateMonitor;
 import com.ceco.oreo.gravitybox.managers.NotificationDataMonitor;
 import com.ceco.oreo.gravitybox.managers.SysUiManagers;
@@ -57,7 +56,8 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 public class LockscreenAppBar implements KeyguardStateMonitor.Listener,
-                                         NotificationDataMonitor.Listener {
+                                         NotificationDataMonitor.Listener,
+                                         AppLauncher.ConfigChangeListener {
     private static final String TAG = "GB:LockscreenAppBar";
     private static final boolean DEBUG = false;
 
@@ -84,7 +84,6 @@ public class LockscreenAppBar implements KeyguardStateMonitor.Listener,
     private boolean mIsActive;
     private boolean mIsInteractive = true;
     private int mScale;
-    private Configuration mCurrentConfig = new Configuration();
 
     public LockscreenAppBar(Context ctx, Context gbCtx, ViewGroup container,
             Object notifPanel, XSharedPreferences prefs) {
@@ -100,7 +99,6 @@ public class LockscreenAppBar implements KeyguardStateMonitor.Listener,
         mShowBadges = prefs.getBoolean(
                 GravityBoxSettings.PREF_KEY_LOCKSCREEN_SHORTCUT_SHOW_BADGES, false);
         mScale = prefs.getInt(GravityBoxSettings.PREF_KEY_LOCKSCREEN_SHORTCUT_SCALE, 0);
-        mCurrentConfig.setTo(mContext.getResources().getConfiguration());
 
         mNdMonitor = SysUiManagers.NotifDataMonitor;
         if (mNdMonitor != null) {
@@ -124,7 +122,7 @@ public class LockscreenAppBar implements KeyguardStateMonitor.Listener,
         }
         updateScale();
 
-        mAppSlots = new ArrayList<AppInfo>(7);
+        mAppSlots = new ArrayList<>(7);
         mAppSlots.add(new AppInfo(R.id.quickapp1));
         mAppSlots.add(new AppInfo(R.id.quickapp2));
         mAppSlots.add(new AppInfo(R.id.quickapp3));
@@ -135,21 +133,16 @@ public class LockscreenAppBar implements KeyguardStateMonitor.Listener,
 
         mKgMonitor = SysUiManagers.KeyguardMonitor;
         mKgMonitor.registerListener(this);
+    }
 
-        mContext.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Configuration newConfig = context.getResources().getConfiguration();
-                if ((mCurrentConfig.updateFrom(newConfig) & ActivityInfo.CONFIG_DENSITY) != 0) {
-                    try {
-                        mGbContext = Utils.getGbContext(mContext, newConfig);
-                    } catch (Throwable t) {
-                        GravityBox.log(TAG, t);
-                    }
-                    updateScale();
-                }
-            }
-        }, new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
+    @Override
+    public void onDensityDpiChanged(Configuration config) {
+        try {
+            mGbContext = Utils.getGbContext(mContext, config);
+        } catch (Throwable t) {
+            GravityBox.log(TAG, t);
+        }
+        updateScale();
     }
 
     private void updateScale() {

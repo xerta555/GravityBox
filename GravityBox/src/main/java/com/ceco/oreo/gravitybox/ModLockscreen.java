@@ -200,7 +200,7 @@ public class ModLockscreen {
                     }
 
                     if (SysUiManagers.AppLauncher != null) {
-                        SysUiManagers.AppLauncher.addConfigChangeListener(densityDpi -> {
+                        SysUiManagers.AppLauncher.addConfigChangeListener(config -> {
                             mLeftAction = null;
                             mRightAction = null;
                             prepareBottomActions();
@@ -477,6 +477,9 @@ public class ModLockscreen {
                         if (container != null) {
                             mAppBar = new LockscreenAppBar(mContext, mGbContext, container,
                                     param.thisObject, prefs);
+                            if (SysUiManagers.AppLauncher != null) {
+                                SysUiManagers.AppLauncher.addConfigChangeListener(mAppBar);
+                            }
                             if (Utils.isUserUnlocked(mContext)) {
                                 mAppBar.initAppSlots();
                             }

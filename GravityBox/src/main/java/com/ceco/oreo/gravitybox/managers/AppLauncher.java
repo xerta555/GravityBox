@@ -91,7 +91,7 @@ public class AppLauncher implements BroadcastSubReceiver {
     }
 
     public interface ConfigChangeListener {
-        void onDensityDpiChanged(int densityDpi);
+        void onDensityDpiChanged(Configuration config);
     }
 
     private Runnable mDismissAppDialogRunnable = this::dismissDialog;
@@ -159,7 +159,7 @@ public class AppLauncher implements BroadcastSubReceiver {
                     }
                     synchronized (mConfigChangeListeners) {
                         mConfigChangeListeners.forEach(
-                                (l) -> l.onDensityDpiChanged(newConfig.densityDpi));
+                                (l) -> l.onDensityDpiChanged(newConfig));
                     }
                 }
             }
