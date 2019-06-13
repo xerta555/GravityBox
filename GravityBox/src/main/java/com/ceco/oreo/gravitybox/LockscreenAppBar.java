@@ -19,11 +19,14 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -81,6 +84,7 @@ public class LockscreenAppBar implements KeyguardStateMonitor.Listener,
     private boolean mIsActive;
     private boolean mIsInteractive = true;
     private int mScale;
+    private Configuration mCurrentConfig = new Configuration();
 
     public LockscreenAppBar(Context ctx, Context gbCtx, ViewGroup container,
             Object notifPanel, XSharedPreferences prefs) {
@@ -96,6 +100,7 @@ public class LockscreenAppBar implements KeyguardStateMonitor.Listener,
         mShowBadges = prefs.getBoolean(
                 GravityBoxSettings.PREF_KEY_LOCKSCREEN_SHORTCUT_SHOW_BADGES, false);
         mScale = prefs.getInt(GravityBoxSettings.PREF_KEY_LOCKSCREEN_SHORTCUT_SCALE, 0);
+        mCurrentConfig.setTo(mContext.getResources().getConfiguration());
 
         mNdMonitor = SysUiManagers.NotifDataMonitor;
         if (mNdMonitor != null) {
@@ -130,6 +135,21 @@ public class LockscreenAppBar implements KeyguardStateMonitor.Listener,
 
         mKgMonitor = SysUiManagers.KeyguardMonitor;
         mKgMonitor.registerListener(this);
+
+        mContext.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Configuration newConfig = context.getResources().getConfiguration();
+                if ((mCurrentConfig.updateFrom(newConfig) & ActivityInfo.CONFIG_DENSITY) != 0) {
+                    try {
+                        mGbContext = Utils.getGbContext(mContext, newConfig);
+                    } catch (Throwable t) {
+                        GravityBox.log(TAG, t);
+                    }
+                    updateScale();
+                }
+            }
+        }, new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
     }
 
     private void updateScale() {
