@@ -199,6 +199,14 @@ public class ModLockscreen {
                         prepareBottomActions();
                     }
 
+                    if (SysUiManagers.AppLauncher != null) {
+                        SysUiManagers.AppLauncher.addConfigChangeListener(densityDpi -> {
+                            mLeftAction = null;
+                            mRightAction = null;
+                            prepareBottomActions();
+                        });
+                    }
+
                     IntentFilter intentFilter = new IntentFilter();
                     intentFilter.addAction(GravityBoxSettings.ACTION_LOCKSCREEN_SETTINGS_CHANGED);
                     intentFilter.addAction(KeyguardImageService.ACTION_KEYGUARD_IMAGE_UPDATED);

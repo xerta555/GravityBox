@@ -84,9 +84,14 @@ public class AppLauncher implements BroadcastSubReceiver {
     private DialogTheme mDialogTheme;
     private boolean mIsFirstShow = true;
     private Configuration mCurrentConfig = new Configuration();
+    private final List<ConfigChangeListener> mConfigChangeListeners = new ArrayList<>();
 
     private static void log(String message) {
         XposedBridge.log(TAG + ": " + message);
+    }
+
+    public interface ConfigChangeListener {
+        void onDensityDpiChanged(int densityDpi);
     }
 
     private Runnable mDismissAppDialogRunnable = this::dismissDialog;
@@ -152,6 +157,10 @@ public class AppLauncher implements BroadcastSubReceiver {
                     } catch (Throwable t) {
                         GravityBox.log(TAG, t);
                     }
+                    synchronized (mConfigChangeListeners) {
+                        mConfigChangeListeners.forEach(
+                                (l) -> l.onDensityDpiChanged(newConfig.densityDpi));
+                    }
                 }
             }
         }, new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
@@ -175,6 +184,14 @@ public class AppLauncher implements BroadcastSubReceiver {
         }
         if (intent.getAction().equals(ACTION_SHOW_APP_LAUCNHER)) {
             showDialog();
+        }
+    }
+
+    public void addConfigChangeListener(ConfigChangeListener listener) {
+        synchronized (mConfigChangeListeners) {
+            if (!mConfigChangeListeners.contains(listener)) {
+                mConfigChangeListeners.add(listener);
+            }
         }
     }
 
