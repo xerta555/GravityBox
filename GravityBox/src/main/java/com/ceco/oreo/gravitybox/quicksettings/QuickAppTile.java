@@ -36,6 +36,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -314,18 +315,18 @@ public class QuickAppTile extends QsTile {
         }
     }
 
+    @Override
+    public void onDensityDpiChanged(Configuration config) {
+        super.onDensityDpiChanged(config);
+        updateAllApps();
+    }
+
     private void updateMainApp(String value) {
-        if (mMainApp.getValue() == null || !mMainApp.getValue().equals(value)) {
-            mMainApp.initAppInfo(value);
-        }
+        mMainApp.initAppInfo(value);
     }
 
     private void updateSubApp(int slot, String value) {
-        AppInfo ai;
-        ai = mAppSlots.get(slot);
-        if (ai.getValue() == null || !ai.getValue().equals(value)) {
-            ai.initAppInfo(value);
-        }
+        mAppSlots.get(slot).initAppInfo(value);
     }
 
     @Override

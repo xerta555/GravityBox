@@ -115,6 +115,15 @@ public abstract class BaseTile implements QsEventListener {
     }
 
     @Override
+    public void onDensityDpiChanged(Configuration config) {
+        try {
+            mGbContext = Utils.getGbContext(mContext, config);
+        } catch(Throwable t) {
+            GravityBox.log(TAG, t);
+        }
+    }
+
+    @Override
     public void handleClick() {
         if (mHapticFeedback) {
             mTileView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY,

@@ -28,6 +28,7 @@ import com.ceco.oreo.gravitybox.GravityBoxSettings;
 import com.ceco.oreo.gravitybox.ModHwKeys;
 import com.ceco.oreo.gravitybox.ModQsTiles;
 import com.ceco.oreo.gravitybox.Utils;
+import com.ceco.oreo.gravitybox.managers.SysUiManagers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -210,6 +211,9 @@ public class QsPanel implements BroadcastSubReceiver {
                         mEventDistributor.setQsPanel(QsPanel.this);
                         mQuickPulldownHandler = new QsQuickPulldownHandler(
                                 mQsPanel.getContext(), mPrefs, mEventDistributor);
+                        if (SysUiManagers.ConfigChangeMonitor != null) {
+                            SysUiManagers.ConfigChangeMonitor.addConfigChangeListener(mEventDistributor);
+                        }
                     }
 
                     Collection<?> tiles = (Collection<?>)param.args[0];
@@ -330,7 +334,7 @@ public class QsPanel implements BroadcastSubReceiver {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     if (DEBUG) log("BrightnessController: updateIcon");
-                    ImageView icon = (ImageView) XposedHelpers.getObjectField(param.thisObject, "mIcon");                      
+                    ImageView icon = (ImageView) XposedHelpers.getObjectField(param.thisObject, "mIcon");
                     if (icon != null) {
                         if (!icon.hasOnClickListeners()) {
                             icon.setOnClickListener(mBrightnessIconOnClick);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,6 +26,7 @@ import com.ceco.oreo.gravitybox.GravityBoxSettings;
 import com.ceco.oreo.gravitybox.ModQsTiles;
 import com.ceco.oreo.gravitybox.PhoneWrapper;
 import com.ceco.oreo.gravitybox.Utils;
+import com.ceco.oreo.gravitybox.managers.ConfigurationChangeMonitor;
 import com.ceco.oreo.gravitybox.managers.KeyguardStateMonitor;
 import com.ceco.oreo.gravitybox.managers.SysUiManagers;
 
@@ -41,7 +42,8 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-public class QsTileEventDistributor implements KeyguardStateMonitor.Listener {
+public class QsTileEventDistributor implements KeyguardStateMonitor.Listener,
+                                               ConfigurationChangeMonitor.ConfigChangeListener {
     private static final String TAG = "GB:QsTileEventDistributor";
     private static final boolean DEBUG = ModQsTiles.DEBUG;
 
@@ -61,6 +63,7 @@ public class QsTileEventDistributor implements KeyguardStateMonitor.Listener {
         boolean handleSecondaryClick();
         Object getDetailAdapter();
         boolean isLocked();
+        void onDensityDpiChanged(Configuration config);
     }
 
     private static void log(String message) {
@@ -322,4 +325,9 @@ public class QsTileEventDistributor implements KeyguardStateMonitor.Listener {
 
     @Override
     public void onScreenStateChanged(boolean interactive) { }
+
+    @Override
+    public void onDensityDpiChanged(Configuration config) {
+        mListeners.values().forEach(l -> l.onDensityDpiChanged(config));
+    }
 }
