@@ -2109,4 +2109,8 @@ Dikkatli kullanın ve her zaman bir yedeğiniz olsun!</string>
     <string name="pref_tuneable_value_int_error">Geçersiz değer. Tamsayı bekleniyor</string>
     <string name="tuner_manager_not_responding">Ayarlama yöneticisi yanıt vermiyor</string>
 
+    <!-- Phone: fix LED mor missed calls -->
+    <string name="pref_phone_fix_missed_call_led_title">"Cevapsız arama LED'ini düzelt"</string>
+    <string name="pref_phone_fix_missed_call_led_summary">"Cevapsız arama bildirim LED'ini düzeltmeye çalışır (yeniden başlatma gerektirir)"</string>
+
 </resources>
