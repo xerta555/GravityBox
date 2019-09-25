@@ -23,7 +23,6 @@ import android.Manifest.permission;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -32,37 +31,30 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore.Images;
+import android.view.ContextThemeWrapper;
 import android.widget.Toast;
+
+import com.theartofdev.edmodo.cropper.CropImage;
 
 public class PickImageActivity extends GravityBoxActivity {
 
     private static final int REQ_PICK_IMAGE = 1;
-    private static final int REQ_CROP_IMAGE = 2;
-    private static final String ACTION_CROP = "com.android.camera.action.CROP";
 
     public static final String EXTRA_CROP_MODE = "cropMode";
-    public static final String EXTRA_SCALE = "scale";
-    public static final String EXTRA_SCALE_UP = "scaleUpIfNeeded";
     public static final String EXTRA_ASPECT_X = "aspectX";
     public static final String EXTRA_ASPECT_Y = "aspectY";
     public static final String EXTRA_OUTPUT_X = "outputX";
     public static final String EXTRA_OUTPUT_Y = "outputY";
-    public static final String EXTRA_SPOTLIGHT_X = "spotlightX";
-    public static final String EXTRA_SPOTLIGHT_Y = "spotlightY";
     public static final String EXTRA_FILE_PATH = "filePath";
 
     private enum CropMode { ORIGINAL, CROP, ASK }
 
     private ProgressDialog mProgressDialog;
     private CropMode mCropMode = CropMode.ORIGINAL;
-    private boolean mScale;
-    private boolean mScaleUp;
     private Point mAspectSize;
     private Point mOutputSize;
-    private Point mSpotlightSize;
-    private Uri mCropUri;
     private AlertDialog mAlertDialog;
+    private File mImageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +77,6 @@ public class PickImageActivity extends GravityBoxActivity {
             if (startIntent.hasExtra(EXTRA_CROP_MODE)) {
                 mCropMode = CropMode.valueOf(startIntent.getStringExtra(EXTRA_CROP_MODE));
             }
-            mScale = startIntent.getBooleanExtra(EXTRA_SCALE, false);
-            mScaleUp = startIntent.getBooleanExtra(EXTRA_SCALE_UP, false);
             if (startIntent.hasExtra(EXTRA_ASPECT_X) || startIntent.hasExtra(EXTRA_ASPECT_Y)) {
                 mAspectSize = new Point(startIntent.getIntExtra(EXTRA_ASPECT_X, 0),
                         startIntent.getIntExtra(EXTRA_ASPECT_Y, 0));
@@ -94,10 +84,6 @@ public class PickImageActivity extends GravityBoxActivity {
             if (startIntent.hasExtra(EXTRA_OUTPUT_X) || startIntent.hasExtra(EXTRA_OUTPUT_Y)) {
                 mOutputSize = new Point(startIntent.getIntExtra(EXTRA_OUTPUT_X, 0),
                         startIntent.getIntExtra(EXTRA_OUTPUT_Y, 0));
-            }
-            if (startIntent.hasExtra(EXTRA_SPOTLIGHT_X) || startIntent.hasExtra(EXTRA_SPOTLIGHT_Y)) {
-                mSpotlightSize = new Point(startIntent.getIntExtra(EXTRA_SPOTLIGHT_X, 0),
-                        startIntent.getIntExtra(EXTRA_SPOTLIGHT_Y, 0));
             }
 
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -120,19 +106,19 @@ public class PickImageActivity extends GravityBoxActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQ_PICK_IMAGE) {
+        if (requestCode == REQ_PICK_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
                 new ImageLoader().execute(data.getData());
-            } else if (requestCode == REQ_CROP_IMAGE) {
-                if (data.getData() != null) {
-                    sendResult(data.getData());
-                } else {
-                    Toast.makeText(this, R.string.imgpick_crop_uri_null, Toast.LENGTH_LONG).show();
-                    sendResult(mCropUri);
-                }
+            } else {
+                sendResult(Activity.RESULT_CANCELED);
             }
-        } else {
-            sendResult(null);
+        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                sendResult(Activity.RESULT_OK);
+            } else {
+                Toast.makeText(this, R.string.imgpick_crop_uri_null, Toast.LENGTH_LONG).show();
+                sendResult(Activity.RESULT_OK);
+            }
         }
     }
 
@@ -142,79 +128,52 @@ public class PickImageActivity extends GravityBoxActivity {
         } else if (result.exception != null) {
             Toast.makeText(this, String.format("%s: %s", getString(R.string.imgpick_choose_error),
                     result.exception.getMessage()), Toast.LENGTH_LONG).show();
-            sendResult(null);
+            sendResult(Activity.RESULT_CANCELED);
             return;
         }
 
+        mImageFile = result.file;
         if (mCropMode == CropMode.ORIGINAL) {
-            setResult(Activity.RESULT_OK, 
-                    new Intent().putExtra(EXTRA_FILE_PATH, result.file.getAbsolutePath()));
-            finish();
+            sendResult(Activity.RESULT_OK);
         } else if (mCropMode == CropMode.CROP) {
-            cropImage(result.file);
+            cropImage();
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                    .setTitle(R.string.imgpick_crop_ask_title)
-                    .setMessage(getString(R.string.imgpick_crop_ask_msg, mOutputSize.x, mOutputSize.y))
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            cropImage(result.file);
-                        }
-                    })
-                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            setResult(Activity.RESULT_OK, 
-                                    new Intent().putExtra(EXTRA_FILE_PATH, result.file.getAbsolutePath()));
-                            finish();
-                        }
-                    });
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(
+                    this, R.style.AlertDialogStyle))
+                .setTitle(R.string.imgpick_crop_ask_title)
+                .setMessage(getString(R.string.imgpick_crop_ask_msg, mOutputSize.x, mOutputSize.y))
+                .setPositiveButton(R.string.yes, (dialog, which) -> cropImage())
+                .setNegativeButton(R.string.no, (dialog, which) -> sendResult(Activity.RESULT_OK));
             mAlertDialog = builder.create();
             mAlertDialog.show();
         }
     }
 
-    private void sendResult(Uri uri) {
-        if (uri == null) {
+    private void sendResult(int result) {
+        if (result == Activity.RESULT_CANCELED || mImageFile == null) {
             setResult(Activity.RESULT_CANCELED);
         } else {
-            try {
-                File f = createFileFromUri(uri, false);
-                setResult(Activity.RESULT_OK, 
-                        new Intent().putExtra(EXTRA_FILE_PATH, f.getAbsolutePath()));
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, String.format("%s: %s", getString(R.string.imgpick_crop_error),
-                        e.getMessage()), Toast.LENGTH_LONG).show();
-                setResult(Activity.RESULT_CANCELED);
-            }
-            getContentResolver().delete(uri, null, null);
-        }
-        if (mCropUri != null && mCropUri != uri) {
-            getContentResolver().delete(mCropUri, null, null);
-            mCropUri = null;
+            setResult(Activity.RESULT_OK,
+                        new Intent().putExtra(EXTRA_FILE_PATH, mImageFile.getAbsolutePath()));
         }
         finish();
     }
 
-    private File createFileFromUri(Uri uri, boolean downscale) throws Exception {
+    private File createFileFromUri(Uri uri) throws Exception {
         File outFile = new File(Utils.getCacheDir(PickImageActivity.this) + "/" + UUID.randomUUID().toString());
         InputStream in = null;
         FileOutputStream out = null;
         BitmapFactory.Options options = null;
         try {
-            if (downscale) {
-                // downscale to maxWidth/maxHeight of display
-                in = getContentResolver().openInputStream(uri);
-                options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeStream(in, null, options);
-                options.inSampleSize = BitmapUtils.calculateInSampleSize(
-                        options, getMaxWidth(), getMaxHeight());
-                options.inJustDecodeBounds = false;
-                in.close();
-            }
+            // downscale to maxWidth/maxHeight of display
+            in = getContentResolver().openInputStream(uri);
+            options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(in, null, options);
+            options.inSampleSize = BitmapUtils.calculateInSampleSize(
+                    options, getMaxWidth(), getMaxHeight());
+            options.inJustDecodeBounds = false;
+            in.close();
 
             // save bitmap
             in = getContentResolver().openInputStream(uri);
@@ -224,8 +183,8 @@ public class PickImageActivity extends GravityBoxActivity {
             out.flush();
             bitmap.recycle();
         } finally {
-            try { in.close(); } catch (Exception e) { }
-            try { out.close(); } catch (Exception e) { }
+            try { in.close(); } catch (Exception ignored) { }
+            try { out.close(); } catch (Exception ignored) { }
         }
         return outFile;
     }
@@ -238,37 +197,23 @@ public class PickImageActivity extends GravityBoxActivity {
         return getResources().getDisplayMetrics().heightPixels;
     }
 
-    private void cropImage(File file) {
+    private void cropImage() {
         try {
-            mCropUri = Uri.parse(Images.Media.insertImage(
-                    getContentResolver(), file.getAbsolutePath(), null, null));
-            Intent cropIntent = new Intent(ACTION_CROP);
-            cropIntent.setDataAndType(mCropUri, "image/*");
-            cropIntent.putExtra("crop", "true");
+            Uri uri = Uri.fromFile(mImageFile);
+            CropImage.ActivityBuilder builder = CropImage.activity(uri);
             if (mAspectSize != null) {
-                cropIntent.putExtra(EXTRA_ASPECT_X, mAspectSize.x);
-                cropIntent.putExtra(EXTRA_ASPECT_Y, mAspectSize.y);
+                builder.setAspectRatio(mAspectSize.x, mAspectSize.y);
             }
             if (mOutputSize != null) {
-                cropIntent.putExtra(EXTRA_OUTPUT_X, mOutputSize.x);
-                cropIntent.putExtra(EXTRA_OUTPUT_Y, mOutputSize.y);
+                builder.setRequestedSize(mOutputSize.x, mOutputSize.y);
             }
-            if (mSpotlightSize != null) {
-                cropIntent.putExtra(EXTRA_SPOTLIGHT_X, mSpotlightSize.x);
-                cropIntent.putExtra(EXTRA_SPOTLIGHT_Y, mSpotlightSize.y);
-            }
-            cropIntent.putExtra(EXTRA_SCALE, mScale);
-            cropIntent.putExtra(EXTRA_SCALE_UP, mScaleUp);
-            cropIntent.putExtra("return-data", false);
-            cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-            startActivityForResult(cropIntent, REQ_CROP_IMAGE);
+            builder.setOutputUri(uri);
+            builder.start(this);
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, String.format("%s: %s", getString(R.string.imgpick_crop_error),
                     e.getMessage()), Toast.LENGTH_LONG).show();
-            sendResult(null);
+            sendResult(Activity.RESULT_CANCELED);
         }
     }
 
@@ -300,7 +245,7 @@ public class PickImageActivity extends GravityBoxActivity {
         protected LoadResult doInBackground(Uri... params) {
             LoadResult result = new LoadResult();
             try { 
-                result.file = createFileFromUri(params[0], true);
+                result.file = createFileFromUri(params[0]);
             } catch (Exception e) {
                 result.exception = e;
                 e.printStackTrace();
