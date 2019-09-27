@@ -45,8 +45,6 @@ public class ResourceProxy {
         public int resId;
         public String name;
         public Object value;
-        private boolean isProcessed;
-        private boolean isOverridden;
 
         private ResourceSpec(Interceptor interceptor, int resId, String name, Object value) {
             this.interceptor = interceptor;
@@ -190,20 +188,10 @@ public class ResourceProxy {
             Object value = param.getResult();
             ResourceSpec spec = getOrCreateResourceSpec((Resources)param.thisObject,
                     (int)param.args[0], value);
-            if (spec != null) {
-                if (spec.isProcessed) {
-                    if (spec.isOverridden) {
-                        param.setResult(spec.value);
-                    }
-                    return;
-                }
-                if (spec.interceptor.onIntercept(spec) &&
+            if (spec != null && spec.interceptor.onIntercept(spec) &&
                         value.getClass().isAssignableFrom(spec.value.getClass())) {
-                    if (DEBUG) log(param.method.getName() + ": onIntercept: " + spec.toString());
-                    spec.isOverridden = true;
-                    param.setResult(spec.value);
-                }
-                spec.isProcessed = true;
+                if (DEBUG) log(param.method.getName() + ": onIntercept: " + spec.toString());
+                param.setResult(spec.value);
             }
         }
     };
@@ -213,8 +201,10 @@ public class ResourceProxy {
         if (pkgName == null) return null;
 
         int cacheKey = getCacheKey(pkgName, resId);
-        if (sCache.get(cacheKey) != null)
+        if (sCache.get(cacheKey) != null) {
+            sCache.get(cacheKey).value = value;
             return sCache.get(cacheKey);
+        }
 
         String resName = getResourceEntryName(res, resId);
         if (resName == null) return null;
