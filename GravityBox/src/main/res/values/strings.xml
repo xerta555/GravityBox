@@ -2160,4 +2160,12 @@
     <string name="pref_phone_fix_missed_call_led_title">Fix missed call LED</string>
     <string name="pref_phone_fix_missed_call_led_summary">Attempts to fix missing LED for missed call notifications (requires reboot)</string>
 
+    <!-- About EdXposed -->
+    <string name="about_edxposed_title">EdXposed framework</string>
+    <string name="about_edxposed_summary">Coded by solohsu &amp; MlgmXyysd. Touch to visit official page.</string>
+
+    <!-- About Riru -->
+    <string name="about_riru_title">Riru</string>
+    <string name="about_riru_summary">Coded by RikkaW. Touch to visit official page.</string>
+
 </resources>

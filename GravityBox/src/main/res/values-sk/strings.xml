@@ -2062,4 +2062,12 @@
     <string name="pref_phone_fix_missed_call_led_title">Opraviť LED zmeškaných hovorov</string>
     <string name="pref_phone_fix_missed_call_led_summary">Pokúsi sa opraviť chýbajúce LED upozornenie pre oznámenia zmeškaných hovorov (vyžaduje reštart)</string>
 
+    <!-- About EdXposed -->
+    <string name="about_edxposed_title">EdXposed framework</string>
+    <string name="about_edxposed_summary">Naprogramoval solohsu &amp; MlgmXyysd. Dotykom otvoríte oficiálnu stránku.</string>
+
+    <!-- About Riru -->
+    <string name="about_riru_title">Riru</string>
+    <string name="about_riru_summary">Naprogramoval RikkaW. Dotykom otvoríte oficiálnu stránku.</string>
+
 </resources>

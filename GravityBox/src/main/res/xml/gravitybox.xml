@@ -2752,6 +2752,16 @@
             android:summary="@string/about_xposed_summary" />"
 
         <Preference
+            android:key="pref_about_edxposed"
+            android:title="@string/about_edxposed_title"
+            android:summary="@string/about_edxposed_summary" />"
+
+        <Preference
+            android:key="pref_about_riru"
+            android:title="@string/about_riru_title"
+            android:summary="@string/about_riru_summary" />"
+
+        <Preference
             android:key="pref_about_donate"
             android:title="@string/about_donate_title"
             android:summary="@string/about_donate_summary" />

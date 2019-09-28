@@ -2057,4 +2057,12 @@
     <string name="pref_phone_fix_missed_call_led_title">Opravit LED zmeškaných hovorů</string>
     <string name="pref_phone_fix_missed_call_led_summary">Pokusí se opravit chybějící LED upozornění pro oznámení zmeškaných hovorů (vyžaduje restart)</string>
 
+    <!-- About EdXposed -->
+    <string name="about_edxposed_title">EdXposed framework</string>
+    <string name="about_edxposed_summary">Naprogramoval solohsu &amp; MlgmXyysd. Dotykem otevřete oficiální stránku.</string>
+
+    <!-- About Riru -->
+    <string name="about_riru_title">Riru</string>
+    <string name="about_riru_summary">Naprogramoval RikkaW. Dotykem otevřete oficiální stránku.</string>
+
 </resources>

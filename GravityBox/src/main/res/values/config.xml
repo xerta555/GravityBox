@@ -17,6 +17,8 @@
 <resources>
     <string name="url_gravitybox" translatable="false">http://forum.xda-developers.com/showthread.php?t=3739929</string>
     <string name="url_xposed" translatable="false">http://forum.xda-developers.com/xposed/xposed-installer-versions-changelog-t2714053</string>
+    <string name="url_edxposed" translatable="false">https://github.com/ElderDrivers/EdXposed</string>
+    <string name="url_riru" translatable="false">https://github.com/RikkaApps/Riru</string>
     <string name="url_donate_fixed_amount" translatable="false">https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=HB4XU4Y98B2PC</string>
     <string name="url_donate_free_amount" translatable="false">https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=5HXYSB2ACQXWU</string>
     <string name="url_web_service" translatable="false">http://gravitybox.ceco.sk.eu.org/service.php</string>

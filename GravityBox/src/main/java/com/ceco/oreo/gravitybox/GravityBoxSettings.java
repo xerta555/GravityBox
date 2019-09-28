@@ -227,6 +227,8 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String PREF_CAT_KEY_ABOUT = "pref_cat_about";
     public static final String PREF_KEY_ABOUT_GRAVITYBOX = "pref_about_gb";
     public static final String PREF_KEY_ABOUT_XPOSED = "pref_about_xposed";
+    public static final String PREF_KEY_ABOUT_EDXPOSED = "pref_about_edxposed";
+    public static final String PREF_KEY_ABOUT_RIRU = "pref_about_riru";
     public static final String PREF_KEY_ABOUT_DONATE = "pref_about_donate";
     public static final String PREF_KEY_ABOUT_UNLOCKER = "pref_about_get_unlocker";
     public static final String PREF_KEY_UNPLUG_TURNS_ON_SCREEN = "pref_unplug_turns_on_screen";
@@ -1308,6 +1310,8 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
         private PreferenceScreen mPrefCatAbout;
         private Preference mPrefAboutGb;
         private Preference mPrefAboutXposed;
+        private Preference mPrefAboutEdXposed;
+        private Preference mPrefAboutRiru;
         private Preference mPrefAboutDonate;
         private Preference mPrefAboutUnlocker;
         private Preference mPrefEngMode;
@@ -1505,6 +1509,8 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             }
 
             mPrefAboutXposed = findPreference(PREF_KEY_ABOUT_XPOSED);
+            mPrefAboutEdXposed = findPreference(PREF_KEY_ABOUT_EDXPOSED);
+            mPrefAboutRiru = findPreference(PREF_KEY_ABOUT_RIRU);
             mPrefAboutDonate = findPreference(PREF_KEY_ABOUT_DONATE);
             mPrefAboutUnlocker = findPreference(PREF_KEY_ABOUT_UNLOCKER);
 
@@ -3734,6 +3740,10 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_gravitybox)));
             } else if (pref == mPrefAboutXposed) {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_xposed)));
+            } else if (pref == mPrefAboutEdXposed) {
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_edxposed)));
+            } else if (pref == mPrefAboutRiru) {
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_riru)));
             } else if (pref == mPrefAboutDonate) {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(mDonateUrlResId)));
             } else if (pref == mPrefAboutUnlocker) {
