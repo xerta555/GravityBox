@@ -723,6 +723,8 @@ public class ModStatusBar {
                     if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_VISUALIZER_ENABLE, false)) {
                         intentFilter.addAction(GravityBoxSettings.ACTION_VISUALIZER_SETTINGS_CHANGED);
                     }
+                    intentFilter.addAction(Intent.ACTION_TIME_CHANGED);
+                    intentFilter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
 
                     mContext.registerReceiver(mBroadcastReceiver, intentFilter);
 
