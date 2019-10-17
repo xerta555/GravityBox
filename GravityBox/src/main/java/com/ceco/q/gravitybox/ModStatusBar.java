@@ -1243,6 +1243,13 @@ public class ModStatusBar {
                         mRightArea.addView(mTrafficMeter, 0);
                     }
                     break;
+                case GravityBoxSettings.DT_POSITION_RIGHT_EDGE:
+                    lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    lp.weight = 0;
+                    if (mRightArea != null) {
+                        mRightArea.addView(mTrafficMeter);
+                    }
+                    break;
             }
             mTrafficMeter.setLayoutParams(lp);
         }

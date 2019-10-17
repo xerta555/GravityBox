@@ -64,7 +64,7 @@ public abstract class TrafficMeterAbstract extends TextView
     protected int mInterval = 1000;
     protected int mPosition;
     protected int mSize;
-    protected int mMargin;
+    protected int mMarginStartRight;
     protected boolean mIsScreenOn = true;
     protected DisplayMode mDisplayMode;
     protected boolean mIsDownloadActive;
@@ -97,10 +97,8 @@ public abstract class TrafficMeterAbstract extends TextView
 
         LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-        mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2,
+        mMarginStartRight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6,
                 context.getResources().getDisplayMetrics());
-        lParams.setMarginStart(mMargin);
-        lParams.setMarginEnd(mMargin);
         setLayoutParams(lParams);
         setTextAppearance(context.getResources().getIdentifier(
                 "TextAppearance.StatusBar.Clock", "style", PACKAGE_NAME));
@@ -133,8 +131,8 @@ public abstract class TrafficMeterAbstract extends TextView
         }
 
         try {
-            mPosition = Integer.valueOf(prefs.getString(
-                    GravityBoxSettings.PREF_KEY_DATA_TRAFFIC_POSITION, "0"));
+            setTrafficMeterPosition(Integer.valueOf(prefs.getString(
+                    GravityBoxSettings.PREF_KEY_DATA_TRAFFIC_POSITION, "0")));
         } catch (NumberFormatException nfe) {
             GravityBox.log(TAG, "Invalid preference value for PREF_KEY_DATA_TRAFFIC_POSITION");
         }
@@ -219,6 +217,10 @@ public abstract class TrafficMeterAbstract extends TextView
 
     public void setTrafficMeterPosition(int position) {
         mPosition = position;
+        LinearLayout.LayoutParams lParams = (LinearLayout.LayoutParams) getLayoutParams();
+        lParams.setMarginStart(mPosition == GravityBoxSettings.DT_POSITION_RIGHT_EDGE ?
+                mMarginStartRight : 0);
+        setLayoutParams(lParams);
     }
 
     public boolean isAllowedInLockscreen() {

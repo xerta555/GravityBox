@@ -36,7 +36,6 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.LinearLayout;
 
 public class TrafficMeterOmni extends TrafficMeterAbstract {
     private static final int KILOBYTE = 1024;
@@ -251,10 +250,6 @@ public class TrafficMeterOmni extends TrafficMeterAbstract {
 
         setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
         updateTrafficDrawableColor();
-
-        LinearLayout.LayoutParams lParams = (LinearLayout.LayoutParams) getLayoutParams();
-        lParams.setMarginEnd(mShowIcon ? 0 : mMargin);
-        setLayoutParams(lParams);
     }
 
     private void updateTrafficDrawableColor() {
