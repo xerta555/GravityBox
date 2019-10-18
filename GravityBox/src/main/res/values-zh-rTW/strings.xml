@@ -288,9 +288,6 @@
     <string name="pref_gb_theme_dark_title">使用  黑色背景主題</string>
     <string name="pref_gb_theme_dark_summary">將 GravityBox 的預設  白色背景主題換成  黑色背景主題</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">調整頂部邊距</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">搜尋</string>
     <string name="app_picker_none"> (未有指定) </string>
@@ -490,7 +487,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> 可用</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> 已使用</string>
-    <string name="pref_rambar_title">於多工面板內顯示記憶體使用量棒條</string>
     <string name="rambar_off">關閉</string>
     <string name="rambar_top">頂部</string>
     <string name="rambar_bottom">底部</string>
@@ -567,9 +563,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">前往啟動器</string>
     <string name="hwkey_action_back">返回</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">調整底部邊距</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">為了能夠支援導航列動作控制，在導航列選項中覆蓋系統預設值是必須的</string>
@@ -743,9 +736,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">快速應用程式瓷貼 2 設定</string>
     <string name="qs_tile_quickapp_2">快速應用程式瓷貼 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">多工面板</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">其他設定</string>

@@ -483,9 +483,9 @@
     </string-array>
 
     <string-array name="rambar_values" translatable="false">
-        <item>0</item>
-        <item>48</item>
-        <item>80</item>
+        <item>OFF</item>
+        <item>TOP</item>
+        <item>BOTTOM</item>
     </string-array>
 
     <string-array name="pie_custom_key_entries" translatable="false">

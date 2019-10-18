@@ -18,6 +18,8 @@ import com.ceco.pie.gravitybox.ColorUtils;
 import com.ceco.pie.gravitybox.GravityBox;
 
 import android.content.Context;
+import android.graphics.Color;
+
 import de.robv.android.xposed.XposedHelpers;
 
 class OOSThemeColorUtils {
@@ -27,6 +29,7 @@ class OOSThemeColorUtils {
     private static final int QS_PRIMARY_TEXT = 0x1;
     private static final int QS_SECONDARY_TEXT = 0x2;
     private static final int QS_ACCENT = 0x64;
+    private static final int QS_TILE_CIRCLE_OFF = 0xf;
 
     private OOSThemeColorUtils() { /* static, non-instantiable */ }
 
@@ -41,6 +44,17 @@ class OOSThemeColorUtils {
         }
     }
 
+    private static int getCurrentTheme(Context ctx) {
+        try {
+            final Class<?> tcuClass = XposedHelpers.findClass(
+                    CLASS_THEME_COLOR_UTILS, ctx.getClassLoader());
+            return (int) XposedHelpers.callStaticMethod(tcuClass, "getCurrentTheme");
+        } catch (Throwable t) {
+            GravityBox.log(TAG, "Error getting current OOS theme", t);
+            return 2;
+        }
+    }
+
     public static int getColorTextPrimary(Context ctx) {
         return getColor(ctx, QS_PRIMARY_TEXT, android.R.attr.textColorPrimary);
     }
@@ -51,5 +65,16 @@ class OOSThemeColorUtils {
 
     public static int getColorAccent(Context ctx) {
         return getColor(ctx, QS_ACCENT, android.R.attr.colorControlNormal);
+    }
+
+    public static int getTileColorActive(Context ctx) {
+        switch (getCurrentTheme(ctx)) {
+            case 2: return Color.WHITE;
+            default: return getColorAccent(ctx);
+        }
+    }
+
+    public static int getTileColorInactive(Context ctx) {
+        return getColor(ctx, QS_TILE_CIRCLE_OFF, android.R.attr.textColorTertiary);
     }
 }

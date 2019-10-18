@@ -297,9 +297,6 @@
     <string name="pref_gb_theme_dark_title">Usa il Tema scuro</string>
     <string name="pref_gb_theme_dark_summary">Cambia interfaccia a GravityBox, usa il tema scuro</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Regolazione margine superiore</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Ricerca</string>
     <string name="app_picker_none">(Nessuno)</string>
@@ -487,7 +484,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> liberi</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> usati</string>
-    <string name="pref_rambar_title">Indicatore RAM in attività recenti</string>
     <string name="rambar_off">Spento</string>
     <string name="rambar_top">In alto</string>
     <string name="rambar_bottom">In basso</string>
@@ -565,9 +561,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Vai a schermata Home</string>
     <string name="hwkey_action_back">Torna indietro</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Margine inferiore</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Per abilitare il supporto per le azioni della barra di navigazione è necessario
@@ -735,9 +728,6 @@
 	<!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Impostazioni QuickApp 2</string>
     <string name="qs_tile_quickapp_2">Quick App 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Schermata applicazioni recenti</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Altre impostazioni</string>
@@ -1873,9 +1863,6 @@
     <string name="notif_channel_services_desc">Per le notifiche del servizio di primo piano come Torcia e Registrazione dello schermo</string>
     <string name="notif_channel_unc_title">Anteprima UNC</string>
     <string name="notif_channel_unc_desc">Per l\'anteprima delle notifiche di Ultimate Notification Control</string>
-
-    <!-- Recents: Clear always visible -->
-    <string name="pref_recent_clear_always_visible_title">Mostra sempre il pulsante Cancella tutto</string>
 
     <!-- Theme -->
     <string name="theme_title">Tema</string>

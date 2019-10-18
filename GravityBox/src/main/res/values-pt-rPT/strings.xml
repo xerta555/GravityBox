@@ -273,9 +273,6 @@
     <string name="pref_gb_theme_dark_title">Utilizar tema escuro</string>
     <string name="pref_gb_theme_dark_summary">Altera a interface de utilizador da aplicação GB para o tema escuro em vez do tema claro</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Ajustar margem superior</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Pesquisa</string>
     <string name="app_picker_none">(Nenhuma)</string>
@@ -462,7 +459,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> livres</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> utiliz.</string>
-    <string name="pref_rambar_title">Indicação de memória RAM</string>
     <string name="rambar_off">Desativada</string>
     <string name="rambar_top">Topo do ecrã</string>
     <string name="rambar_bottom">Fundo do ecrã</string>
@@ -540,9 +536,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Ir para início</string>
     <string name="hwkey_action_back">Ir para trás</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Ajustar margem inferior</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Para ativar ações relacionadas com a barra de navegação, é necessário 
@@ -704,9 +697,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Definições do painel Aplicação rápida 2</string>
     <string name="qs_tile_quickapp_2">Aplicação rápida 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Painel de aplicações recentes</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Outras definições</string>

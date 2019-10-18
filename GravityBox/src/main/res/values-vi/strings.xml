@@ -292,9 +292,6 @@
     <string name="pref_gb_theme_dark_title">Sử dụng giao diện tối</string>
     <string name="pref_gb_theme_dark_summary">Chuyển giao diện GB sang giao diện tối</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Căn chỉnh lề trên</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Tìm kiếm</string>
     <string name="app_picker_none">(Không có gì)</string>
@@ -481,7 +478,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> trống</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> đã dùng</string>
-    <string name="pref_rambar_title">Thanh hiển thị RAM</string>
     <string name="rambar_off">Tắt</string>
     <string name="rambar_top">Trên cùng</string>
     <string name="rambar_bottom">Dưới cùng</string>
@@ -559,9 +555,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Về màn hình chủ</string>
     <string name="hwkey_action_back">Quay lại</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Căn chỉnh lề dưới</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Để tính năng này hỗ trợ cho thanh trạng thái, nó là cần thiết 
@@ -728,9 +721,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Cài đặt QuickApp tile 2</string>
     <string name="qs_tile_quickapp_2">Quick App 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Bảng hiện tại</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Cài đặt khác</string>

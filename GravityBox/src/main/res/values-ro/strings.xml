@@ -290,9 +290,6 @@
     <string name="pref_gb_theme_dark_title">Utilizați tema întunecată</string>
     <string name="pref_gb_theme_dark_summary">Comută GB pentru a utiliza tema întunecată</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Ajustare margine superioară</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Căutare</string>
     <string name="app_picker_none">(Nimic)</string>
@@ -477,7 +474,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> liberi</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> utilizaţi</string>
-    <string name="pref_rambar_title">Bară RAM în recente</string>
     <string name="rambar_off">Dezactivată</string>
     <string name="rambar_top">Sus</string>
     <string name="rambar_bottom">Jos</string>
@@ -554,9 +550,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Acasă</string>
     <string name="hwkey_action_back">Înapoi</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Ajustare margine inferioară</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Pentru a permite activarea acțiunilor pentru bara de navigare, este necesar să înlocuiți setările prestabilite ale sistemului în meniul de configurare a barei de navigare</string>
@@ -723,9 +716,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Setări Aplicaţie rapidă dala 2</string>
     <string name="qs_tile_quickapp_2">Aplicație rapidă 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Panou recente</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Alte setări</string>

@@ -298,9 +298,6 @@
     <string name="pref_gb_theme_dark_title">Gunakan tema gelap</string>
     <string name="pref_gb_theme_dark_summary">Gunakan tema gelap untuk GB</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Set ukuran atas</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Cari</string>
     <string name="app_picker_none">(Tiada)</string>
@@ -487,7 +484,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> Bebas</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> Diguna</string>
-    <string name="pref_rambar_title">Bar RAM</string>
     <string name="rambar_off">Tidak aktif</string>
     <string name="rambar_top">Atas</string>
     <string name="rambar_bottom">Bawah</string>
@@ -565,9 +561,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Pergi rumah</string>
     <string name="hwkey_action_back">Pergi kembali</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Tukar margin bawah</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Demi untuk membenarkan aksi ke atas bar navigasi, adalah perlu
@@ -735,9 +728,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Tetapan aplikasi cepat tile 2</string>
     <string name="qs_tile_quickapp_2">Aplikasi cepat 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Panel baru-baru</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Tetapan lain</string>
@@ -1875,9 +1865,6 @@
     <string name="notif_channel_services_desc">Untuk khidmat seperti lampu picit dan perakam skrin</string>
     <string name="notif_channel_unc_title">Pratonton UNC</string>
     <string name="notif_channel_unc_desc">Untuk pratonton kawalan notifikasi ultimate</string>
-
-    <!-- Recents: Clear always visible -->
-    <string name="pref_recent_clear_always_visible_title">Sentiasa tunjukkan butang buang semua</string>
 
     <!-- Theme -->
     <string name="theme_title">Tema</string>

@@ -275,9 +275,6 @@
     <string name="pref_gb_theme_dark_title">Použít tmavé téma</string>
     <string name="pref_gb_theme_dark_summary">Přepne GB UI na tmavé téma</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Přizpůsobit horní okraj</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Hledat</string>
     <string name="app_picker_none">(Žádná)</string>
@@ -460,7 +457,7 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> volných</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> využitých</string>
-    <string name="pref_rambar_title">RAM lišta v seznamu spuštěných aplikací</string>
+    <string name="pref_qs_rambar_mode_title">Lišta využití RAM</string>
     <string name="rambar_off">Vypnuta</string>
     <string name="rambar_top">Zobrazit nahoře</string>
     <string name="rambar_bottom">Zobrazit dole</string>
@@ -538,9 +535,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Domů</string>
     <string name="hwkey_action_back">Zpět</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Přizpůsobit spodní okraj</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">V případě potřeby použití akcí pro softwarové tlačítka navigační lišty je
@@ -709,9 +703,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Rychlá aplikace 2</string>
     <string name="qs_tile_quickapp_2">Rychlá aplikace 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Panel aktivních úloh</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Jiná nastavení</string>
@@ -1818,9 +1809,6 @@
 
     <!-- Statusbar: Hide data saver icon -->
     <string name="pref_sb_hide_data_saver_icon_title">Skrýt ikonu spořiče dat</string>
-
-    <!-- Recents: Clear always visible -->
-    <string name="pref_recent_clear_always_visible_title">Vždy zobrazit tlačítko vymazání</string>
 
     <!-- Theme -->
     <string name="theme_title">Téma</string>

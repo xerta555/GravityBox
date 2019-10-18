@@ -239,8 +239,6 @@
     <string name="pref_gb_theme_dark_title">Dark 테마 사용</string>
     <string name="pref_gb_theme_dark_summary">GravityBox의 UI 테마를 Light을 대신하여 Dark를 사용합니다. (AMOLED 기기에 적합)</string>
 
-    <string name="pref_recent_clear_margin_top_title">상단 여백</string>
-
     <string name="app_picker_search">검색</string>
     <string name="app_picker_none">(없음)</string>
 
@@ -384,7 +382,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> 남음</string>
     <!-- [CHAR LIMIT=10] -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> 사용 중</string>
-    <string name="pref_rambar_title">RAM 상태바 표시</string>
     <string name="rambar_off">숨기기</string>
     <string name="rambar_top">상단</string>
     <string name="rambar_bottom">하단</string>
@@ -448,8 +445,6 @@
 
     <string name="hwkey_action_home">홈으로 이동</string>
     <string name="hwkey_action_back">뒤로 이동</string>
-
-    <string name="pref_recent_clear_margin_bottom_title">하단 여백</string>
 
     <string name="hwkey_navbar_warning">In order to enable actions support for navigation bar, it is necessary 
         to override system defaults in Navigation bar tweaks menu</string>
@@ -579,8 +574,6 @@
 
     <string name="pref_cat_quickapp_tile_2_title">앱 바로가기 타일 2 세팅</string>
     <string name="qs_tile_quickapp_2">앱 바로가기 2</string>
-
-    <string name="pref_cat_misc_recents_panel_title">최근 사용한 앱 패널</string>
 
     <string name="pref_cat_misc_other_title">기타 설정</string>
 

@@ -280,9 +280,6 @@
     <string name="pref_gb_theme_dark_title">Użyj ciemnego motywu</string>
     <string name="pref_gb_theme_dark_summary">Przełącza GB UI na ciemny motyw zamiast jasnego</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Ustaw górny margines</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Wyszukaj</string>
     <string name="app_picker_none">(Żadna)</string>
@@ -467,7 +464,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> wolne</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> w użyciu</string>
-    <string name="pref_rambar_title">Pasek RAM listy ostatnich aplikacji</string>
     <string name="rambar_off">Wyłączony</string>
     <string name="rambar_top">Na górze</string>
     <string name="rambar_bottom">Na dole</string>
@@ -544,9 +540,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Ekran HOME</string>
     <string name="hwkey_action_back">Powrót</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Ustaw dolny margines</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Aby włączyć obsługę akcji dla paska nawigacyjnego, konieczne jest zastąpienie domyślnych ustawień systemowych w menu Poprawek paska nawigacyjnego</string>
@@ -712,9 +705,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Ustawienia kafelka Aplikacji 2</string>
     <string name="qs_tile_quickapp_2">Szybkie uruch. Aplikacji 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Panel ostatnich aplikacji</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Inne ustawienia</string>

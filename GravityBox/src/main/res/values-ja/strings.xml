@@ -247,8 +247,6 @@
     <!-- Option for GB dark theme -->
     <string name="pref_gb_theme_dark_title">ダークテーマを使用</string>
     <string name="pref_gb_theme_dark_summary">GravityBoxのUIをダークテーマに変更します。</string>
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">ボタン上の余白</string>
     <!-- AppPickerPreference -->
     <string name="app_picker_search">検索</string>
     <string name="app_picker_none">(なし)</string>
@@ -399,7 +397,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g>空き</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g>使用中</string>
-    <string name="pref_rambar_title">最近のアプリでのRAMバー</string>
     <string name="rambar_off">無効</string>
     <string name="rambar_top">上に表示</string>
     <string name="rambar_bottom">下に表示</string>
@@ -463,8 +460,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">ホーム</string>
     <string name="hwkey_action_back">戻る</string>
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">ボタン下の余白</string>
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">ナビバーのアクションを有効化するには
         ナビバー設定でシステムの初期値を上書きしないといけません。</string>
@@ -595,8 +590,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">クイックアプリタイル2の設定</string>
     <string name="qs_tile_quickapp_2">クイックアプリ2</string>
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">最近のアプリパネル</string>
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">その他の設定</string>
     <!-- Disable fullscreen keyboard -->
@@ -1463,7 +1456,6 @@
     <string name="pref_qs_scale_correction_title">スケール補正</string>
     <string name="pref_qs_tiles_per_header_summary">ヘッダーに表示するタイルの数</string>
     <string name="pref_qs_tiles_per_header_title">ヘッダーごとのタイル</string>
-    <string name="pref_recent_clear_always_visible_title">常にすべて削除ボタンを表示</string>
     <string name="pref_rm_tile_enabled_modes_summary">タイルがサポートするリンガーモード</string>
     <string name="pref_sa_tile_auto_reset_title">自動リセット</string>
     <string name="pref_sb_corner_padding_remove_summary">角の丸いディスプレイ用のパッディングを消す(要再起動)</string>

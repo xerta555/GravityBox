@@ -252,8 +252,6 @@
     <!-- Option for GB dark theme -->
     <string name="pref_gb_theme_dark_title">Utiliser le thème Dark</string>
     <string name="pref_gb_theme_dark_summary">Bascule l\'interface de GravityBox vers le thème Dark au lieu de Light</string>
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Ajuster la marge supérieure</string>
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Rechercher</string>
     <string name="app_picker_none">(Aucun)</string>
@@ -404,7 +402,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> libre</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> utilisé</string>
-    <string name="pref_rambar_title">Barre des tâches récentes en RAM</string>
     <string name="rambar_off">Désactivée</string>
     <string name="rambar_top">En haut</string>
     <string name="rambar_bottom">En bas</string>
@@ -468,8 +465,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Aller à l\'écran Home</string>
     <string name="hwkey_action_back">Retour</string>
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Ajuster la marge inférieure</string>
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Pour permettre d\'activer le support des actions de la barre de navigation, il est nécessaire
         de remplacer les paramètres système par défaut dans le menu Modifications barre de navigation</string>
@@ -601,8 +596,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Paramètres de la touche Appli Rapide 2</string>
     <string name="qs_tile_quickapp_2">Appli Rapide 2</string>
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Panneau applications récentes</string>
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Autres paramètres</string>
     <!-- Disable fullscreen keyboard -->
@@ -1530,8 +1523,6 @@ Utiliser dans le cas où une autre application nécessite l\'utilisation du capt
     <string name="notif_channel_services_desc">Pour les notifications de service de premier plan telles que la torche et l\'enregistrement d\'écran</string>
     <string name="notif_channel_unc_title">Aperçu UNC</string>
     <string name="notif_channel_unc_desc">Pour la notification d\'aperçu du Contrôle Ultime de Notification</string>
-    <!-- Recents: Clear always visible -->
-    <string name="pref_recent_clear_always_visible_title">Toujours afficher le bouton \"Tout effacer\"</string>
     <!-- Theme -->
     <string name="theme_title">Theme</string>
     <string name="theme_default">Par défaut</string>

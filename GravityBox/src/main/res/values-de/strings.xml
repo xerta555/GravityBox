@@ -292,9 +292,6 @@
     <string name="pref_gb_theme_dark_title">Dunkles Thema verwenden</string>
     <string name="pref_gb_theme_dark_summary">Dunkles Thema für GravityBox verwenden</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Oberen Rand festlegen</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Suche</string>
     <string name="app_picker_none">Keine</string>
@@ -479,7 +476,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> frei</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> verwendet</string>
-    <string name="pref_rambar_title">RAM-Anzeige im Fenster</string>
     <string name="rambar_off">Aus</string>
     <string name="rambar_top">Oben</string>
     <string name="rambar_bottom">Unten</string>
@@ -556,9 +552,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Zum Home-Bildschirm</string>
     <string name="hwkey_action_back">Zurück</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Unteren Rand einstellen</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Für Aktionen in der Navigationsleiste muss der Systemstandard im Anpassungsmenü der Navigationsleiste überschrieben werden.</string>
@@ -724,9 +717,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Schnellstart 2 Kachel</string>
     <string name="qs_tile_quickapp_2">Schnellstart 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Anzeige der zuletzt geöffneten Apps</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Sonstiges</string>

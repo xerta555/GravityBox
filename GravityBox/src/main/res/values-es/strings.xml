@@ -292,9 +292,6 @@
     <string name="pref_gb_theme_dark_title">Usar tema oscuro</string>
     <string name="pref_gb_theme_dark_summary">Cambiar la interfaz de GravityBox a colores oscuros</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Ajustar margen superior</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Buscar</string>
     <string name="app_picker_none">(Ninguna)</string>
@@ -481,7 +478,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> libres</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> usados</string>
-    <string name="pref_rambar_title">Barra de memoria RAM en tareas recientes</string>
     <string name="rambar_off">Desactivada</string>
     <string name="rambar_top">Arriba</string>
     <string name="rambar_bottom">Abajo</string>
@@ -559,9 +555,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Ir al inicio</string>
     <string name="hwkey_action_back">Volver atrás</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Ajustar margen inferior</string>
 
 	<!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Para habilitar el soporte de acciones en la barra de navegación, es necesario 
@@ -729,9 +722,6 @@
     <string name="pref_cat_quickapp_tile_2_title">Ajustes de la casilla de app rápida 2</string>
     <string name="qs_tile_quickapp_2">Aplicación rápida 2</string>
 
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Panel de recientes</string>
-    
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Otros ajustes</string>
   

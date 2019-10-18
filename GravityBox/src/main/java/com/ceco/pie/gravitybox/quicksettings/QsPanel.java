@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.pie.gravitybox.quicksettings;
 
 import java.util.ArrayList;
@@ -21,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ceco.pie.gravitybox.ColorUtils;
+import com.ceco.pie.gravitybox.LinearColorBar;
+import com.ceco.pie.gravitybox.MemInfoReader;
 import com.ceco.pie.gravitybox.R;
 import com.ceco.pie.gravitybox.GravityBox;
 import com.ceco.pie.gravitybox.GravityBoxSettings;
@@ -30,12 +32,21 @@ import com.ceco.pie.gravitybox.Utils;
 import com.ceco.pie.gravitybox.managers.BroadcastMediator;
 import com.ceco.pie.gravitybox.managers.SysUiManagers;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
+import android.text.format.Formatter;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.core.math.MathUtils;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
@@ -48,8 +59,10 @@ public class QsPanel implements BroadcastMediator.Receiver {
     public static final String CLASS_QS_PANEL = "com.android.systemui.qs.QSPanel";
     private static final String CLASS_BRIGHTNESS_CTRL = "com.android.systemui.settings.BrightnessController";
     private static final String CLASS_TILE_LAYOUT = "com.android.systemui.qs.TileLayout";
+    private static final String CLASS_QS_FRAGMENT = "com.android.systemui.qs.QSFragment";
 
     public enum LockedTileIndicator { NONE, DIM, PADLOCK, KEY }
+    private enum RamBarMode { OFF, TOP, BOTTOM}
 
     public static final String IC_PADLOCK = "\uD83D\uDD12";
     public static final String IC_KEY = "\uD83D\uDD11";
@@ -71,6 +84,12 @@ public class QsPanel implements BroadcastMediator.Receiver {
     private QsQuickPulldownHandler mQuickPulldownHandler;
     private Map<String, BaseTile> mTiles = new HashMap<>();
     private LockedTileIndicator mLockedTileIndicator;
+    private LinearColorBar mRamBar;
+    private RamBarMode mRamBarMode;
+    private TextView mMemoryUsedTextView;
+    private TextView mMemoryFreeTextView;
+    private ActivityManager mAm;
+    private MemInfoReader mMemInfoReader;
 
     public QsPanel(XSharedPreferences prefs, ClassLoader classLoader) {
         mPrefs = prefs;
@@ -93,10 +112,12 @@ public class QsPanel implements BroadcastMediator.Receiver {
                 Utils.isOxygenOsRom());
         mLockedTileIndicator = LockedTileIndicator.valueOf(
                 mPrefs.getString(GravityBoxSettings.PREF_KEY_QS_LOCKED_TILE_INDICATOR, "DIM"));
+        mRamBarMode = RamBarMode.valueOf(mPrefs.getString(GravityBoxSettings.PREF_KEY_QS_RAMBAR_MODE, "OFF"));
         if (DEBUG) log("initPreferences: mNumColumns=" + mNumColumns +
                 "; mHideBrightness=" + mHideBrightness +
                 "; mBrightnessIconEnabled=" + mBrightnessIconEnabled +
-                "; mLockedTileIndicator=" + mLockedTileIndicator);
+                "; mLockedTileIndicator=" + mLockedTileIndicator +
+                "; mRamBarMode=" + mRamBarMode);
     }
 
     @Override
@@ -127,6 +148,12 @@ public class QsPanel implements BroadcastMediator.Receiver {
                 mLockedTileIndicator = LockedTileIndicator.valueOf(intent.getStringExtra(
                         GravityBoxSettings.EXTRA_QS_LOCKED_TILE_INDICATOR));
                 if (DEBUG) log("onBroadcastReceived: mLockedTileIndicator=" + mLockedTileIndicator);
+            }
+            if (intent.hasExtra(GravityBoxSettings.EXTRA_QS_RAMBAR_MODE)) {
+                mRamBarMode = RamBarMode.valueOf(intent.getStringExtra(
+                        GravityBoxSettings.EXTRA_QS_RAMBAR_MODE));
+                updateRamBarMode();
+                if (DEBUG) log("onBroadcastReceived: mRamBarMode=" + mRamBarMode);
             }
         }
     }
@@ -193,9 +220,10 @@ public class QsPanel implements BroadcastMediator.Receiver {
 
             XposedBridge.hookAllConstructors(classQsPanel, new XC_MethodHook() {
                 @Override
-                protected void afterHookedMethod(MethodHookParam param) {
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     if (CLASS_QS_PANEL.equals(param.thisObject.getClass().getName())) {
                         mQsPanel = (ViewGroup) param.thisObject;
+                        createRamBar();
                         if (DEBUG) log("QSPanel created");
                     }
                 }
@@ -282,6 +310,34 @@ public class QsPanel implements BroadcastMediator.Receiver {
                 protected void afterHookedMethod(MethodHookParam param) {
                     if (param.thisObject == mQsPanel && "qs_show_brightness".equals(param.args[0])) {
                         updateBrightnessSliderVisibility();
+                    }
+                }
+            });
+
+            XposedHelpers.findAndHookMethod(classQsPanel, "setListening",
+                    boolean.class, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (param.thisObject == mQsPanel && (boolean)param.args[0]) {
+                        updateRamBarMemoryUsage();
+                    }
+                }
+            });
+        } catch (Throwable t) {
+            GravityBox.log(TAG, t);
+        }
+
+        try {
+            XposedHelpers.findAndHookMethod(CLASS_QS_FRAGMENT, classLoader, "setQsExpansion",
+                    float.class, float.class, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (mRamBar != null && mRamBarMode != RamBarMode.OFF) {
+                        float expansion = (float)param.args[0];
+                        float startDelay = mRamBarMode == RamBarMode.TOP ? 0.9f : 0.5f;
+                        float span = 1f-startDelay;
+                        float alpha = MathUtils.clamp((expansion-startDelay)/span, 0f, 1f);
+                        mRamBar.setAlpha(alpha);
                     }
                 }
             });
@@ -394,5 +450,102 @@ public class QsPanel implements BroadcastMediator.Receiver {
                 return false;
             }
         }
+    };
+
+    private void createRamBar() throws Throwable {
+        mRamBar = new LinearColorBar(mQsPanel.getContext(), null);
+        mRamBar.setOrientation(LinearLayout.HORIZONTAL);
+        mRamBar.setClipChildren(false);
+        mRamBar.setClipToPadding(false);
+        LayoutInflater inflater = LayoutInflater.from(Utils.getGbContext(mQsPanel.getContext()));
+        inflater.inflate(R.layout.linear_color_bar, mRamBar, true);
+        mMemoryUsedTextView = mRamBar.findViewById(R.id.foregroundText);
+        mMemoryFreeTextView = mRamBar.findViewById(R.id.backgroundText);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mRamBar.setLayoutParams(lp);
+        updateRamBarMode();
+    }
+
+    private void updateRamBarMode() {
+        if (mRamBar != null) {
+            mQsPanel.removeView(mRamBar);
+            if (mRamBarMode == RamBarMode.TOP) {
+                mQsPanel.addView(mRamBar, 0);
+            } else if (mRamBarMode == RamBarMode.BOTTOM) {
+                mQsPanel.addView(mRamBar);
+            }
+        }
+    }
+
+    private void updateRamBarMemoryUsage() {
+        mQsPanel.removeCallbacks(updateRamBarTask);
+        if (mRamBarMode != RamBarMode.OFF && mRamBar != null && mRamBar.isAttachedToWindow()) {
+            mQsPanel.post(updateRamBarTask);
+        }
+    }
+
+    private final Runnable updateRamBarTask = () -> {
+        Context gbContext;
+        try {
+            gbContext = Utils.getGbContext(mQsPanel.getContext());
+        } catch (Throwable t) {
+            GravityBox.log(TAG, t);
+            return;
+        }
+
+        if (mAm == null) {
+            mAm = (ActivityManager) mQsPanel.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        }
+        if (mMemInfoReader == null) {
+            mMemInfoReader = new MemInfoReader();
+        }
+
+        // update layout
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mRamBar.getLayoutParams();
+        int sideMargin = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16,
+                mQsPanel.getResources().getDisplayMetrics()));
+        lp.setMargins(sideMargin, 0, sideMargin, 0);
+        mRamBar.setLayoutParams(lp);
+        int hPadding = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6,
+                mQsPanel.getResources().getDisplayMetrics()));
+        int vPadding = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
+                mQsPanel.getResources().getDisplayMetrics()));
+        mRamBar.setPadding(hPadding, vPadding, hPadding, vPadding);
+
+        // update colors
+        final int leftBgColor = Utils.isOxygenOsRom() ?
+                OOSThemeColorUtils.getTileColorActive(mQsPanel.getContext()) :
+                ColorUtils.getColorFromStyleAttr(mQsPanel.getContext(), android.R.attr.colorAccent);
+        final int rightBgColor = Utils.isOxygenOsRom() ?
+                OOSThemeColorUtils.getTileColorInactive(mQsPanel.getContext()) :
+                ColorUtils.getDisabled(mQsPanel.getContext(),
+                        ColorUtils.getColorFromStyleAttr(mQsPanel.getContext(), android.R.attr.textColorTertiary));
+        final int primaryTextColor = Utils.isOxygenOsRom() ?
+                OOSThemeColorUtils.getColorTextPrimary(mQsPanel.getContext()) :
+                ColorUtils.getColorFromStyleAttr(mQsPanel.getContext(), android.R.attr.textColorPrimary);
+        mRamBar.setLeftColor(leftBgColor);
+        mRamBar.setRightColor(rightBgColor);
+        mMemoryUsedTextView.setTextColor(ColorUtils.findContrastColor(primaryTextColor, leftBgColor, true, 2));
+        mMemoryFreeTextView.setTextColor(primaryTextColor);
+
+        // update memory usage
+        ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+        mAm.getMemoryInfo(memInfo);
+        long secServerMem = 0;//XposedHelpers.getLongField(memInfo, "secondaryServerThreshold");
+        mMemInfoReader.readMemInfo();
+        long availMem = mMemInfoReader.getFreeSize() + mMemInfoReader.getCachedSize() -
+                secServerMem;
+        long totalMem = mMemInfoReader.getTotalSize();
+
+        String sizeStr = Formatter.formatShortFileSize(mQsPanel.getContext(), totalMem-availMem);
+        mMemoryUsedTextView.setText(gbContext.getResources().getString(
+                R.string.service_foreground_processes, sizeStr));
+        sizeStr = Formatter.formatShortFileSize(mQsPanel.getContext(), availMem);
+        mMemoryFreeTextView.setText(gbContext.getResources().getString(
+                R.string.service_background_processes, sizeStr));
+
+        mRamBar.setRatios(((float) totalMem - (float) availMem) / (float) totalMem, 0, 0);
+        if (DEBUG) log("RAM bar updated");
     };
 }

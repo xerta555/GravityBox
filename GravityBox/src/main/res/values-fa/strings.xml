@@ -200,7 +200,6 @@
 <string name="pref_hwkeys_disable_summary">غیرفعالسازی تک لمسی دکمه‌ها هنگام فعال بودن Pie</string>
 <string name="pref_gb_theme_dark_title">استفاده از پوسته تیره</string>
 <string name="pref_gb_theme_dark_summary">سوئیچ به GB UI برای استفاده از تم تیره</string>
-<string name="pref_recent_clear_margin_top_title">تنظیم حاشیه بالا</string>
 <string name="app_picker_search">جستجو</string>
 <string name="app_picker_none">(انتخاب نشده)</string>
 <string name="qs_tile_quickapp">دسترسی سریع به برنامه‌ها</string>
@@ -310,7 +309,6 @@
 <string name="second_abbr">s</string>
 <string name="service_background_processes">%1$s آزاد</string>
 <string name="service_foreground_processes">%1$s استفده شده</string>
-<string name="pref_rambar_title">نمایش مقدار حافظه در صفحه مدیریت موارد اخیر</string>
 <string name="rambar_off">خاموش</string>
 <string name="rambar_top">بالا</string>
 <string name="rambar_bottom">پایین</string>
@@ -359,7 +357,6 @@
 <string name="hwkey_back_doubletap_dialog_title">عمل کلید بازگشت با دو لمس متوالی</string>
 <string name="hwkey_action_home">رفتن به صفحه خانگی</string>
 <string name="hwkey_action_back">بازگشت</string>
-<string name="pref_recent_clear_margin_bottom_title">تنظیم حاشیه پایین</string>
 <string name="hwkey_navbar_warning">"اقدام برای فعالسازی پشتیبانی از نوار ناوبری ،نیازمند نادیده‌گرفتن تنظیمات پیشفرض و فعال کردن منو ترفندهای نوار ناوبری "</string>
 <string name="pref_hwkey_lockscreen_torch_title">چراغ قوه صفحه قفل</string>
 <string name="hwkey_ls_torch_disabled">غیرفعال</string>
@@ -453,7 +450,6 @@
 <string name="bpt_charging_animated">متحرک</string>
 <string name="pref_cat_quickapp_tile_2_title">تنظیمات کاشی دسترسی سریع به برنامه‌ها ۲</string>
 <string name="qs_tile_quickapp_2">دسترسی سریع به برنامه‌های ۲</string>
-<string name="pref_cat_misc_recents_panel_title">پنل موارد اخیر</string>
 <string name="pref_cat_misc_other_title">سایر تنظیمات</string>
 <string name="pref_ime_fullscreen_disable_title">غیرفعالسازی صفحه کلید تمام‌صفحه</string>
 <string name="pref_torch_auto_off_title">خاموش کردن خودکار چراغ قوه</string>

@@ -109,6 +109,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String PREF_KEY_QS_BRIGHTNESS_ICON = "pref_qs_brightness_icon";
     public static final String PREF_KEY_QS_SCALE_CORRECTION = "pref_qs_scale_correction";
     public static final String PREF_KEY_QS_LOCKED_TILE_INDICATOR = "pref_qs_locked_tile_indicator";
+    public static final String PREF_KEY_QS_RAMBAR_MODE = "pref_qs_rambar_mode";
     public static final int QUICK_PULLDOWN_OFF = 0;
     public static final int QUICK_PULLDOWN_RIGHT = 1;
     public static final int QUICK_PULLDOWN_LEFT = 2;
@@ -166,22 +167,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String ACTION_PREF_IME_CHANGED = "gravitybox.intent.action.IME_CHANGED";
     public static final String EXTRA_IME_VOL_KEY_CURSOR_CONTROL = "imeVolKeyCursorControl";
     public static final String EXTRA_IME_FULLSCREEN_DISABLE = "imeFullscreenDisable";
-
-    public static final String PREF_CAT_RECENTS_PANEL = "pref_cat_misc_recents_panel";
-    public static final String PREF_KEY_RECENT_CLEAR_ALWAYS_VISIBLE = "pref_recent_clear_always_visible";
-    public static final String PREF_KEY_RAMBAR = "pref_rambar";
-    public static final String PREF_KEY_RECENTS_CLEAR_MARGIN_TOP = "pref_recent_clear_margin_top";
-    public static final String PREF_KEY_RECENTS_CLEAR_MARGIN_BOTTOM = "pref_recent_clear_margin_bottom";
-    public static final int RECENT_CLEAR_OFF = 0;
-    public static final int RECENT_CLEAR_TOP_LEFT = 51;
-    public static final int RECENT_CLEAR_TOP_RIGHT = 53;
-    public static final int RECENT_CLEAR_BOTTOM_LEFT = 83;
-    public static final int RECENT_CLEAR_BOTTOM_RIGHT = 85;
-    public static final String ACTION_PREF_RECENTS_CHANGED = "gravitybox.intent.action.RECENTS_CHANGED";
-    public static final String EXTRA_RECENTS_CLEAR_ALWAYS_VISIBLE = "recentsClearAlwaysVisible";
-    public static final String EXTRA_RECENTS_RAMBAR = "recentsRambar";
-    public static final String EXTRA_RECENTS_MARGIN_TOP = "recentsMarginTop";
-    public static final String EXTRA_RECENTS_MARGIN_BOTTOM = "recentsMarginBottom";
 
     public static final String PREF_CAT_KEY_PHONE = "pref_cat_phone";
     public static final String PREF_KEY_CALLER_FULLSCREEN_PHOTO = "pref_caller_fullscreen_photo3";
@@ -543,6 +528,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String EXTRA_QS_BRIGHTNESS_ICON = "qsBrightnessIcon";
     public static final String EXTRA_QS_SCALE_CORRECTION = "qsScaleCorrection";
     public static final String EXTRA_QS_LOCKED_TILE_INDICATOR = "qsLockedTileIndicator";
+    public static final String EXTRA_QS_RAMBAR_MODE = "qsRambarMode";
 
     public static final String ACTION_PREF_CLOCK_CHANGED = "gravitybox.intent.action.CENTER_CLOCK_CHANGED";
     public static final String EXTRA_CLOCK_POSITION = "clockPosition";
@@ -1283,7 +1269,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
         private ListPreference mPrefPieAppLongpress;
         private ListPreference mPrefPieLongpressDelay;
         private CheckBoxPreference mPrefGbThemeDark;
-        private ListPreference mPrefRambar;
+        private ListPreference mPrefQsRambarMode;
         private PreferenceScreen mPrefCatPhone;
         private SeekBarPreference mPrefBrightnessMin;
         private SeekBarPreference mPrefScreenDimLevel;
@@ -1495,7 +1481,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             File file = new File(Utils.getFilesDir(getActivity()) + "/" + FILE_THEME_DARK_FLAG);
             mPrefGbThemeDark.setChecked(file.exists());
 
-            mPrefRambar = (ListPreference) findPreference(PREF_KEY_RAMBAR);
+            mPrefQsRambarMode = (ListPreference) findPreference(PREF_KEY_QS_RAMBAR_MODE);
 
             mPrefCatPhone = (PreferenceScreen) findPreference(PREF_CAT_KEY_PHONE);
 
@@ -1676,10 +1662,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             // TODO: Brightness
             Preference pb = findPreference(PREF_CAT_KEY_BRIGHTNESS);
             if (pb != null) mPrefCatDisplay.removePreference(pb);
-            // TODO: Recents
-            PreferenceScreen psm = (PreferenceScreen) findPreference(PREF_CAT_KEY_MISC);
-            Preference pr = findPreference(PREF_CAT_RECENTS_PANEL);
-            if (psm != null && pr != null) psm.removePreference(pr);
 
             // remove Dialer features if Dialer package unavailable
             PackageInfo pi = null;
@@ -1737,13 +1719,8 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 mPrefCatPhone.removePreference(mPrefCatPhoneDialer);
                 mBatteryStyle.setEntries(R.array.battery_style_entries_oos);
                 mBatteryStyle.setEntryValues(R.array.battery_style_values_oos);
-                PreferenceCategory pc = (PreferenceCategory) findPreference(PREF_CAT_RECENTS_PANEL);
-                p = findPreference(PREF_KEY_RECENT_CLEAR_ALWAYS_VISIBLE);
-                if (pc != null && p != null) pc.removePreference(p);
-                if (sSystemProperties.isOxygenOsRom) {
-                    p = findPreference(PREF_KEY_STATUSBAR_HIDE_VIBRATE_ICON);
-                    if (p != null) mPrefCatStatusbar.removePreference(p);
-                }
+                p = findPreference(PREF_KEY_STATUSBAR_HIDE_VIBRATE_ICON);
+                if (p != null) mPrefCatStatusbar.removePreference(p);
             } else {
                 Preference p = findPreference(PREF_KEY_OOS_CALL_RECORDING);
                 if (p != null) mPrefCatPhoneTelephony.removePreference(p);
@@ -2214,8 +2191,8 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 mPrefPieEnabled.setSummary(mPrefPieEnabled.getEntry());
             }
 
-            if (key == null || key.equals(PREF_KEY_RAMBAR)) {
-                mPrefRambar.setSummary(mPrefRambar.getEntry());
+            if (key == null || key.equals(PREF_KEY_QS_RAMBAR_MODE)) {
+                mPrefQsRambarMode.setSummary(mPrefQsRambarMode.getEntry());
             }
 
             if (key == null || key.equals(PREF_KEY_EXPANDED_DESKTOP)) {
@@ -3283,19 +3260,9 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 intent.setAction(ACTION_PREF_BATTERY_BAR_CHANGED);
                 intent.putExtra(EXTRA_BBAR_COLOR_CHARGING, prefs.getInt(key, 
                         getResources().getInteger(R.integer.COLOR_GREEN)));
-            } else if (key.equals(PREF_KEY_RECENT_CLEAR_ALWAYS_VISIBLE)) {
-                intent.setAction(ACTION_PREF_RECENTS_CHANGED);
-                intent.putExtra(EXTRA_RECENTS_CLEAR_ALWAYS_VISIBLE, prefs.getBoolean(key, false));
-            } else if (key.equals(PREF_KEY_RAMBAR)) {
-                intent.setAction(ACTION_PREF_RECENTS_CHANGED);
-                intent.putExtra(EXTRA_RECENTS_RAMBAR, 
-                        Integer.valueOf(prefs.getString(key, "0")));
-            } else if (key.equals(PREF_KEY_RECENTS_CLEAR_MARGIN_TOP)) {
-                intent.setAction(ACTION_PREF_RECENTS_CHANGED);
-                intent.putExtra(EXTRA_RECENTS_MARGIN_TOP, prefs.getInt(key, 77));
-            } else if (key.equals(PREF_KEY_RECENTS_CLEAR_MARGIN_BOTTOM)) {
-                intent.setAction(ACTION_PREF_RECENTS_CHANGED);
-                intent.putExtra(EXTRA_RECENTS_MARGIN_BOTTOM, prefs.getInt(key, 50));
+            } else if (key.equals(PREF_KEY_QS_RAMBAR_MODE)) {
+                intent.setAction(ACTION_PREF_QUICKSETTINGS_CHANGED);
+                intent.putExtra(EXTRA_QS_RAMBAR_MODE, prefs.getString(key, "OFF"));
             } else if (PREF_KEY_LOCKSCREEN_SHORTCUT.contains(key)) {
                 intent.setAction(ACTION_PREF_LOCKSCREEN_SHORTCUT_CHANGED);
                 intent.putExtra(EXTRA_LS_SHORTCUT_SLOT,

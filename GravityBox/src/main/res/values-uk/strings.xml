@@ -296,9 +296,6 @@
     <string name="pref_gb_theme_dark_title">Використовувати чорну тему</string>
     <string name="pref_gb_theme_dark_summary">Перемикає тему інтерфейсу GravityBox зі світлої на темну</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Налаштувати відступ зверху</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Пошук</string>
     <string name="app_picker_none">(Немає)</string>
@@ -483,7 +480,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> вільно</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> використано</string>
-    <string name="pref_rambar_title">Панель пам\'яті нещодавніх завдань</string>
     <string name="rambar_off">Вимкнено</string>
     <string name="rambar_top">Зверху</string>
     <string name="rambar_bottom">Знизу</string>
@@ -560,9 +556,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">На головну</string>
     <string name="hwkey_action_back">Назад</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Відрегулюйте нижнє поле</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">При включенні підтримки дії для панелі навігації необхідно переписати типові налаштування в меню «налаштування панелі навігації»</string>
@@ -728,9 +721,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Друга плитка швидкого запуску</string>
     <string name="qs_tile_quickapp_2">Швидкий запуск 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Панель нещодавніх</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Інші налаштування</string>
@@ -1825,9 +1815,6 @@
     <string name="notif_channel_services_desc">Для фонових сервісів сповіщення, таких як «Ліхтарик» та «Запис екрану»</string>
     <string name="notif_channel_unc_title">Попередній перегляд</string>
     <string name="notif_channel_unc_desc">Попередній перегляд для керування сповіщеннями</string>
-
-    <!-- Recents: Clear always visible -->
-    <string name="pref_recent_clear_always_visible_title">Завжди показувати кнопку «Очистити все»</string>
 
     <!-- Theme -->
     <string name="theme_title">Тема</string>

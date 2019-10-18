@@ -291,9 +291,6 @@
     <string name="pref_gb_theme_dark_title">Выкарыстоўваць цёмную тэму</string>
     <string name="pref_gb_theme_dark_summary">Пераключэнне тэмы інтэрфейсу GravityBox са светлай на цёмную</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Наладзіць водступ зверху</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Пошук</string>
     <string name="app_picker_none">(Не)</string>
@@ -480,7 +477,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> вольна</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> выкарыстана</string>
-    <string name="pref_rambar_title">Панэль памяці ў нядаўніх</string>
     <string name="rambar_off">Вымкнута</string>
     <string name="rambar_top">Зверху</string>
     <string name="rambar_bottom">Знізу</string>
@@ -558,9 +554,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">"Дамоў"</string>
     <string name="hwkey_action_back">"Назад"</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Наладзіць водступ знізу</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">Пры ўлучэнні падтрымкі дзеяння для панэлі навігацыі трэба 
@@ -727,9 +720,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Дадковая плітка хуткага запуску</string>
     <string name="qs_tile_quickapp_2">Хуткі запуск 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Панэль нядаўніх</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Іншыя налады</string>

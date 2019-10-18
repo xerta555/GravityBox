@@ -298,9 +298,6 @@
     <string name="pref_gb_theme_dark_title">Sötét téma használata</string>
     <string name="pref_gb_theme_dark_summary">Átkapcsolja a Gravitybox felhasználói felületét sötét téma használatára</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Felső szegély beállítása</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Keresés</string>
     <string name="app_picker_none">(Semmi)</string>
@@ -487,7 +484,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> szabad</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> foglalt</string>
-    <string name="pref_rambar_title">Nemrég használt alkalmazások Memória sáv</string>
     <string name="rambar_off">Kikapcsolva</string>
     <string name="rambar_top">Fent</string>
     <string name="rambar_bottom">Lent</string>
@@ -565,9 +561,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Kezdőlapra ugrás</string>
     <string name="hwkey_action_back">Visszalépés</string>
-
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Alsó szegély beállítása</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">A Navigációs sávval kapcsolatos műveletek működéséhez a Navigációs sáv beállítások menüben a rendszerbeállítások felülírása szükséges</string>
@@ -733,9 +726,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Gyors Programelérés csempe 2 beállítások</string>
     <string name="qs_tile_quickapp_2">Gyors Programelérés 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Nemrég használt alkalmazások panel</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Egyéb beállítások</string>
@@ -1832,9 +1822,6 @@
     <string name="notif_channel_services_desc">Az előtérben lévő szolgáltatások értesítéséhez, mint pl. a Zseblámpa és Képernyő videofelvétel</string>
     <string name="notif_channel_unc_title">UNC előnézet</string>
     <string name="notif_channel_unc_desc">A Végső Értesítés Vezérlés (UNC) értesítés előnézetéhez</string>
-	
-    <!-- Recents: Clear always visible -->
-    <string name="pref_recent_clear_always_visible_title">Összes törlése gomb állandó megjelenítése</string>
 
     <!-- Theme -->
     <string name="theme_title">Téma</string>

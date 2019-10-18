@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,6 +14,7 @@
  */
 package com.ceco.pie.gravitybox.visualizer;
 
+import com.ceco.pie.gravitybox.ColorUtils;
 import com.ceco.pie.gravitybox.GravityBoxSettings;
 import com.ceco.pie.gravitybox.R;
 import com.ceco.pie.gravitybox.Utils;
@@ -27,12 +28,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
-
-import static androidx.core.graphics.ColorUtils.HSLToColor;
-import static androidx.core.graphics.ColorUtils.LABToColor;
-import static androidx.core.graphics.ColorUtils.calculateContrast;
-import static androidx.core.graphics.ColorUtils.colorToHSL;
-import static androidx.core.graphics.ColorUtils.colorToLAB;
 
 public class NavbarVisualizerLayout extends AVisualizerLayout {
 
@@ -105,8 +100,8 @@ public class NavbarVisualizerLayout extends AVisualizerLayout {
     @Override
     public void onColorUpdated(int color) {
         color = Color.rgb(Color.red(color), Color.green(color), Color.blue(color));
-        mDarkColor = findContrastColor(color, Color.WHITE, true, 2);
-        mLightColor = findContrastColorAgainstDark(color, Color.BLACK, true, 2);
+        mDarkColor = ColorUtils.findContrastColor(color, Color.WHITE, true, 2);
+        mLightColor = ColorUtils.findContrastColorAgainstDark(color, Color.BLACK, true, 2);
         color = mLightNavbar ? mDarkColor : mLightColor;
         color = Color.argb(mOpacity, Color.red(color), Color.green(color), Color.blue(color));
         setColor(color);
@@ -122,62 +117,5 @@ public class NavbarVisualizerLayout extends AVisualizerLayout {
                     mOpacity, Color.red(color),
                     Color.green(color), Color.blue(color)));
         }
-    }
-
-    private int findContrastColor(int color, int other, boolean findFg, double minRatio) {
-        int fg = findFg ? color : other;
-        int bg = findFg ? other : color;
-        if (calculateContrast(fg, bg) >= minRatio) {
-            return color;
-        }
-
-        double[] lab = new double[3];
-        colorToLAB(findFg ? fg : bg, lab);
-
-        double low = 0, high = lab[0];
-        final double a = lab[1], b = lab[2];
-        for (int i = 0; i < 15 && high - low > 0.00001; i++) {
-            final double l = (low + high) / 2;
-            if (findFg) {
-                fg = LABToColor(l, a, b);
-            } else {
-                bg = LABToColor(l, a, b);
-            }
-            if (calculateContrast(fg, bg) > minRatio) {
-                low = l;
-            } else {
-                high = l;
-            }
-        }
-        return LABToColor(low, a, b);
-    }
-
-    private int findContrastColorAgainstDark(int color, int other, boolean findFg,
-                                                   double minRatio) {
-        int fg = findFg ? color : other;
-        int bg = findFg ? other : color;
-        if (calculateContrast(fg, bg) >= minRatio) {
-            return color;
-        }
-
-        float[] hsl = new float[3];
-        colorToHSL(findFg ? fg : bg, hsl);
-
-        float low = hsl[2], high = 1;
-        for (int i = 0; i < 15 && high - low > 0.00001; i++) {
-            final float l = (low + high) / 2;
-            hsl[2] = l;
-            if (findFg) {
-                fg = HSLToColor(hsl);
-            } else {
-                bg = HSLToColor(hsl);
-            }
-            if (calculateContrast(fg, bg) > minRatio) {
-                high = l;
-            } else {
-                low = l;
-            }
-        }
-        return findFg ? fg : bg;
     }
 }

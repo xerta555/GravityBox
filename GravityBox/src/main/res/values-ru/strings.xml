@@ -297,9 +297,6 @@
     <string name="pref_gb_theme_dark_title">Использовать тёмную тему</string>
     <string name="pref_gb_theme_dark_summary">Переключение темы интерфейса GravityBox со светлой на тёмную</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Настроить отступ сверху</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Поиск</string>
     <string name="app_picker_none">(Нет)</string>
@@ -487,7 +484,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> свободно</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> использ.</string>
-    <string name="pref_rambar_title">Панель памяти в недавних</string>
     <string name="rambar_off">Выключено</string>
     <string name="rambar_top">Сверху</string>
     <string name="rambar_bottom">Снизу</string>
@@ -565,9 +561,6 @@
     <!-- HW Key Actions: Home and Back actions -->
     <string name="hwkey_action_home">Домой</string>
     <string name="hwkey_action_back">Назад</string>
-    
-    <!-- Clear all recents bottom margin -->
-    <string name="pref_recent_clear_margin_bottom_title">Настроить отступ снизу</string>
 
     <!-- HW Keys Navigation Bar warning -->
     <string name="hwkey_navbar_warning">При включении поддержки действия для панели навигации необходимо 
@@ -736,9 +729,6 @@
     <!-- QuickApp Tile #2 -->
     <string name="pref_cat_quickapp_tile_2_title">Плитка быстрого запуска 2</string>
     <string name="qs_tile_quickapp_2">Быстрый запуск 2</string>
-
-    <!-- Misc tweaks: category for recents panel related tweaks -->
-    <string name="pref_cat_misc_recents_panel_title">Панель недавних</string>
 
     <!-- Misc tweaks: category for other settings -->
     <string name="pref_cat_misc_other_title">Другие настройки</string>
@@ -1875,9 +1865,6 @@
     <string name="notif_channel_services_desc">Для активных уведомлений запущенных служб, таких как фонарик и запись экрана</string>
     <string name="notif_channel_unc_title">Предпросмотр</string>
     <string name="notif_channel_unc_desc">Для предпросмотра уведомлений управления оповещением</string>
-
-    <!-- Recents: Clear always visible -->
-    <string name="pref_recent_clear_always_visible_title">Всегда показывать Очистить все</string>
 
     <!-- Theme -->
     <string name="theme_title">Тема</string>

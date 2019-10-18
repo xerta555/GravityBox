@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2013 AOKP Project
- * Copyright (C) 2013 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.pie.gravitybox;
 
 import android.content.Context;
@@ -40,6 +39,8 @@ public class LinearColorBar extends LinearLayout {
 
     final Rect mRect = new Rect();
     final Paint mPaint = new Paint();
+    private int mLeftColor = LEFT_COLOR;
+    private int mRightColor = RIGHT_COLOR;
 
     int mLastInterestingLeft, mLastInterestingRight;
     int mLineWidth;
@@ -69,6 +70,14 @@ public class LinearColorBar extends LinearLayout {
         invalidate();
     }
 
+    public void setLeftColor(int color) {
+        mLeftColor = color;
+    }
+
+    public void setRightColor(int color) {
+        mRightColor = color;
+    }
+
     public void setShowingGreen(boolean showingGreen) {
         if (mShowingGreen != showingGreen) {
             mShowingGreen = showingGreen;
@@ -84,7 +93,7 @@ public class LinearColorBar extends LinearLayout {
         mRect.bottom = getHeight();
         if (mShowingGreen) {
             mColorGradientPaint.setShader(new LinearGradient(
-                    0, 0, 0, off-2, RIGHT_COLOR&0xffffff, RIGHT_COLOR, Shader.TileMode.CLAMP));
+                    0, 0, 0, off-2, mRightColor&0xffffff, mRightColor, Shader.TileMode.CLAMP));
         } else {
             mColorGradientPaint.setShader(new LinearGradient(
                     0, 0, 0, off-2, MIDDLE_COLOR&0xffffff, MIDDLE_COLOR, Shader.TileMode.CLAMP));
@@ -158,7 +167,7 @@ public class LinearColorBar extends LinearLayout {
         if (left < right) {
             mRect.left = left;
             mRect.right = right;
-            mPaint.setColor(LEFT_COLOR);
+            mPaint.setColor(mLeftColor);
             canvas.drawRect(mRect, mPaint);
             width -= (right-left);
             left = right;
@@ -180,7 +189,7 @@ public class LinearColorBar extends LinearLayout {
         if (left < right) {
             mRect.left = left;
             mRect.right = right;
-            mPaint.setColor(RIGHT_COLOR);
+            mPaint.setColor(mRightColor);
             canvas.drawRect(mRect, mPaint);
         }
     }

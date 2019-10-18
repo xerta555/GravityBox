@@ -270,9 +270,6 @@
     <string name="pref_gb_theme_dark_title">استخدام الثيم الغامق</string>
     <string name="pref_gb_theme_dark_summary">التبديل من الثيم الفاتح إلى الغامق</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">ضبط الهامش العلوي</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">بحث</string>
     <string name="app_picker_none">لا شيء</string>
@@ -450,7 +447,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> المتبقي</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> المستخدم</string>
-    <string name="pref_rambar_title">شريط الذاكرة العشوائية</string>
     <string name="rambar_off">تعطيل</string>
     <string name="rambar_top">في الأعلى</string>
     <string name="rambar_bottom">في الأسفل</string>

@@ -270,9 +270,6 @@
     <string name="pref_gb_theme_dark_title">Gunakan tema Dark</string>
     <string name="pref_gb_theme_dark_summary">Ganti UI GB ke tema Dark daripada Light</string>
 
-    <!-- Clear all recents top margin -->
-    <string name="pref_recent_clear_margin_top_title">Tentukan batas atas</string>
-
     <!-- AppPickerPreference -->
     <string name="app_picker_search">Pencarian</string>
     <string name="app_picker_none">(Tidak ada)</string>
@@ -451,7 +448,6 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> bebas</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> terpakai</string>
-    <string name="pref_rambar_title">Recent tasks RAM bar</string>
     <string name="rambar_off">Mati</string>
     <string name="rambar_top">Atas</string>
     <string name="rambar_bottom">Bawah</string>
