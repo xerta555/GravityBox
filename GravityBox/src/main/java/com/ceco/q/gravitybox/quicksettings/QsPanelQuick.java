@@ -17,6 +17,8 @@ package com.ceco.q.gravitybox.quicksettings;
 import com.ceco.q.gravitybox.GravityBox;
 import com.ceco.q.gravitybox.GravityBoxSettings;
 import com.ceco.q.gravitybox.Utils;
+import com.ceco.q.gravitybox.managers.BroadcastMediator;
+import com.ceco.q.gravitybox.managers.SysUiManagers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +29,7 @@ import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-public class QsPanelQuick {
+public class QsPanelQuick implements BroadcastMediator.Receiver {
     private static final String TAG = "GB:QsPanelQuick";
     private static final boolean DEBUG = false;
 
@@ -46,6 +48,9 @@ public class QsPanelQuick {
         initPreferences(prefs);
         createHooks(classLoader);
 
+        SysUiManagers.BroadcastMediator.subscribe(this,
+                GravityBoxSettings.ACTION_PREF_QUICKSETTINGS_CHANGED);
+
         if (DEBUG) log("QsPanelQuick wrapper created");
     }
 
@@ -54,6 +59,7 @@ public class QsPanelQuick {
                 GravityBoxSettings.PREF_KEY_QUICK_SETTINGS_TILES_PER_HEADER, "0"));
     }
 
+    @Override
     public void onBroadcastReceived(Context context, Intent intent) {
         if (intent.hasExtra(GravityBoxSettings.EXTRA_QS_COLS_HEADER)) {
             mNumTiles = intent.getIntExtra(GravityBoxSettings.EXTRA_QS_COLS_HEADER, 0);

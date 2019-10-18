@@ -46,7 +46,7 @@ public class ModQsTiles {
         }
 
         try {
-            mQsPanel = new QsPanel(prefs, classLoader, mQsPanelQuick);
+            mQsPanel = new QsPanel(prefs, classLoader);
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
         }

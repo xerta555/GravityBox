@@ -56,7 +56,6 @@ public class QsPanel implements BroadcastMediator.Receiver {
 
     private XSharedPreferences mPrefs;
     private ViewGroup mQsPanel;
-    private QsPanelQuick mQsPanelQuick;
     private int mNumColumns;
     private int mScaleCorrection;
     private View mBrightnessSlider;
@@ -69,9 +68,8 @@ public class QsPanel implements BroadcastMediator.Receiver {
     private Map<String, BaseTile> mTiles = new HashMap<>();
     private LockedTileIndicator mLockedTileIndicator;
 
-    public QsPanel(XSharedPreferences prefs, ClassLoader classLoader, QsPanelQuick quickPanel) {
+    public QsPanel(XSharedPreferences prefs, ClassLoader classLoader) {
         mPrefs = prefs;
-        mQsPanelQuick = quickPanel;
 
         initPreferences();
         createHooks(classLoader);
@@ -126,10 +124,7 @@ public class QsPanel implements BroadcastMediator.Receiver {
                         GravityBoxSettings.EXTRA_QS_LOCKED_TILE_INDICATOR));
                 if (DEBUG) log("onBroadcastReceived: mLockedTileIndicator=" + mLockedTileIndicator);
             }
-            if (mQsPanelQuick != null) {
-                mQsPanelQuick.onBroadcastReceived(context, intent);
-            }
-        } 
+        }
     }
 
     private void updateResources() {
