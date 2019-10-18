@@ -1924,17 +1924,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 }
                 appPref.setOnPreferenceChangeListener(this);
             }
-
-            // set default quick tap as Go Home for OOS 4.1
-            if (sSystemProperties.isOxygenOsRom &&
-                    mPrefs.getString(PREF_KEY_FINGERPRINT_LAUNCHER_APP, null) == null) {
-                AppPickerPreference appp = (AppPickerPreference)
-                        findPreference(PREF_KEY_FINGERPRINT_LAUNCHER_APP);
-                appp.setValue(GoHomeShortcut.ACTION_DEFAULT_URI);
-                Intent intent = new Intent(ACTION_FPL_SETTINGS_CHANGED);
-                intent.putExtra(EXTRA_FPL_APP, appp.getValue());
-                getActivity().sendBroadcast(intent);
-            }
         }
 
         private void checkPermissions() {

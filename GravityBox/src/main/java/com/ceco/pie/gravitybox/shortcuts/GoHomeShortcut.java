@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,6 @@ import android.graphics.drawable.Drawable;
 
 public class GoHomeShortcut extends AShortcut {
     protected static final String ACTION =  ModHwKeys.ACTION_GO_HOME;
-    public static final String ACTION_DEFAULT_URI = "#Intent;action=gravitybox.intent.action.LAUNCH_ACTION;launchFlags=0x10008000;component=com.ceco.pie.gravitybox/.shortcuts.LaunchActivity;S.action=gravitybox.intent.action.GO_HOME;S.prefLabel=GravityBox%20Actions%3A%20Go%20home;i.mode=1;S.label=Go%20home;S.iconResName=com.ceco.pie.gravitybox%3Adrawable%2Fshortcut_home;S.actionType=broadcast;end";
 
     public GoHomeShortcut(Context context) {
         super(context);
