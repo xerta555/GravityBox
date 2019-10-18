@@ -23,6 +23,12 @@ import android.view.ContextThemeWrapper;
 
 import de.robv.android.xposed.XposedBridge;
 
+import static androidx.core.graphics.ColorUtils.HSLToColor;
+import static androidx.core.graphics.ColorUtils.LABToColor;
+import static androidx.core.graphics.ColorUtils.calculateContrast;
+import static androidx.core.graphics.ColorUtils.colorToHSL;
+import static androidx.core.graphics.ColorUtils.colorToLAB;
+
 public class ColorUtils {
     private static final String TAG = "GB:" + ColorUtils.class.getSimpleName();
     private static final boolean DEBUG = false;
@@ -118,5 +124,79 @@ public class ColorUtils {
             throw new IllegalArgumentException("alpha must be between 0 and 255.");
         }
         return (color & 0x00ffffff) | (alpha << 24);
+    }
+
+    public static int findContrastColor(int color, int other, boolean findFg, double minRatio) {
+        int fg = findFg ? color : other;
+        int bg = findFg ? other : color;
+        if (calculateContrast(fg, bg) >= minRatio) {
+            return color;
+        }
+
+        double[] lab = new double[3];
+        colorToLAB(findFg ? fg : bg, lab);
+
+        double low = 0, high = lab[0];
+        final double a = lab[1], b = lab[2];
+        for (int i = 0; i < 15 && high - low > 0.00001; i++) {
+            final double l = (low + high) / 2;
+            if (findFg) {
+                fg = LABToColor(l, a, b);
+            } else {
+                bg = LABToColor(l, a, b);
+            }
+            if (calculateContrast(fg, bg) > minRatio) {
+                low = l;
+            } else {
+                high = l;
+            }
+        }
+        return LABToColor(low, a, b);
+    }
+
+    public static int findContrastColorAgainstDark(int color, int other, boolean findFg,
+                                             double minRatio) {
+        int fg = findFg ? color : other;
+        int bg = findFg ? other : color;
+        if (calculateContrast(fg, bg) >= minRatio) {
+            return color;
+        }
+
+        float[] hsl = new float[3];
+        colorToHSL(findFg ? fg : bg, hsl);
+
+        float low = hsl[2], high = 1;
+        for (int i = 0; i < 15 && high - low > 0.00001; i++) {
+            final float l = (low + high) / 2;
+            hsl[2] = l;
+            if (findFg) {
+                fg = HSLToColor(hsl);
+            } else {
+                bg = HSLToColor(hsl);
+            }
+            if (calculateContrast(fg, bg) > minRatio) {
+                high = l;
+            } else {
+                low = l;
+            }
+        }
+        return findFg ? fg : bg;
+    }
+
+    public static int getDisabled(Context context, int inputColor) {
+        return applyAlphaAttr(context, android.R.attr.disabledAlpha, inputColor);
+    }
+
+    public static int applyAlphaAttr(Context context, int attr, int inputColor) {
+        TypedArray ta = context.obtainStyledAttributes(new int[]{attr});
+        float alpha = ta.getFloat(0, 0);
+        ta.recycle();
+        return applyAlpha(alpha, inputColor);
+    }
+
+    public static int applyAlpha(float alpha, int inputColor) {
+        alpha *= Color.alpha(inputColor);
+        return Color.argb((int) (alpha), Color.red(inputColor), Color.green(inputColor),
+                Color.blue(inputColor));
     }
 }
