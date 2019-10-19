@@ -1211,8 +1211,12 @@ public class ModStatusBar {
             final int position = mStatusBarState == StatusBarState.SHADE ?
                     mTrafficMeter.getTrafficMeterPosition() :
                         GravityBoxSettings.DT_POSITION_AUTO;
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)
+                    mTrafficMeter.getLayoutParams();
             switch(position) {
                 case GravityBoxSettings.DT_POSITION_AUTO:
+                    lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    lp.weight = 0;
                     if (mStatusBarState == StatusBarState.SHADE) {
                         if (mClock != null && mClock.getCurrentPosition() == StatusbarClock.ClockPosition.CENTER) {
                             if (mLeftArea != null) {
@@ -1226,16 +1230,21 @@ public class ModStatusBar {
                     }
                     break;
                 case GravityBoxSettings.DT_POSITION_LEFT:
+                    lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    lp.weight = 0;
                     if (mLeftArea != null) {
                         mLeftArea.addView(mTrafficMeter, 0);
                     }
                     break;
                 case GravityBoxSettings.DT_POSITION_RIGHT:
+                    lp.weight = 1;
+                    lp.width = 0;
                     if (mRightArea != null) {
-                        mRightArea.addView(mTrafficMeter);
+                        mRightArea.addView(mTrafficMeter, 0);
                     }
                     break;
             }
+            mTrafficMeter.setLayoutParams(lp);
         }
     }
 
