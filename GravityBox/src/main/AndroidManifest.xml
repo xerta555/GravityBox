@@ -17,8 +17,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ceco.pie.gravitybox"
-    android:versionCode="913"
-    android:versionName="9.1.2" >
+    android:versionCode="914"
+    android:versionName="9.1.3" >
 
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
