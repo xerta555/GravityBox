@@ -470,6 +470,7 @@
     <string name="dt_position_auto">Автоматически (в центре или справа в зависимости от положения часов)</string>
     <string name="dt_position_left">Слева</string>
     <string name="dt_position_right">Справа</string>
+    <string name="dt_position_right_edge">Правый край</string>
     <string name="pref_data_traffic_size_title">Размер</string>
     <string name="dt_size_normal">Обычный</string>
     <string name="dt_size_smaller">Маленький</string>
@@ -484,7 +485,8 @@
     <string name="service_background_processes"><xliff:g id="memory">%1$s</xliff:g> свободно</string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes"><xliff:g id="memory">%1$s</xliff:g> использ.</string>
-    <string name="rambar_off">Выключено</string>
+    <string name="pref_qs_rambar_mode_title">Панель использования памяти</string>
+    <string name="rambar_off">Выключена</string>
     <string name="rambar_top">Сверху</string>
     <string name="rambar_bottom">Снизу</string>
 
@@ -588,6 +590,7 @@
     <string name="ringer_mode_vibrate">Вибрация</string>
     <string name="ringer_mode_sound">Звук</string>
     <string name="ringer_mode_sound_vibrate">Звук и вибрация</string>
+    <string name="ringer_mode_muted">Без звука</string>
 
     <!-- Screen recording -->
     <string name="screenrecord_notif_ticker">Экран записывается</string>
@@ -2017,15 +2020,68 @@
     <string name="pref_battery_style_header_title">Применить к заголовку строки состояния</string>
     <string name="pref_battery_style_header_summary">Применение выбранного индикатора батареи и к заголовку строки состояния</string>
 
+    <!-- Statusbar: max notification icons -->
+    <string name="pref_sb_max_notif_icons_title">Максимум значков уведомлений</string>
+    <string name="pref_sb_max_notif_icons_summary">Попытка убрать ограничение количества видимых значков уведомлений в строке состояния</string>
+
     <!-- Link ringtone & notifications volumes -->
+    <string 
+name="pref_link_volumes_title">Связать громкость мелодии и уведомлений</string>
+
+    <!-- Expanded volume panel -->
+    <string name="pref_volume_panel_expanded_title">Расширенная панель громкости</string>
+    <string name="pref_volume_panel_expanded_summary">Отображение ползунков громкости для всех основных звуковых потоков, даже когда они неактивны</string>
+
+    <!-- Link/unlink audio stream volumes -->
     <string name="volumes_linked">Связанные уровни громкости</string>
     <string name="volumes_unlinked">Несвязанные уровни громкости</string>
 
     <!-- Link ringtone & system volumes -->
     <string name="pref_link_ringer_system_volumes_title">Связать громкость мелодии и системных звуков</string>
 
+    <!-- QS: OP screen refresh tile -->
+    <string name="qs_tile_op_screen_refresh_rate">Частота обновления экрана</string>
+    <string name="qs_tile_label_auto">Авто</string>
+
+    <!-- QS: OP screen resolution tile -->
+    <string name="qs_tile_op_screen_resolution">Разрешение экрана</string>
+
     <!-- Volume panel timeout -->
     <string name="pref_volume_panel_timeout_title">Задержка панели громкости</string>
     <string name="pref_volume_panel_timeout_summary">Оставьте ноль для задержки по умолчанию</string>
+
+    <!-- QS: OP screen refresh tile allow real 90Hz mode -->
+    <string name="pref_qs_op_screen_refresh_rate_full90_title">Разрешить реальный режим 90 Гц</string>
+    <string name="pref_qs_op_screen_refresh_rate_full90_summary">Эксперимент: включение реального режима 90 Гц.
+        Плитка позволит переключаться между Авто/90Гц/60Гц, где автоматический режим будет стоковым 90 Гц, а 90Гц - реальный режим 90 Гц.
+        There will be no option selected in Display settings in case of real 90Hz mode as it is not currently available there.</string>
+
+    <!-- Lockscreen: Disable alarm info -->
+    <string name="pref_lockscreen_alarm_info_disable_title">Отключить информацию будильника</string>
+
+    <!-- Media / Vulume panel category -->
+    <string name="pref_cat_volume_panel_title">Панель громкости</string>
+
+    <!-- About EdXposed -->
+    <string name="about_edxposed_title">EdXposed framework</string>
+    <string name="about_edxposed_summary">Кодировка solohsu &amp; MlgmXyysd. Нажмите для перехода на официальную страницу.</string>
+
+    <!-- About Riru -->
+    <string name="about_riru_title">Riru</string>
+    <string name="about_riru_summary">Кодировка RikkaW. Нажмите для перехода на официальную страницу.</string>
+
+    <!-- Volume panel: Visible streams -->
+    <string name="pref_volume_panel_expanded_streams_title">Выберите аудиопотоки</string>
+    <string name="pref_volume_panel_expanded_streams_summary">Возможность выбора аудиопотоков, отображаемых в расширенной панели громкости</string>
+    <string name="stream_music">Медиа</string>
+    <string name="stream_ring">Звонок</string>
+    <string name="stream_notification">Notification</string>
+    <string name="stream_alarm">Ьудильник</string>
+    <string name="stream_call">Голосовой вызов</string>
+    <string name="stream_bluetooth">Bluetooth</string>
+    <string name="stream_system">Система</string>
+
+    <!-- Lockscreen: disable media art -->
+    <string name="pref_lockscreen_media_art_disable_title">Отключить обложки</string>
 
 </resources>
