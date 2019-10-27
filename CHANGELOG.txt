@@ -1,3 +1,13 @@
+Changelog 10.0.0-beta-5 - 27/10/2019
+--------------------------------------
+- QuickSettings: added option to show Memory usage bar in QS panel
+- TrafficMeter: added "Right edge" position as an alternative to existing Right position
+- Settings: removed forced Go Home action from FingerPrint launcher quick-tap on OxygenOS
+- Trusted WiFi: warn about Location permission requirement
+- Massive update to Italian translations (thanks to Fs00)
+- Updated Turkish translations (thanks to Fatih Firinci)
+- Updated Russian translations (thanks to gaich)
+
 Changelog 10.0.0-beta-4 - 13/10/2019
 --------------------------------------
 - Lockscreen: added option for hiding media art
