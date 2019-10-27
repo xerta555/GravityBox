@@ -1970,4 +1970,8 @@
     <!-- Lockscreen: disable media art -->
     <string name="pref_lockscreen_media_art_disable_title">Skrýt grafiku hudby</string>
 
+    <!-- Trusted WiFi: location permission warning -->
+    <string name="wifi_trusted_location_permission_denied">Funkce vyžaduje povolení přístupu k
+         poloze za účelem zobrazení seznamu WiFi sítí</string>
+
 </resources>

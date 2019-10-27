@@ -2075,4 +2075,8 @@
     <!-- Lockscreen: disable media art -->
     <string name="pref_lockscreen_media_art_disable_title">Disable media art</string>
 
+    <!-- Trusted WiFi: location permission warning -->
+    <string name="wifi_trusted_location_permission_denied">This feature requires Location permission
+        to access the list of WiFi networks</string>
+
 </resources>

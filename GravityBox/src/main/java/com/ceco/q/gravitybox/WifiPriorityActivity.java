@@ -33,6 +33,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -87,6 +88,9 @@ public class WifiPriorityActivity extends GravityBoxListActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             loadNetworks();
+        } else {
+            Toast.makeText(this, R.string.wifi_trusted_location_permission_denied,
+                    Toast.LENGTH_LONG).show();
         }
     }
 
