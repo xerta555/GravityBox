@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -55,7 +55,7 @@ public class GpsTile extends QsTile implements SysUiGpsStatusMonitor.Listener {
     }
 
     @Override
-    public void onLocationModeChanged(int mode) { }
+    public void onLocationModeChanged(SysUiGpsStatusMonitor.LocationMode mode) { }
 
     @Override
     public void onGpsEnabledChanged(boolean gpsEnabled) {
@@ -97,7 +97,11 @@ public class GpsTile extends QsTile implements SysUiGpsStatusMonitor.Listener {
     @Override
     public void handleClick() {
         if (SysUiManagers.GpsMonitor != null) {
-            SysUiManagers.GpsMonitor.setGpsEnabled(!mGpsEnabled);
+            boolean enabled = !mGpsEnabled;
+            SysUiManagers.GpsMonitor.setGpsProviderEnabled(enabled);
+            if (enabled && !SysUiManagers.GpsMonitor.isLocationEnabled()) {
+                SysUiManagers.GpsMonitor.setLocationEnabled(true);
+            }
         }
         super.handleClick();
     }
