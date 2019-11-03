@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2015 The SlimRoms Project
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.ceco.pie.gravitybox.R;
@@ -43,25 +42,14 @@ public class LocationTileSlimkat extends QsTile implements SysUiGpsStatusMonitor
     private static final Intent LOCATION_SETTINGS_INTENT = 
             new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 
-    public static final Integer[] LOCATION_SETTINGS = new Integer[] {
-        Settings.Secure.LOCATION_MODE_BATTERY_SAVING,
-        Settings.Secure.LOCATION_MODE_SENSORS_ONLY,
-        Settings.Secure.LOCATION_MODE_HIGH_ACCURACY
-    };
-
-    private int mLastActiveMode;
     private QsDetailAdapterProxy mDetailAdapter;
-    private List<Integer> mLocationList = new ArrayList<>();
+    private List<SysUiGpsStatusMonitor.LocationMode> mLocationList = new ArrayList<>();
 
     public LocationTileSlimkat(Object host, String key, Object tile, XSharedPreferences prefs,
             QsTileEventDistributor eventDistributor) throws Throwable {
         super(host, key, tile, prefs, eventDistributor);
 
         mState.dualTarget = true;
-        mLastActiveMode = getLocationMode();
-        if(mLastActiveMode == Settings.Secure.LOCATION_MODE_OFF) {
-            mLastActiveMode = Settings.Secure.LOCATION_MODE_HIGH_ACCURACY;
-        }
     }
 
     @Override
@@ -93,52 +81,54 @@ public class LocationTileSlimkat extends QsTile implements SysUiGpsStatusMonitor
     }
 
     private boolean isLocationEnabled() {
-        return (getLocationMode() != Settings.Secure.LOCATION_MODE_OFF);
+        SysUiGpsStatusMonitor.LocationMode mode = getLocationMode();
+        if (mode != null) {
+            return mode.isLocationEnabled;
+        }
+        return false;
     }
 
-    private int getLocationMode() {
-        return (SysUiManagers.GpsMonitor == null ? 0 :
-            SysUiManagers.GpsMonitor.getLocationMode());
-    }
-
-    private void setLocationMode(int mode) {
+    private SysUiGpsStatusMonitor.LocationMode getLocationMode() {
         if (SysUiManagers.GpsMonitor != null) {
+            return SysUiManagers.GpsMonitor.getLocationMode();
+        }
+        return null;
+    }
+
+    private void setLocationMode(SysUiGpsStatusMonitor.LocationMode mode) {
+        if (SysUiManagers.GpsMonitor != null && mode != null) {
             SysUiManagers.GpsMonitor.setLocationMode(mode);
         }
     }
 
     private void switchLocationMode() {
-        int currentMode = getLocationMode();
-        switch (currentMode) {
-            case Settings.Secure.LOCATION_MODE_OFF:
-                setLocationMode(Settings.Secure.LOCATION_MODE_BATTERY_SAVING);
-                break;
-            case Settings.Secure.LOCATION_MODE_BATTERY_SAVING:
-                setLocationMode(Settings.Secure.LOCATION_MODE_SENSORS_ONLY);
-                break;
-            case Settings.Secure.LOCATION_MODE_SENSORS_ONLY:
-                setLocationMode(Settings.Secure.LOCATION_MODE_HIGH_ACCURACY);
-                break;
-            case Settings.Secure.LOCATION_MODE_HIGH_ACCURACY:
-                setLocationMode(Settings.Secure.LOCATION_MODE_OFF);
-                break;
+        SysUiGpsStatusMonitor.LocationMode currentMode = getLocationMode();
+        SysUiGpsStatusMonitor gpsMonitor = SysUiManagers.GpsMonitor;
+        if (currentMode == null || gpsMonitor ==  null)
+            return;
+
+        if (!currentMode.isLocationEnabled) {
+            gpsMonitor.setLocationEnabled(true);
+        } else if (currentMode.isNetworkProviderEnabled && currentMode.isGpsProviderEnabled) {
+            gpsMonitor.setGpsProviderEnabled(false);
+        } else if (currentMode.isNetworkProviderEnabled) {
+            gpsMonitor.setNetworkProviderEnabled(false);
+            gpsMonitor.setGpsProviderEnabled(true);
+        } else if (currentMode.isGpsProviderEnabled) {
+            gpsMonitor.setLocationEnabled(false);
+        } else {
+            gpsMonitor.setLocationEnabled(false);
         }
     }
 
     private void setLocationEnabled(boolean enabled) {
         if (SysUiManagers.GpsMonitor != null) {
-            // Store last active mode if we are switching off
-            // so we can restore it at the next enable
-            if(!enabled) {
-                mLastActiveMode = getLocationMode();
-            }
-            final int mode = enabled ? mLastActiveMode : Settings.Secure.LOCATION_MODE_OFF;
-            SysUiManagers.GpsMonitor.setLocationMode(mode);
+            SysUiManagers.GpsMonitor.setLocationEnabled(enabled);
         }
     }
 
     @Override
-    public void onLocationModeChanged(int mode) {
+    public void onLocationModeChanged(SysUiGpsStatusMonitor.LocationMode mode) {
         if (DEBUG) log(getKey() + ": onLocationModeChanged: mode=" + mode);
         refreshState();
     }
@@ -152,23 +142,23 @@ public class LocationTileSlimkat extends QsTile implements SysUiGpsStatusMonitor
     @Override
     public void handleUpdateState(Object state, Object arg) {
         mState.booleanValue = true;
-        int locationMode = getLocationMode();
-        switch (locationMode) {
-            case Settings.Secure.LOCATION_MODE_SENSORS_ONLY:
-                mState.icon = iconFromResId(R.drawable.ic_qs_location_on);
-                break;
-            case Settings.Secure.LOCATION_MODE_BATTERY_SAVING:
-                mState.icon = iconFromResId(R.drawable.ic_qs_location_battery_saving);
-                break;
-            case Settings.Secure.LOCATION_MODE_HIGH_ACCURACY:
-                mState.icon = iconFromResId(R.drawable.ic_qs_location_on);
-                break;
-            case Settings.Secure.LOCATION_MODE_OFF:
-                mState.booleanValue = false;
-                mState.icon = iconFromResId(R.drawable.ic_qs_location_off);
-                break;
+        SysUiGpsStatusMonitor.LocationMode mode = getLocationMode();
+        if (mode == null)
+            return;
+
+        if (!mode.isLocationEnabled) {
+            mState.booleanValue = false;
+            mState.icon = iconFromResId(R.drawable.ic_qs_location_off);
+        } else if (mode.isGpsProviderEnabled && mode.isNetworkProviderEnabled) {
+            mState.icon = iconFromResId(R.drawable.ic_qs_location_on);
+        } else if (mode.isGpsProviderEnabled) {
+            mState.icon = iconFromResId(R.drawable.ic_qs_location_on);
+        } else if (mode.isNetworkProviderEnabled) {
+            mState.icon = iconFromResId(R.drawable.ic_qs_location_battery_saving);
+        } else {
+            mState.icon = iconFromResId(R.drawable.ic_qs_location_on);
         }
-        mState.label = SysUiGpsStatusMonitor.getModeLabel(mContext, locationMode);
+        mState.label = SysUiGpsStatusMonitor.getModeLabel(mContext, mode);
 
         super.handleUpdateState(state, arg);
     }
@@ -213,12 +203,12 @@ public class LocationTileSlimkat extends QsTile implements SysUiGpsStatusMonitor
 
     private class LocationDetailAdapter implements QsDetailAdapterProxy.Callback, AdapterView.OnItemClickListener {
 
-        private QsDetailItemsListAdapter<Integer> mAdapter;
+        private QsDetailItemsListAdapter<SysUiGpsStatusMonitor.LocationMode> mAdapter;
         private QsDetailItemsList mDetails;
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            setLocationMode((Integer) parent.getItemAtPosition(position));
+            setLocationMode((SysUiGpsStatusMonitor.LocationMode) parent.getItemAtPosition(position));
             showDetail(false);
         }
 
@@ -240,15 +230,15 @@ public class LocationTileSlimkat extends QsTile implements SysUiGpsStatusMonitor
 
         @Override
         public View createDetailView(final Context context, View convertView, ViewGroup parent) throws Throwable {
-            mAdapter = new QsDetailItemsListAdapter<Integer>(context, mLocationList) {
+            mAdapter = new QsDetailItemsListAdapter<SysUiGpsStatusMonitor.LocationMode>(context, mLocationList) {
                 @Override
-                protected CharSequence getListItemText(Integer item) {
+                protected CharSequence getListItemText(SysUiGpsStatusMonitor.LocationMode item) {
                     return SysUiGpsStatusMonitor.getModeLabel(context, item);
                 }
             };
             mDetails = QsDetailItemsList.create(context, parent);
             mDetails.setEmptyState(R.drawable.ic_qs_location_off,
-                    SysUiGpsStatusMonitor.getModeLabel(context, Settings.Secure.LOCATION_MODE_OFF));
+                    SysUiGpsStatusMonitor.getModeLabel(context, SysUiGpsStatusMonitor.LocationMode.OFF));
             mDetails.setAdapter(mAdapter);
 
             final ListView list = mDetails.getListView();
@@ -273,9 +263,13 @@ public class LocationTileSlimkat extends QsTile implements SysUiGpsStatusMonitor
         private void rebuildLocationList(boolean populate) {
             mLocationList.clear();
             if (populate) {
-                mLocationList.addAll(Arrays.asList(LOCATION_SETTINGS));
-                mDetails.getListView().setItemChecked(mAdapter.getPosition(
-                        getLocationMode()), true);
+                mLocationList.add(SysUiGpsStatusMonitor.LocationMode.BATTERY_SAVING);
+                mLocationList.add(SysUiGpsStatusMonitor.LocationMode.SENSORS_ONLY);
+                mLocationList.add(SysUiGpsStatusMonitor.LocationMode.HIGH_ACCURACY);
+                SysUiGpsStatusMonitor.LocationMode mode = getLocationMode();
+                if (mode != null) {
+                    mDetails.getListView().setItemChecked(mAdapter.getPosition(mode), true);
+                }
             }
             mAdapter.notifyDataSetChanged();
         }

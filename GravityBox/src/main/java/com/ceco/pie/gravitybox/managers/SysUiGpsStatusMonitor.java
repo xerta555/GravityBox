@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,6 +16,7 @@ package com.ceco.pie.gravitybox.managers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.ceco.pie.gravitybox.R;
 import com.ceco.pie.gravitybox.GravityBox;
@@ -27,6 +28,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.location.GnssStatus;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.os.UserManager;
 import android.provider.Settings;
 import de.robv.android.xposed.XposedBridge;
@@ -36,23 +39,71 @@ public class SysUiGpsStatusMonitor implements BroadcastMediator.Receiver {
     public static final String TAG="GB:GpsStatusMonitor";
     private static boolean DEBUG = false;
 
+    private static final String SETTING_LOCATION_GPS_ENABLED = "gravitybox.location_gps_enabled";
+    private static final String SETTING_LOCATION_NETWORK_ENABLED = "gravitybox.location_network_enabled";
+
     private static void log(String msg) {
         XposedBridge.log(TAG + ": " + msg);
     }
 
     public interface Listener {
-        void onLocationModeChanged(int mode);
+        void onLocationModeChanged(LocationMode mode);
         void onGpsEnabledChanged(boolean gpsEnabled);
         void onGpsFixChanged(boolean gpsFixed);
     }
 
+    public static class LocationMode {
+        public final boolean isLocationEnabled;
+        public final boolean isGpsProviderEnabled;
+        public final boolean isNetworkProviderEnabled;
+
+        public static final LocationMode BATTERY_SAVING =
+                new LocationMode(true, false, true);
+        public static final LocationMode SENSORS_ONLY =
+                new LocationMode(true, true, false);
+        public static final LocationMode HIGH_ACCURACY =
+                new LocationMode(true, true, true);
+        public static final LocationMode OFF =
+                new LocationMode(false, true, true);
+
+        private LocationMode(boolean location, boolean gps, boolean network) {
+            isLocationEnabled = location;
+            isGpsProviderEnabled = gps;
+            isNetworkProviderEnabled = network;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            LocationMode that = (LocationMode) o;
+            return isLocationEnabled == that.isLocationEnabled &&
+                    isGpsProviderEnabled == that.isGpsProviderEnabled &&
+                    isNetworkProviderEnabled == that.isNetworkProviderEnabled;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(isLocationEnabled, isGpsProviderEnabled, isNetworkProviderEnabled);
+        }
+
+        @Override
+        public String toString() {
+            return "LocationMode{" +
+                    "isLocationEnabled=" + isLocationEnabled +
+                    ", isGpsProviderEnabled=" + isGpsProviderEnabled +
+                    ", isNetworkProviderEnabled=" + isNetworkProviderEnabled +
+                    '}';
+        }
+    }
+
     private Context mContext;
-    private int mLocationMode;
-    private boolean mGpsEnabled;
+    private LocationMode mLocationMode;
     private boolean mGpsFixed;
     private boolean mGpsStatusTrackingActive;
     private LocationManager mLocMan;
     private final List<Listener> mListeners = new ArrayList<>();
+    private long mSettingsRestoreTimestamp;
 
     private GnssStatus.Callback mGnssStatusCallback = new GnssStatus.Callback() {
         @Override
@@ -75,36 +126,46 @@ public class SysUiGpsStatusMonitor implements BroadcastMediator.Receiver {
         }
     };
 
-    protected SysUiGpsStatusMonitor(Context context) {
+    SysUiGpsStatusMonitor(Context context) {
         if (context == null)
             throw new IllegalArgumentException("Context cannot be null");
 
         mContext = context;
         mLocMan = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
 
-        mLocationMode = getLocationModeFromSettings();
-        mGpsEnabled = (mLocationMode == Settings.Secure.LOCATION_MODE_HIGH_ACCURACY ||
-                mLocationMode == Settings.Secure.LOCATION_MODE_SENSORS_ONLY);
+        mLocationMode = getCurrentLocationMode();
+        if (DEBUG) log("SysUiGpsStatusMonitor initialized: mLocationMode=" + mLocationMode);
 
         SysUiManagers.BroadcastMediator.subscribe(this,
                 LocationManager.MODE_CHANGED_ACTION,
-                Intent.ACTION_LOCKED_BOOT_COMPLETED);
+                LocationManager.PROVIDERS_CHANGED_ACTION,
+                Intent.ACTION_LOCKED_BOOT_COMPLETED,
+                Intent.ACTION_USER_PRESENT);
     }
 
     @Override
     public void onBroadcastReceived(Context context, Intent intent) {
-        if (intent.getAction().equals(LocationManager.MODE_CHANGED_ACTION)) {
-            final boolean oldGpsEnabled = mGpsEnabled;
-            final int oldLocationMode = mLocationMode;
-            mLocationMode = getLocationModeFromSettings();
-            if (mLocationMode != oldLocationMode) {
+        final String action = intent.getAction();
+        if (LocationManager.MODE_CHANGED_ACTION.equals(action) ||
+                LocationManager.PROVIDERS_CHANGED_ACTION.equals(action)) {
+            final LocationMode oldLocationMode = mLocationMode;
+            mLocationMode = getCurrentLocationMode();
+            if (DEBUG) log(action + " received: " +
+                    "oldMode=" + oldLocationMode +
+                    "; newMode=" + mLocationMode);
+            if (!mLocationMode.equals(oldLocationMode)) {
                 notifyLocationModeChanged();
+                if (SystemClock.uptimeMillis() - mSettingsRestoreTimestamp > 10000) {
+                    Settings.Global.putInt(mContext.getContentResolver(), SETTING_LOCATION_GPS_ENABLED,
+                            mLocationMode.isGpsProviderEnabled ? 1 : 0);
+                    Settings.Global.putInt(mContext.getContentResolver(), SETTING_LOCATION_NETWORK_ENABLED,
+                            mLocationMode.isNetworkProviderEnabled ? 1 : 0);
+                    if (DEBUG) log("Provider settings saved");
+                }
             }
-            mGpsEnabled = mLocationMode == Settings.Secure.LOCATION_MODE_HIGH_ACCURACY ||
-                    mLocationMode == Settings.Secure.LOCATION_MODE_SENSORS_ONLY;
-            if (mGpsEnabled != oldGpsEnabled) {
+            if (mLocationMode.isGpsProviderEnabled != oldLocationMode.isGpsProviderEnabled) {
                 notifyGpsEnabledChanged();
-                if (mGpsEnabled) {
+                if (mLocationMode.isGpsProviderEnabled) {
                     startGpsStatusTracking();
                 } else {
                     stopGpsStatusTracking();
@@ -114,12 +175,25 @@ public class SysUiGpsStatusMonitor implements BroadcastMediator.Receiver {
                     }
                 }
             }
-            if (DEBUG) log("MODE_CHANGED_ACTION received: mode=" + mLocationMode + "; " +
-                    "mGpsEnabled=" + mGpsEnabled);
-        } else if (intent.getAction().equals(Intent.ACTION_LOCKED_BOOT_COMPLETED)) {
-            if (mGpsEnabled) {
+        } else if (Intent.ACTION_LOCKED_BOOT_COMPLETED.equals(action)) {
+            final LocationMode oldLocationMode = mLocationMode;
+            mLocationMode = getCurrentLocationMode();
+            if (DEBUG) log("ACTION_LOCKED_BOOT_COMPLETED: mLocationMode=" + mLocationMode);
+            if (!mLocationMode.equals(oldLocationMode)) {
+                notifyLocationModeChanged();
+            }
+            if (mLocationMode.isGpsProviderEnabled) {
                 startGpsStatusTracking();
             }
+        } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction()) && mSettingsRestoreTimestamp == 0) {
+            mSettingsRestoreTimestamp = SystemClock.uptimeMillis();
+            new Handler().postDelayed(() -> {
+                setNetworkProviderEnabled(Settings.Global.getInt(mContext.getContentResolver(),
+                        SETTING_LOCATION_NETWORK_ENABLED, 1) == 1);
+                setGpsProviderEnabled(Settings.Global.getInt(mContext.getContentResolver(),
+                        SETTING_LOCATION_GPS_ENABLED, 1) == 1);
+                if (DEBUG) log("Provider settings restored");
+            }, 5000);
         }
     }
 
@@ -139,49 +213,71 @@ public class SysUiGpsStatusMonitor implements BroadcastMediator.Receiver {
         }
     }
 
-    public int getLocationMode() {
+    public LocationMode getLocationMode() {
         return mLocationMode;
     }
 
+    public boolean isLocationEnabled() {
+        return mLocationMode.isLocationEnabled;
+    }
+
     public boolean isGpsEnabled() {
-        return mGpsEnabled;
+        return mLocationMode.isGpsProviderEnabled;
     }
 
     public boolean isGpsFixed() {
         return mGpsFixed;
     }
 
-    public void setLocationMode(int mode) {
+    @SuppressWarnings("deprecation")
+    public void setLocationEnabled(boolean enabled) {
         final int currentUserId = Utils.getCurrentUser();
         if (!isUserLocationRestricted(currentUserId)) {
             try {
                 final ContentResolver cr = mContext.getContentResolver();
                 XposedHelpers.callStaticMethod(Settings.Secure.class, "putIntForUser",
-                        cr, Settings.Secure.LOCATION_MODE, mode, currentUserId);
+                        cr, Settings.Secure.LOCATION_MODE, enabled ?
+                                Settings.Secure.LOCATION_MODE_HIGH_ACCURACY :
+                                Settings.Secure.LOCATION_MODE_OFF, currentUserId);
             } catch (Throwable t) {
                 GravityBox.log(TAG, t);
             }
         }
     }
 
-    public void setGpsEnabled(boolean enabled) {
-        final int mode = enabled ? Settings.Secure.LOCATION_MODE_HIGH_ACCURACY :
-            Settings.Secure.LOCATION_MODE_BATTERY_SAVING;
-        setLocationMode(mode);
+    @SuppressWarnings("deprecation")
+    private void setProviderEnabledInternal(String provider, boolean enabled) {
+        final int currentUserId = Utils.getCurrentUser();
+        if (!isUserLocationRestricted(currentUserId)) {
+            try {
+                final ContentResolver cr = mContext.getContentResolver();
+                XposedHelpers.callStaticMethod(Settings.Secure.class, "putStringForUser",
+                        cr, Settings.Secure.LOCATION_PROVIDERS_ALLOWED,
+                        (enabled ? "+":"-") + provider, currentUserId);
+            } catch (Throwable t) {
+                GravityBox.log(TAG, t);
+            }
+        }
     }
 
-    private int getLocationModeFromSettings() {
-        try {
-            final int currentUserId = Utils.getCurrentUser();
-            final ContentResolver cr = mContext.getContentResolver();
-            final int mode = (int) XposedHelpers.callStaticMethod(Settings.Secure.class, "getIntForUser",
-                    cr, Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF, currentUserId);
-            if (DEBUG) log("getLocationMode: mode=" + mode);
-            return mode;
-        } catch (Throwable t) {
-            GravityBox.log(TAG, t);
-            return Settings.Secure.LOCATION_MODE_OFF;
-        }
+    public void setGpsProviderEnabled(boolean enabled) {
+        setProviderEnabledInternal(LocationManager.GPS_PROVIDER, enabled);
+    }
+
+    public void setNetworkProviderEnabled(boolean enabled) {
+        setProviderEnabledInternal(LocationManager.NETWORK_PROVIDER, enabled);
+    }
+
+    public void setLocationMode(LocationMode mode) {
+        setLocationEnabled(mode.isLocationEnabled);
+        setGpsProviderEnabled(mode.isGpsProviderEnabled);
+        setNetworkProviderEnabled(mode.isNetworkProviderEnabled);
+    }
+
+    private LocationMode getCurrentLocationMode() {
+        return new LocationMode(mLocMan.isLocationEnabled(),
+                mLocMan.isProviderEnabled(LocationManager.GPS_PROVIDER),
+                mLocMan.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
     }
 
     private boolean isUserLocationRestricted(int userId) {
@@ -207,7 +303,7 @@ public class SysUiGpsStatusMonitor implements BroadcastMediator.Receiver {
     private void notifyGpsEnabledChanged() {
         synchronized (mListeners) {
             for (Listener l : mListeners) {
-                l.onGpsEnabledChanged(mGpsEnabled);
+                l.onGpsEnabledChanged(mLocationMode.isGpsProviderEnabled);
             }
         }
     }
@@ -236,23 +332,21 @@ public class SysUiGpsStatusMonitor implements BroadcastMediator.Receiver {
         }
     }
 
-    public static String getModeLabel(Context ctx, int currentState) {
+    public static String getModeLabel(Context ctx, LocationMode mode) {
         try {
             Context gbContext = Utils.getGbContext(ctx);
-            switch (currentState) {
-                case Settings.Secure.LOCATION_MODE_OFF:
-                    return gbContext.getString(R.string.quick_settings_location_off);
-                case Settings.Secure.LOCATION_MODE_BATTERY_SAVING:
-                    return gbContext.getString(R.string.location_mode_battery_saving);
-                case Settings.Secure.LOCATION_MODE_SENSORS_ONLY:
-                    return gbContext.getString(R.string.location_mode_device_only);
-                case Settings.Secure.LOCATION_MODE_HIGH_ACCURACY:
-                    return gbContext.getString(R.string.location_mode_high_accuracy);
-                default:
-                    return gbContext.getString(R.string.qs_tile_gps);
-             }
+            if (!mode.isLocationEnabled)
+                return gbContext.getString(R.string.quick_settings_location_off);
+            else if (mode.isGpsProviderEnabled && mode.isNetworkProviderEnabled)
+                return gbContext.getString(R.string.location_mode_high_accuracy);
+            else if (mode.isGpsProviderEnabled)
+                return gbContext.getString(R.string.location_mode_device_only);
+            else if (mode.isNetworkProviderEnabled)
+                return gbContext.getString(R.string.location_mode_battery_saving);
+            else
+                return gbContext.getString(R.string.qs_tile_gps);
         } catch (Throwable e) {
-            return String.valueOf(currentState);
+            return "N/A";
         }
     }
 }
