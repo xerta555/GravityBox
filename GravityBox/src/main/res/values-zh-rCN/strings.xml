@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+ <?xml version="1.0" encoding="utf-8"?>
 <!--
  * Copyright (C) 2013 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -472,6 +472,7 @@
     <string name="dt_position_auto">自动(中心或右,取决于时钟的位置)</string>
     <string name="dt_position_left">左</string>
     <string name="dt_position_right">右</string>
+    <string name="dt_position_right_edge">右边缘</string>
     <string name="pref_data_traffic_size_title">大小</string>
     <string name="dt_size_normal">标准</string>
     <string name="dt_size_smaller">较小</string>
@@ -486,6 +487,7 @@
     <string name="service_background_processes">可用：<xliff:g id="memory">%1$s</xliff:g></string>
     <!-- [CHAR LIMIT=10] Running services, summary of foreground processes -->
     <string name="service_foreground_processes">已用：<xliff:g id="memory">%1$s</xliff:g></string>
+    <string name="pref_qs_rambar_mode_title">内存使用情况栏</string>
     <string name="rambar_off">关闭</string>
     <string name="rambar_top">顶部</string>
     <string name="rambar_bottom">底部</string>
@@ -590,6 +592,7 @@
     <string name="ringer_mode_vibrate">振动</string>
     <string name="ringer_mode_sound">声音</string>
     <string name="ringer_mode_sound_vibrate">声音和振动</string>
+    <string name="ringer_mode_muted">静音</string>
 
     <!-- Screen recording -->
     <string name="screenrecord_notif_ticker">屏幕录制已开始</string>
@@ -2057,5 +2060,30 @@
 
     <!-- Lockscreen: Disable alarm info -->
     <string name="pref_lockscreen_alarm_info_disable_title">禁用报警信息</string>
+	
+    <!-- Media / Vulume panel category -->
+    <string name="pref_cat_volume_panel_title">音量面板</string>
+
+    <!-- About EdXposed -->
+    <string name="about_edxposed_title">EdXposed框架</string>
+    <string name="about_edxposed_summary">由solohsu&amp;MlgmXyysd提供代码,点击访问官方页面</string>
+
+    <!-- About Riru -->
+    <string name="about_riru_title">Riru</string>
+    <string name="about_riru_summary">由RikkaW提供代码,点击访问官方页面</string>
+
+    <!-- Volume panel: Visible streams -->
+    <string name="pref_volume_panel_expanded_streams_title">选择音频流</string>
+    <string name="pref_volume_panel_expanded_streams_summary">在扩展音量面板中允许选择要显示的音频流</string>
+    <string name="stream_music">媒体</string>
+    <string name="stream_ring">铃声</string>
+    <string name="stream_notification">通知</string>
+    <string name="stream_alarm">闹铃</string>
+    <string name="stream_call">通话</string>
+    <string name="stream_bluetooth">蓝牙</string>
+    <string name="stream_system">系统</string>
+
+    <!-- Lockscreen: disable media art -->
+    <string name="pref_lockscreen_media_art_disable_title">禁用媒体封面</string>
 
 </resources>
