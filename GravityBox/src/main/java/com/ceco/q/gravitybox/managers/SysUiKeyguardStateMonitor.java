@@ -22,6 +22,7 @@ import com.ceco.q.gravitybox.GravityBoxSettings;
 import com.ceco.q.gravitybox.ModPower;
 import com.ceco.q.gravitybox.Utils;
 
+import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.Intent;
@@ -72,11 +73,13 @@ public class SysUiKeyguardStateMonitor implements BroadcastMediator.Receiver {
     private ImprintMode mImprintMode = ImprintMode.DEFAULT;
     private final List<Listener> mListeners = new ArrayList<>();
     private boolean mIsInteractive;
+    private KeyguardManager mKm;
 
     protected SysUiKeyguardStateMonitor(Context context, XSharedPreferences prefs) {
         mContext = context;
         mPrefs = prefs;
         mPm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+        mKm = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
         mHandler = new Handler();
 
         mProxWakeupEnabled = prefs.getBoolean(
@@ -118,8 +121,8 @@ public class SysUiKeyguardStateMonitor implements BroadcastMediator.Receiver {
                 @Override
                 protected void afterHookedMethod(final MethodHookParam param) {
                     boolean showing = XposedHelpers.getBooleanField(param.thisObject, "mShowing");
-                    boolean secured = XposedHelpers.getBooleanField(param.thisObject, "mSecure");
-                    boolean locked = !XposedHelpers.getBooleanField(param.thisObject, "mCanSkipBouncer");
+                    boolean secured = mKm.isKeyguardSecure();
+                    boolean locked = mKm.isDeviceLocked();
                     boolean managed = getIsTrustManaged();
                     if (showing != mIsShowing || secured != mIsSecured ||
                             locked != mIsLocked || managed != mIsTrustManaged) {
@@ -196,7 +199,7 @@ public class SysUiKeyguardStateMonitor implements BroadcastMediator.Receiver {
     }
 
     private void notifyStateChanged() {
-        if (DEBUG) log("showing:" + mIsShowing + "; secured:" + mIsSecured + 
+        if (DEBUG) log("showing:" + mIsShowing + "; secured:" + mIsSecured +
                 "; locked:" + mIsLocked + "; trustManaged:" + mIsTrustManaged);
         synchronized (mListeners) {
             for (Listener l : mListeners) {
@@ -251,7 +254,7 @@ public class SysUiKeyguardStateMonitor implements BroadcastMediator.Receiver {
     }
 
     public boolean isLocked() {
-        return (mIsSecured && mIsLocked);
+        return mIsLocked;
     }
 
     public boolean isTrustManaged() {
