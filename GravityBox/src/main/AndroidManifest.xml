@@ -17,8 +17,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ceco.q.gravitybox"
-    android:versionCode="1004"
-    android:versionName="10.0.0-beta-5" >
+    android:versionCode="1005"
+    android:versionName="10.0.0-beta-6" >
 
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
