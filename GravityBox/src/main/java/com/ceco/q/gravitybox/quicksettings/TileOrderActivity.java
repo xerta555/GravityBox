@@ -210,9 +210,9 @@ public class TileOrderActivity extends GravityBoxListActivity implements View.On
             return false;
         if (key.equals("aosp_tile_data") && !Utils.isMotoXtDevice())
             return false;
-        if (key.equals("gb_tile_op_screen_refresh_rate") && !Utils.isOxygenOs7ProRom())
+        if (key.equals("gb_tile_op_screen_refresh_rate") && !Utils.hasOnePlusScreenRefreshControl())
             return false;
-        if (key.equals("gb_tile_op_screen_resolution") && !Utils.isOxygenOs7ProRom())
+        if (key.equals("gb_tile_op_screen_resolution") && !Utils.hasOnePlusScreenRefreshControl())
             return false;
 
         return true;

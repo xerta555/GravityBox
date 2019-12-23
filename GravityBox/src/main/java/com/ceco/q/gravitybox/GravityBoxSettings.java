@@ -1726,7 +1726,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             }
 
             // Remove non-OP7Pro preferences
-            if (!Utils.isOxygenOs7ProRom()) {
+            if (!Utils.hasOnePlusScreenRefreshControl()) {
                 Preference p = findPreference(PREF_CAT_KEY_OP_SCREEN_REFRESH_RATE);
                 if (p != null) mPrefCatQsTileSettings.removePreference(p);
             }
