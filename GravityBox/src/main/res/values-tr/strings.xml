@@ -578,6 +578,7 @@
     <string name="ringer_mode_vibrate">Titreşim</string>
     <string name="ringer_mode_sound">Ses</string>
     <string name="ringer_mode_sound_vibrate">Ses ve titreşim</string>
+    <string name="ringer_mode_muted">Sessiz</string>
 
     <!-- Screen recording -->
     <string name="screenrecord_notif_ticker">Ekran kaydı başladı</string>
@@ -2021,8 +2022,14 @@ Devam ederseniz, kendi sorumluluğunuz altındadır ve herhangi bir destek bekle
     <string name="stream_ring">Zil Sesi</string>
     <string name="stream_notification">Bildirim</string>
     <string name="stream_alarm">Alarm</string>
-    <string name="stream_call">Sesli Arama</string>
+    <string name="stream_call">Sesli arama</string>
     <string name="stream_bluetooth">Bluetooth</string>
     <string name="stream_system">Sistem</string>
+    
+        <!-- Lockscreen: disable media art -->
+    <string name="pref_lockscreen_media_art_disable_title">Medya resmini devre dışı bırak</string>
+
+    <!-- Trusted WiFi: location permission warning -->
+    <string name="wifi_trusted_location_permission_denied">Bu özellik, WiFi ağları listesine erişmek için Konum izni gerektirir</string>
 
  </resources>
