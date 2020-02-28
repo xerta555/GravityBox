@@ -288,7 +288,7 @@ public class ModStatusBar {
             mLeftArea = mStatusBarView
                     .findViewById(res.getIdentifier("status_bar_left_side", "id", PACKAGE_NAME));
 
-            if (mPrefs.getBoolean(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_MASTER_SWITCH, true)) {
+            if (mPrefs.getBoolean(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_MASTER_SWITCH, false)) {
                 // find statusbar clock
                 TextView clock = mStatusBarView.findViewById(
                         res.getIdentifier("clock", "id", PACKAGE_NAME));
