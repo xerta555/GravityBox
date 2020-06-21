@@ -34,7 +34,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -168,14 +167,6 @@ public abstract class TrafficMeterAbstract extends TextView
         }
     };
 
-    @SuppressLint("MissingPermission")
-    protected boolean getConnectAvailable() {
-        ConnectivityManager connManager =
-                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo network = (connManager != null) ? connManager.getActiveNetworkInfo() : null;
-        return network != null && network.isConnected();
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -287,7 +278,7 @@ public abstract class TrafficMeterAbstract extends TextView
     }
 
     private boolean shoudStartTrafficUpdates() {
-        boolean shouldStart = mAttached && mIsScreenOn && !mHiddenByPolicy && !mHiddenByHeadsUp &&  getConnectAvailable();
+        boolean shouldStart = mAttached && mIsScreenOn && !mHiddenByPolicy && !mHiddenByHeadsUp;
         if (mDisplayMode == DisplayMode.DOWNLOAD_MANAGER) {
             shouldStart &= mIsDownloadActive;
         } else if (mDisplayMode == DisplayMode.PROGRESS_TRACKING) {
