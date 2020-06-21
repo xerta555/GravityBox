@@ -161,7 +161,7 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
             }
         });
 
-        hookGetSmallTime();
+        hookUpdateClock();
     }
 
     public ClockPosition getCurrentPosition() {
@@ -233,30 +233,35 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
         setClockVisibility(true);
     }
 
-    private void hookGetSmallTime() {
+    private void hookUpdateClock() {
         try {
-            mHooks.add(XposedHelpers.findAndHookMethod(mClock.getClass(), "getSmallTime", new XC_MethodHook() {
+            mHooks.add(XposedHelpers.findAndHookMethod(mClock.getClass(), "updateClock", new XC_MethodHook() {
                 @SuppressLint("SimpleDateFormat")
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
+                    TextView thisClock = (TextView) param.thisObject;
                     // is this a status bar Clock instance?
                     // yes, if it contains our additional sbClock field
-                    if (DEBUG) log("getSmallTime() called. mAmPmHide=" + mAmPmHide);
-                    Object sbClock = XposedHelpers.getAdditionalInstanceField(param.thisObject, "sbClock");
-                    if (DEBUG) log("Is statusbar clock: " + (sbClock == null ? "false" : "true"));
+                    if (DEBUG) log("updateClock() called. mAmPmHide=" + mAmPmHide);
+                    boolean isStatusbarClock = (XposedHelpers.getAdditionalInstanceField(param.thisObject, "sbClock") != null);
+                    if (DEBUG) log("Is statusbar clock: " + isStatusbarClock);
                     // hide and finish if sb clock hidden
-                    if (sbClock != null && mClockHidden) {
+                    if (isStatusbarClock && mClockHidden) {
                         if (mClock.getVisibility() != View.GONE) {
                             setClockVisibility(false);
                         }
                         return;
                     }
+                    // do nothing if clocktext is null
+                    if (thisClock.getText() == null) {
+                        return;
+                    }
                     Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
                     boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
-                    String clockText = param.getResult().toString();
+                    String clockText = thisClock.getText().toString();
                     if (DEBUG) log("Original clockText: '" + clockText + "'");
                     // generate fresh base time text if seconds enabled
-                    if (mShowSeconds && sbClock != null) {
+                    if (mShowSeconds && isStatusbarClock) {
                         if (mSecondsFormat == null) {
                             mSecondsFormat = new SimpleDateFormat(
                                     DateFormat.getBestDateTimePattern(
@@ -286,7 +291,7 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
                     }
                     CharSequence date = "";
                     // apply date to statusbar clock, not the notification panel clock
-                    if (!mClockShowDate.equals("disabled") && sbClock != null) {
+                    if (!mClockShowDate.equals("disabled") && isStatusbarClock) {
                         SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT);
                         String pattern = mClockShowDate.equals("localized") ?
                                 df.toLocalizedPattern().replaceAll(".?[Yy].?", "") : mClockShowDate;
@@ -295,7 +300,7 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
                     clockText = date + clockText;
                     CharSequence dow = "";
                     // apply day of week only to statusbar clock, not the notification panel clock
-                    if (mClockShowDow != GravityBoxSettings.DOW_DISABLED && sbClock != null) {
+                    if (mClockShowDow != GravityBoxSettings.DOW_DISABLED && isStatusbarClock) {
                         dow = getFormattedDow(calendar.getDisplayName(
                                 Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault())) + " ";
                     }
@@ -317,7 +322,7 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
                         }
                     }
                     if (DEBUG) log("Final clockText: '" + sb + "'");
-                    param.setResult(sb);
+                    thisClock.setText(sb);
                 }
             }));
         } catch (Throwable t) {
