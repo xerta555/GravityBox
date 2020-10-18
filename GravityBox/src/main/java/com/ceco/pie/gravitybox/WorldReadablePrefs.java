@@ -132,8 +132,9 @@ public class WorldReadablePrefs implements SharedPreferences,
             }
             File f = new File(sharedPrefsFolder.getAbsolutePath() + "/" + mPrefsName + ".xml");
             if (!f.exists()) {
-                f.createNewFile();
-                f.setReadable(true, false);
+                edit().putBoolean("dummy", true).commit(() -> {
+                    f.setReadable(true, false);
+                });
             }
         } catch (Exception e) {
             Log.e("GravityBox", "Error pre-creating prefs file " + mPrefsName + ": " + e.getMessage());
