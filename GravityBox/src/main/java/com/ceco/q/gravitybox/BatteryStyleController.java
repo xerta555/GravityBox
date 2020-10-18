@@ -24,6 +24,7 @@ import com.ceco.q.gravitybox.managers.SysUiManagers;
 
 import android.content.Intent;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -33,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import de.robv.android.xposed.XC_MethodHook;
@@ -147,10 +149,21 @@ public class BatteryStyleController implements BroadcastMediator.Receiver {
     private void initLayout() throws Throwable {
         Resources res = mContext.getResources();
         Resources gbRes = Utils.getGbContext(mContext).getResources();
+        ColorStateList headerFillColor = null;
 
         int bIconIndex = mSystemIcons.getChildCount();
         int bIconMarginStart = gbRes.getDimensionPixelSize(R.dimen.circle_battery_padding_left);
         int bIconMarginEnd = gbRes.getDimensionPixelSize(R.dimen.circle_battery_padding_right);
+
+        // determine fill color in header
+        if (mContainerType == ContainerType.HEADER) {
+            try {
+                ImageView ai = (ImageView) XposedHelpers.getObjectField(mContainer, "mNextAlarmIcon");
+                headerFillColor = ai.getImageTintList();
+            } catch (Throwable t) {
+                GravityBox.log(TAG, "Error determining color for header elements");
+            }
+        }
 
         // find stock battery
         String batteryResName = mContainerType == ContainerType.HEADER ? "batteryRemainingIcon" : "battery";
@@ -174,6 +187,9 @@ public class BatteryStyleController implements BroadcastMediator.Receiver {
         mCircleBattery.setVisibility(View.GONE);
         if (mContainerType == ContainerType.HEADER) {
             mCircleBattery.setOnClickListener(v -> startPowerUsageSummary());
+            if (!Utils.isOxygenOsRom() && headerFillColor != null) {
+                mCircleBattery.setColor(headerFillColor.getDefaultColor());
+            }
         }
         mSystemIcons.addView(mCircleBattery, bIconIndex);
         if (DEBUG) log("CmCircleBattery injected");
@@ -200,6 +216,9 @@ public class BatteryStyleController implements BroadcastMediator.Receiver {
         mPercentText = new StatusbarBatteryPercentage(percentTextView, mPrefs, this);
         if (mContainerType == ContainerType.HEADER) {
             mPercentText.getView().setOnClickListener((v) -> startPowerUsageSummary());
+            if (!Utils.isOxygenOsRom() && headerFillColor != null) {
+                mPercentText.setTextColor(headerFillColor.getDefaultColor());
+            }
         }
         mSystemIcons.addView(mPercentText.getView(), mBatteryPercentTextOnRight ? bIconIndex+2 : bIconIndex);
         if (DEBUG) log("Battery percent text injected");
