@@ -193,11 +193,17 @@ public class QuickStatusBarHeader {
                 case RIGHT:
                     mClockView.setPaddingRelative(mClockPaddingEnd,0,mClockPaddingStart, 0);
                     mClockView.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
-                    mClockParent.addView(mClockView);
+                    if (Utils.isOxygenOsRom()) {
+                        mClockParent.addView(mClockView);
+                    } else {
+                        mCenterLayout.setGravity(Gravity.END);
+                        mCenterLayout.addView(mClockView);
+                    }
                     break;
                 case CENTER:
                     mClockView.setPaddingRelative(0,0,0, 0);
                     mClockView.setGravity(Gravity.CENTER);
+                    mCenterLayout.setGravity(Gravity.CENTER);
                     mCenterLayout.addView(mClockView);
                     break;
             }
