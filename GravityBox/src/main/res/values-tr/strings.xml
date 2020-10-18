@@ -587,15 +587,6 @@
     <string name="action_screenrecord">Ekran kaydı</string>
     <string name="pref_powermenu_screenrecord_title">Güç menüsünde ekran kaydı</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Başlatıcı iyileştirmeleri</string>
-    <string name="pref_cat_launcher_tweaks_summary">Stok başlatıcıya ve Google Now başlatıcısına uygulanır</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Masaüstü ızgarası</string>
-    <string name="pref_launcher_desktop_grid_info_title">Varsayılandan başka değerler kullanmak widgetları bozabilir. Seyrek kullanın. Değişiklikler başlatıcının yeniden başlatılmasını gerektirir.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Satır sayısı</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Sütun sayısı</string>
-    <string name="desktop_grid_default">Varsayılan</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Ekran kaydı</string>
 
@@ -828,14 +819,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Uzun basma süresi</string>
     <string name="pie_longpress_delay_default">Sistem varsayılanı</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Uygulama menüsü</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Diğer</string>
-    <string name="pref_launcher_resize_widget_title">"Her widget'ı yeniden boyutlandır"</string>
-    <string name="pref_launcher_resize_widget_summary">"Ana ekranda her widget'ı her boyuta ayarla (başlatıcının yeniden başlatılması gerekir)"</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Simge seçin</string>

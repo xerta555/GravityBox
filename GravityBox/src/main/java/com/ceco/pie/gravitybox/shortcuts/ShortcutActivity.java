@@ -164,10 +164,6 @@ public class ShortcutActivity extends GravityBoxListActivity {
             list.add(new SwitchAppShortcut(mContext));
         }
         list.add(new AppLauncherShortcut(mContext));
-        // TODO: launcher tweaks? probably not...
-        //if (!mLaunchesFromLockscreen) {
-        //    list.add(new LauncherDrawerShortcut(mContext));
-        //}
         list.add(new RotationLockShortcut(mContext));
         list.add(new SleepShortcut(mContext));
         if (!LedSettings.isUncLocked(mContext)) {

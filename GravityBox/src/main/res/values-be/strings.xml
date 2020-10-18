@@ -585,15 +585,6 @@
     <string name="action_screenrecord">Запіс экрана</string>
     <string name="pref_powermenu_screenrecord_title">Запіс экрана ў меню</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Налады лончара</string>
-    <string name="pref_cat_launcher_tweaks_summary">Толькі для лончара па змаўчанні і Google Now</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Сетка працоўнага стала</string>
-    <string name="pref_launcher_desktop_grid_info_title">Выкарыстанне значэнняў, выдатных ад значэнняў па змаўчанні, можа прывесці да праблем з віджэтамі. Выкарыстоўвайце з асцярожнасцю. Змены патрабуюць перазапуску лончара.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Колькасць радкоў</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Колькасць слупкоў</string>
-    <string name="desktop_grid_default">Па змаўчанні</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Паказальнік запісу</string>
 
@@ -829,14 +820,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Затрымка ўтрымання</string>
     <string name="pie_longpress_delay_default">Сістэмная па змаўчанні</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Панэль лончара</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Іншае</string>
-    <string name="pref_launcher_resize_widget_title">Змена віджэтаў</string>
-    <string name="pref_launcher_resize_widget_summary">Магчымасць змяняць памеры кожнага віджэта на хатнім экране (патрэбна перазагрузка лончара)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Выбраць значок</string>

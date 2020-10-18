@@ -205,10 +205,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String PREF_KEY_ABOUT_UNLOCKER = "pref_about_get_unlocker";
     public static final String PREF_KEY_UNPLUG_TURNS_ON_SCREEN = "pref_unplug_turns_on_screen";
     public static final String PREF_KEY_ENGINEERING_MODE = "pref_engineering_mode";
-    public static final String APP_MESSAGING = "com.android.mms";
-    public static final String APP_STOCK_LAUNCHER = "com.android.launcher3";
-    public static final String APP_GOOGLE_HOME = "com.google.android.launcher";
-    public static final String APP_GOOGLE_NOW = "com.google.android.googlequicksearchbox";
     public static final String APP_ENGINEERING_MODE = "com.mediatek.engineermode";
     public static final String APP_ENGINEERING_MODE_CLASS = "com.mediatek.engineermode.EngineerMode";
     public static final String ACTION_PREF_TELEPHONY_CHANGED = "gravity.intent.action.TELEPHONY_CHANGED";
@@ -360,7 +356,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final int HWKEY_ACTION_EXPAND_QUICKSETTINGS = 19;
     public static final int HWKEY_ACTION_SCREENSHOT = 20;
     public static final int HWKEY_ACTION_VOLUME_PANEL = 21;
-    public static final int HWKEY_ACTION_LAUNCHER_DRAWER = 22;
     public static final int HWKEY_ACTION_INAPP_SEARCH = 24;
     public static final int HWKEY_ACTION_CUSTOM_APP = 25;
     public static final int HWKEY_ACTION_SPLIT_SCREEN = 26;
@@ -652,13 +647,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String EXTRA_APP_LAUNCHER_SLOT = "appLauncherSlot";
     public static final String EXTRA_APP_LAUNCHER_APP = "appLauncherApp";
     public static final String EXTRA_APP_LAUNCHER_THEME = "appLauncherTheme";
-
-    public static final String PREF_CAT_LAUNCHER_TWEAKS = "pref_cat_launcher_tweaks";
-    public static final String PREF_KEY_LAUNCHER_DESKTOP_GRID_ROWS = "pref_launcher_desktop_grid_rows";
-    public static final String PREF_KEY_LAUNCHER_DESKTOP_GRID_COLS = "pref_launcher_desktop_grid_cols";
-    public static final String PREF_KEY_LAUNCHER_RESIZE_WIDGET = "pref_launcher_resize_widget";
-
-    public static final String ACTION_PREF_SIGNAL_CLUSTER_CHANGED = "gravitybox.intent.action.SIGNAL_CLUSTER_CHANGED";
 
     public static final String PREF_KEY_SMART_RADIO_ENABLE = "pref_smart_radio_enable";
     public static final String PREF_KEY_SMART_RADIO_NORMAL_MODE = "pref_smart_radio_normal_mode";
@@ -1311,9 +1299,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
         private PreferenceCategory mPrefCatLsOther;
         private PreferenceScreen mPrefCatLsShortcuts;
         private ListPreference mPrefLsRotation;
-        private PreferenceScreen mPrefCatLauncherTweaks;
-        private ListPreference mPrefLauncherDesktopGridRows;
-        private ListPreference mPrefLauncherDesktopGridCols;
         private ListPreference mPrefVolumeRockerWake;
         private ListPreference mPrefNavbarCustomKeySingletap;
         private ListPreference mPrefNavbarCustomKeyLongpress;
@@ -1563,10 +1548,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 }
             }
 
-            mPrefCatLauncherTweaks = (PreferenceScreen) findPreference(PREF_CAT_LAUNCHER_TWEAKS);
-            mPrefLauncherDesktopGridRows = (ListPreference) findPreference(PREF_KEY_LAUNCHER_DESKTOP_GRID_ROWS);
-            mPrefLauncherDesktopGridCols = (ListPreference) findPreference(PREF_KEY_LAUNCHER_DESKTOP_GRID_COLS);
-
             mPrefVolumeRockerWake = (ListPreference) findPreference(PREF_KEY_VOLUME_ROCKER_WAKE);
 
             mPrefPulseNotificationDelay = (SeekBarPreference) findPreference(PREF_KEY_PULSE_NOTIFICATION_DELAY);
@@ -1628,12 +1609,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 mPrefCatMedia.removePreference(mPrefLinkVolumes);
                 mPrefCatMedia.removePreference(mPrefLinkRingerSystemVolumes);
             }
-            // TODO: launcher tweaks? probably not...
-            //if (!(Utils.isAppInstalled(getActivity(), APP_GOOGLE_NOW) &&
-            //        Utils.isAppInstalled(getActivity(), APP_GOOGLE_HOME) ||
-            //        Utils.isAppInstalled(getActivity(), APP_STOCK_LAUNCHER))) {
-                getPreferenceScreen().removePreference(mPrefCatLauncherTweaks);
-            //}
+
             if (Utils.isWifiOnly(getActivity())) {
                 // Remove preferences that don't apply to wifi-only devices
                 getPreferenceScreen().removePreference(mPrefCatPhone);
@@ -2198,14 +2174,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
 
             if (key == null || key.equals(PREF_KEY_TRANSLUCENT_DECOR)) {
                 mPrefTranclucentDecor.setSummary(mPrefTranclucentDecor.getEntry());
-            }
-
-            if (key == null || key.equals(PREF_KEY_LAUNCHER_DESKTOP_GRID_ROWS)) {
-                mPrefLauncherDesktopGridRows.setSummary(mPrefLauncherDesktopGridRows.getEntry());
-            }
-
-            if (key == null || key.equals(PREF_KEY_LAUNCHER_DESKTOP_GRID_COLS)) {
-                mPrefLauncherDesktopGridCols.setSummary(mPrefLauncherDesktopGridCols.getEntry());
             }
 
             if (key == null || key.equals(PREF_KEY_VOLUME_ROCKER_WAKE)) {

@@ -581,15 +581,6 @@
     <string name="action_screenrecord">Înregistrare ecran</string>
     <string name="pref_powermenu_screenrecord_title">Înregistrare ecran în meniul de alimentare</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Setări lansator</string>
-    <string name="pref_cat_launcher_tweaks_summary">Se aplică pentru lansatorul de stoc și lansatorul Google Now</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Grilă desktop</string>
-    <string name="pref_launcher_desktop_grid_info_title">Folosirea altor valori decât implicit ar putea cauza probleme cu aspectul widget-urilor. Utilizați cu prudenţă. Modificările necesită repornirea lansatorului.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Număr de rânduri</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Numar de coloane</string>
-    <string name="desktop_grid_default">Implicit</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Comutați înregistrarea ecranului</string>
 
@@ -822,14 +813,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Întârzierea apăsării lungi</string>
     <string name="pie_longpress_delay_default">Implicit</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Sertar de lansare</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Alte</string>
-    <string name="pref_launcher_resize_widget_title">Redimensionați orice widget</string>
-    <string name="pref_launcher_resize_widget_summary">Redimensionați orice widget la orice dimensiune de pe ecranul de start (necesită repornirea lansatorului)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Alegeți pictograma</string>

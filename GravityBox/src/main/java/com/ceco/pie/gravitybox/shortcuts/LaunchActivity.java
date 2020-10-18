@@ -88,8 +88,6 @@ public class LaunchActivity extends Activity {
             GoogleNowShortcut.launchAction(mContext, intent);
         } else if (action.equals(VolumePanelShortcut.ACTION)) {
             VolumePanelShortcut.launchAction(mContext, intent);
-        } else if (action.equals(LauncherDrawerShortcut.ACTION)) {
-            LauncherDrawerShortcut.launchAction(mContext, intent);
         } else if (action.equals(SmartRadioShortcut.ACTION)) {
             SmartRadioShortcut.launchAction(mContext, intent);
         } else if (action.equals(QuietHoursShortcut.ACTION)) {

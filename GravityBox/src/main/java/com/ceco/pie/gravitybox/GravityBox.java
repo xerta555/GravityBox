@@ -191,11 +191,6 @@ public class GravityBox implements IXposedHookZygoteInit, IXposedHookLoadPackage
             ModLockscreen.init(prefs, qhPrefs, lpparam.classLoader);
         }
 
-        // TODO: launcher tweaks? probably not...
-        //if (ModLauncher.PACKAGE_NAMES.contains(lpparam.packageName)) {
-        //    ModLauncher.init(prefs, lpparam.classLoader);
-        //}
-
         if (lpparam.packageName.equals(ModSmartRadio.PACKAGE_NAME) &&
                 prefs.getBoolean(GravityBoxSettings.PREF_KEY_SMART_RADIO_ENABLE, false)) {
             ModSmartRadio.init(prefs, lpparam.classLoader);

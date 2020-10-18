@@ -598,15 +598,6 @@
     <string name="action_screenrecord">屏幕录制</string>
     <string name="pref_powermenu_screenrecord_title">电源键菜单屏幕录制</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">桌面调整</string>
-    <string name="pref_cat_launcher_tweaks_summary">仅适用于原生桌面和谷歌Now桌面</string>
-    <string name="pref_cat_launcher_desktop_grid_title">桌面网格</string>
-    <string name="pref_launcher_desktop_grid_info_title">使用非默认的值可能破坏小部件的布局,请谨慎使用,改动将在桌面重新启动后生效</string>
-    <string name="pref_launcher_desktop_grid_rows_title">行数</string>
-    <string name="pref_launcher_desktop_grid_cols_title">列数</string>
-    <string name="desktop_grid_default">默认</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">切换屏幕录制</string>
 
@@ -844,14 +835,6 @@
     <string name="pref_pie_longpress_delay_title">长按延迟</string>
     <string name="pie_longpress_delay_default">系统默认</string>
 
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">启动抽屉</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">其它</string>
-    <string name="pref_launcher_resize_widget_title">调整任何小部件</string>
-    <string name="pref_launcher_resize_widget_summary">调整主屏幕上的小部件大小(需要重新启动)</string>
-    
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">选择图标</string>
     <string name="shortcuts_icon_picker_alarm">闹钟</string>

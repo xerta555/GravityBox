@@ -2077,50 +2077,6 @@
     </PreferenceScreen>
 
     <PreferenceScreen 
-        android:key="pref_cat_launcher_tweaks"
-        android:title="@string/pref_cat_launcher_tweaks_title"
-        android:summary="@string/pref_cat_launcher_tweaks_summary">
-
-        <PreferenceCategory 
-            android:key="pref_cat_launcher_desktop_grid"
-            android:title="@string/pref_cat_launcher_desktop_grid_title">
-
-            <Preference 
-                android:key="pref_launcher_desktop_grid_info"
-                android:summary="@string/pref_launcher_desktop_grid_info_title"
-                android:persistent="false" />
-
-            <ListPreference
-                android:key="pref_launcher_desktop_grid_rows" 
-                android:title="@string/pref_launcher_desktop_grid_rows_title"
-                android:entries="@array/desktop_grid_row_entries"
-                android:entryValues="@array/desktop_grid_row_values"
-                android:defaultValue="0" />
-
-            <ListPreference
-                android:key="pref_launcher_desktop_grid_cols" 
-                android:title="@string/pref_launcher_desktop_grid_cols_title"
-                android:entries="@array/desktop_grid_col_entries"
-                android:entryValues="@array/desktop_grid_col_values"
-                android:defaultValue="0" />
-
-        </PreferenceCategory>
-
-        <PreferenceCategory 
-            android:key="pref_cat_launcher_other"
-            android:title="@string/pref_cat_launcher_other_title">
-
-            <CheckBoxPreference 
-                android:key="pref_launcher_resize_widget"
-                android:title="@string/pref_launcher_resize_widget_title"
-                android:summary="@string/pref_launcher_resize_widget_summary"
-                android:defaultValue="false" />
-
-        </PreferenceCategory>
-
-    </PreferenceScreen>
-
-    <PreferenceScreen 
         android:key="pref_cat_hwkey_actions"
         android:title="@string/pref_cat_hwkey_actions_title"
         android:summary="@string/pref_cat_hwkey_actions_summary">

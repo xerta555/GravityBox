@@ -1173,8 +1173,6 @@ public class ModHwKeys {
             takeScreenshot(400L);
         } else if (action.actionId == GravityBoxSettings.HWKEY_ACTION_VOLUME_PANEL) {
             showVolumePanel();
-        } else if (action.actionId == GravityBoxSettings.HWKEY_ACTION_LAUNCHER_DRAWER) {
-            showLauncherDrawer();
         } else if (action.actionId == GravityBoxSettings.HWKEY_ACTION_INAPP_SEARCH) {
             injectKey(KeyEvent.KEYCODE_SEARCH);
         } else if (action.actionId == GravityBoxSettings.HWKEY_ACTION_SPLIT_SCREEN) {
@@ -1610,15 +1608,6 @@ public class ModHwKeys {
             });
         } catch (Throwable t) {
             GravityBox.log(TAG, "Error executing showVolumePanel: ", t);
-        }
-    }
-
-    private static void showLauncherDrawer() {
-        try {
-            Intent intent = new Intent(ModLauncher.ACTION_SHOW_APP_DRAWER);
-            mContext.sendBroadcast(intent);
-        } catch (Throwable t) {
-            GravityBox.log(TAG, "Error executing showLauncherDrawer: ", t);
         }
     }
 

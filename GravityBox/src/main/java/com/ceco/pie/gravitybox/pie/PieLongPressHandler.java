@@ -21,7 +21,6 @@ import java.util.Map;
 import com.ceco.pie.gravitybox.GravityBox;
 import com.ceco.pie.gravitybox.GravityBoxSettings;
 import com.ceco.pie.gravitybox.ModHwKeys;
-import com.ceco.pie.gravitybox.ModLauncher;
 import com.ceco.pie.gravitybox.ModStatusBar;
 import com.ceco.pie.gravitybox.ScreenRecordingService;
 import com.ceco.pie.gravitybox.managers.SysUiManagers;
@@ -161,9 +160,6 @@ public class PieLongPressHandler implements PieItem.PieOnLongPressListener {
                 break;
             case GravityBoxSettings.HWKEY_ACTION_VOLUME_PANEL:
                 intent = new Intent(ModHwKeys.ACTION_SHOW_VOLUME_PANEL);
-                break;
-            case GravityBoxSettings.HWKEY_ACTION_LAUNCHER_DRAWER:
-                intent = new Intent(ModLauncher.ACTION_SHOW_APP_DRAWER);
                 break;
             case GravityBoxSettings.HWKEY_ACTION_INAPP_SEARCH:
                 intent = new Intent(ModHwKeys.ACTION_INAPP_SEARCH);

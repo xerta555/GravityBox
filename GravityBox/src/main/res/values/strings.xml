@@ -598,15 +598,6 @@
     <string name="action_screenrecord">Screen record</string>
     <string name="pref_powermenu_screenrecord_title">Screen record in power menu</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Launcher tweaks</string>
-    <string name="pref_cat_launcher_tweaks_summary">Applies to stock launcher and Google Now launcher</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Desktop grid</string>
-    <string name="pref_launcher_desktop_grid_info_title">Using other values than default may break widgets\' layout. Use wisely. Changes require launcher to be restarted.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Number of rows</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Number of columns</string>
-    <string name="desktop_grid_default">Default</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Toggle screen recording</string>
 
@@ -843,14 +834,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Long-press delay</string>
     <string name="pie_longpress_delay_default">System default</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Launcher drawer</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Other</string>
-    <string name="pref_launcher_resize_widget_title">Resize any widget</string>
-    <string name="pref_launcher_resize_widget_summary">Resize any widget to any size on the homescreen (requires launcher restart)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Choose icon</string>

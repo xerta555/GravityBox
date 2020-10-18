@@ -570,15 +570,6 @@
     <string name="action_screenrecord">Záznam obrazovky</string>
     <string name="pref_powermenu_screenrecord_title">Záznam obrazovky v ponuke napájania</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Nastavenia spúšťača</string>
-    <string name="pref_cat_launcher_tweaks_summary">Vzťahuje sa na štandardný Android spúšťač alebo Google Now spúšťač</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Mriežka plochy</string>
-    <string name="pref_launcher_desktop_grid_info_title">Použitie iných ako východzích hodnôt môže spôsobiť narušenie vzhľadu miniaplikácií. Zmeny vyžadujú reštart spúšťača.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Počet riadkov</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Počet stĺpcov</string>
-    <string name="desktop_grid_default">Štandardný</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Zapnúť/vypnúť záznam obrazovky</string>
 
@@ -814,14 +805,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Oneskorenie dlhého podržania</string>
     <string name="pie_longpress_delay_default">Systémové</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Zoznam aplikácií spúšťača</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Iné</string>
-    <string name="pref_launcher_resize_widget_title">Zmena veľkosti miniaplikácií</string>
-    <string name="pref_launcher_resize_widget_summary">Povolí zmenu veľkosti miniaplikácií na obrazovkách spúšťača (vyžaduje reštart spúšťača)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Vyberte ikonu</string>
