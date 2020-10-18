@@ -320,7 +320,7 @@ public class ProgressBarView extends View implements
     }
 
     @Override
-    public void onStatusBarStateChanged(int oldState, int newState) {
+    public void onStatusBarStateChanged(int newState) {
         if (mStatusBarState != newState) {
             mStatusBarState = newState;
             resetIndexCycler(mCurrentIndex);

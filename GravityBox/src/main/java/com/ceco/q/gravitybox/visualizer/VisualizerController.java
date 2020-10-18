@@ -69,7 +69,7 @@ public class VisualizerController implements StatusBarStateChangedListener,
         void onActiveStateChanged(boolean active);
         void onMediaMetaDataUpdated(MediaMetadata md, Bitmap artwork);
         void onUserActivity();
-        void onStatusBarStateChanged(int oldState, int newState);
+        void onStatusBarStateChanged(int newState);
         void onBatteryStatusChanged(BatteryData batteryData);
         void onColorUpdated(int color);
         void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate);
@@ -364,9 +364,9 @@ public class VisualizerController implements StatusBarStateChangedListener,
     }
 
     @Override
-    public void onStatusBarStateChanged(int oldState, int newState) {
+    public void onStatusBarStateChanged(int newState) {
         for (Listener l : mListeners) {
-            l.onStatusBarStateChanged(oldState, newState);
+            l.onStatusBarStateChanged(newState);
         }
         updateActiveState();
     }

@@ -312,7 +312,7 @@ public class BatteryBarView extends View implements IconManagerListener,
     }
 
     @Override
-    public void onStatusBarStateChanged(int oldState, int newState) {
+    public void onStatusBarStateChanged(int newState) {
         if (mStatusBarState != newState) {
             mStatusBarState = newState;
             update();

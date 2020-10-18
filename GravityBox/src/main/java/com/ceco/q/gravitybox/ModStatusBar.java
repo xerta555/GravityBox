@@ -97,7 +97,7 @@ public class ModStatusBar {
     }
 
     public interface StatusBarStateChangedListener {
-        void onStatusBarStateChanged(int oldState, int newState);
+        void onStatusBarStateChanged(int newState);
     }
 
     private static ViewGroup mLeftArea;
@@ -774,16 +774,15 @@ public class ModStatusBar {
 
             // status bar state change handling
             try {
-                XposedHelpers.findAndHookMethod(statusBarWcClass, "setStatusBarState",
-                        int.class, new XC_MethodHook() {
+                XposedHelpers.findAndHookMethod(statusBarWcClass, "notifyStateChangedCallbacks",
+                        new XC_MethodHook() {
                     @Override
-                    protected void beforeHookedMethod(MethodHookParam param) {
+                    protected void afterHookedMethod(MethodHookParam param) {
                         Object currentState = XposedHelpers.getObjectField(param.thisObject, "mCurrentState");
-                        int oldState = XposedHelpers.getIntField(currentState, "statusBarState");
-                        mStatusBarState = (Integer) param.args[0];
-                        if (DEBUG) log("setStatusBarState: oldState="+oldState+"; newState="+mStatusBarState);
+                        mStatusBarState = XposedHelpers.getIntField(currentState, "statusBarState");
+                        if (DEBUG) log("setStatusBarState: newState="+mStatusBarState);
                         for (StatusBarStateChangedListener listener : mStateChangeListeners) {
-                            listener.onStatusBarStateChanged(oldState, mStatusBarState);
+                            listener.onStatusBarStateChanged(mStatusBarState);
                         }
                         // switch centered layout based on status bar state
                         if (mLayoutCenter != null) {

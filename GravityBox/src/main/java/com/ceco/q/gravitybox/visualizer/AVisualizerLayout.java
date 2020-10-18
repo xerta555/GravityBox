@@ -81,7 +81,7 @@ abstract class AVisualizerLayout extends FrameLayout implements VisualizerContro
     public void onUserActivity() { }
 
     @Override
-    public void onStatusBarStateChanged(int oldState, int newState) {
+    public void onStatusBarStateChanged(int newState) {
         if (mStatusBarState != newState) {
             mStatusBarState = newState;
             updateViewVisibility();
