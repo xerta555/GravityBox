@@ -31,8 +31,6 @@
 
     <string name="important">Ważne</string>
 
-    <string name="caller_fullscreen_photo_title">Fotografia dzwoniącego na pełnym ekranie</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Włączono Synchronizację</string>
     <string name="quick_settings_sync_off">Wyłączono Synchronizację</string>
@@ -507,12 +505,6 @@
     <string name="pref_pie_color_text_title">Kolor tekstu</string>
     <string name="pref_pie_color_reset_title">Resetuj kolory</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Zdjęcie nieznanego dzwoniącego</string>
-    <string name="pref_caller_unknown_photo_title">Ustaw zdjęcie dla nieznanego dzwoniącego</string>
-    <string name="caller_unknown_photo_result_successful">Zdjęcie zostało zmienione</string>
-    <string name="caller_unkown_photo_result_not_successful">Zdjęcie nie zostało zmienione</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Ekran może nie obsługiwać wartości niższych niż 20. Jeśli ekran nie zapala się, przytrzymaj przycisk VOLUME+ przez co najmniej 7 sekund aby zrestetować jasność, a następnie ustaw wyższą wartość minimalnej jasności.</string>
 
@@ -570,10 +562,6 @@
     <string name="screenrecord_toast_processing">Nie można rozpocząć nowego nagrania jeśli poprzednie nagranie jest nadal przetwarzane</string>
     <string name="screenrecord_toast_saved">Nagranie zapisane jako %s</string>
     <string name="screenrecord_toast_save_error">Nie można zapisać nagrania do pliku wyjściowego</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Automatycznie pokaż klawiaturę telefonu</string>
-    <string name="pref_dialer_show_dialpad_summary">Automatycznie pokazuje klawiaturę telefonu po otwarciu aplikacji dialera</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Poprawki Startera Aplikacji</string>
@@ -1663,9 +1651,6 @@
     <string name="pref_force_aosp_summary">Traktuje system jako AOSP. 
         Użyj w przypadku kiedy twoje urządzenie jest wykrywane jako brandowane pomimo tego, że faktycznie
         działający system oparty jest o AOSP (wymaga ponownego uruchomienia)</string>
-
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Dialer</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Pokaż ikonę jasności</string>

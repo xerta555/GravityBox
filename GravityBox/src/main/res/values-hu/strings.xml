@@ -47,8 +47,6 @@
 
     <string name="important">Fontos</string>
 
-    <string name="caller_fullscreen_photo_title">Teljes képernyős hívó fotó</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Szinkronizáció be</string>
     <string name="quick_settings_sync_off">Szinkronizáció ki</string>
@@ -527,12 +525,6 @@
     <string name="pref_pie_color_text_title">Szöveg színe</string>
     <string name="pref_pie_color_reset_title">Színek visszaállítása</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Ismeretlen hívó fotó engedélyezése</string>
-    <string name="pref_caller_unknown_photo_title">Ismeretlen hívó fotó beállítása</string>
-    <string name="caller_unknown_photo_result_successful">Fotó megváltoztatva</string>
-    <string name="caller_unkown_photo_result_not_successful">Fotó nincs megváltoztatva</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Lehetséges, hogy a képernyő nem támogatja a 20 alatt beállított értéket. Ha a képernyő nem világít, 
     tartsa  nyomva a hangerő + gombot legalább 7 másodpercig a fényerő beállítások alaphelyzetbe állításához, és utána állítsa be a fényerőt magasabb értékre.</string>
@@ -591,10 +583,6 @@
     <string name="screenrecord_toast_processing">Nem kezdhető új felvétel, amíg az előző rögzítés feldolgozás alatt van</string>
     <string name="screenrecord_toast_saved">A rögzítés %s-ként elmentésre került</string>
     <string name="screenrecord_toast_save_error">Nem lehetséges a felvétel elmentése kimeneti fájlba</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Tárcsázó gombok automatikus megjelenítése</string>
-    <string name="pref_dialer_show_dialpad_summary">Automatikusan megjeleníti a tárcsázó gombokat a tárcsázó alkalmazás megnyitásakor</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Indító módosítások</string>
@@ -1666,9 +1654,6 @@
     <string name="pref_force_aosp_summary">Rendszer kezelése AOSP-ként. 
         Akkor használd, ha az eszközöd rendszere gyártóiként került azonosításra annak ellenére, hogy valójában alternatív AOSP-alapú rendszer (újraindítás szükséges)</string>
 
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Tárcsázó</string>
-	
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Fényerő ikon megjelenítése</string>
     <string name="pref_qs_brightness_icon_summary">Megjeleníti az aktuális fényerő módra vonatkozó ikont. Ki-bekapcsolja az adaptív fényerőt egyszeri érintésre, megnyitja a képernyő beállításait hosszú érintésre.</string>

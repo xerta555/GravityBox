@@ -166,10 +166,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String EXTRA_IME_FULLSCREEN_DISABLE = "imeFullscreenDisable";
 
     public static final String PREF_CAT_KEY_PHONE = "pref_cat_phone";
-    public static final String PREF_KEY_CALLER_FULLSCREEN_PHOTO = "pref_caller_fullscreen_photo3";
-    public static final String PREF_KEY_CALLER_UNKNOWN_PHOTO_ENABLE = "pref_caller_unknown_photo_enable";
-    public static final String PREF_KEY_CALLER_UNKNOWN_PHOTO = "pref_caller_unknown_photo";
-    public static final String PREF_KEY_DIALER_SHOW_DIALPAD = "pref_dialer_show_dialpad";
     public static final String PREF_KEY_NATIONAL_ROAMING = "pref_national_roaming";
     public static final String PREF_CAT_KEY_STATUSBAR = "pref_cat_statusbar";
     public static final String PREF_CAT_KEY_STATUSBAR_QS = "pref_cat_statusbar_qs";
@@ -587,7 +583,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String EXTRA_SB_MAX_NOTIF_ICONS = "maxNotifIcons";
 
     public static final String PREF_CAT_KEY_PHONE_TELEPHONY = "pref_cat_phone_telephony";
-    public static final String PREF_CAT_KEY_PHONE_DIALER = "pref_cat_phone_dialer";
     public static final String PREF_CAT_KEY_PHONE_MOBILE_DATA = "pref_cat_phone_mobile_data";
 
     public static final String PREF_KEY_RINGER_MODE_TILE_MODE = "pref_qs_ringer_mode3";
@@ -850,7 +845,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String EXTRA_OP_SCREEN_REFRESH_RATE_FULL90 = "opScreenRefreshRateFull90";
 
     private static final int REQ_LOCKSCREEN_BACKGROUND = 1024;
-    private static final int REQ_CALLER_PHOTO = 1027;
     private static final int REQ_OBTAIN_SHORTCUT = 1028;
     private static final int REQ_ICON_PICK = 1029;
 
@@ -1286,7 +1280,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
         private CheckBoxPreference mPrefMusicVolumeSteps;
         private SeekBarPreference mPrefMusicVolumeStepsValue;
         private PreferenceCategory mPrefCatPhoneTelephony;
-        private PreferenceCategory mPrefCatPhoneDialer;
         private ListPreference mPrefQsNetworkModeSimSlot;
         private CheckBoxPreference mPrefUnplugTurnsOnScreen;
         private MultiSelectListPreference mPrefCallVibrations;
@@ -1310,9 +1303,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
         private ListPreference mPrefLinkRingerSystemVolumes;
         private PreferenceScreen mPrefCatAppLauncher;
         private AppPickerPreference[] mPrefAppLauncherSlot;
-        private File callerPhotoFile;
-        private CheckBoxPreference mPrefCallerUnknownPhotoEnable;
-        private Preference mPrefCallerUnknownPhoto;
         private ListPreference mPrefHwKeyLockscreenTorch;
         private PreferenceCategory mPrefCatHwKeyOthers;
         private PreferenceCategory mPrefCatLsOther;
@@ -1421,8 +1411,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             mPrefLockscreenCarrierText = 
                     (EditTextPreference) findPreference(PREF_KEY_LOCKSCREEN_CARRIER_TEXT);
 
-            wallpaperImage = new File(Utils.getFilesDir(getActivity()) + "/lockwallpaper"); 
-            callerPhotoFile = new File(Utils.getFilesDir(getActivity()) + "/caller_photo");
+            wallpaperImage = new File(Utils.getFilesDir(getActivity()) + "/lockwallpaper");
 
             mPrefHwKeyMenuSingletap = (ListPreference) findPreference(PREF_KEY_HWKEY_MENU_SINGLETAP);
             mPrefHwKeyMenuLongpress = (ListPreference) findPreference(PREF_KEY_HWKEY_MENU_LONGPRESS);
@@ -1512,10 +1501,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             mPrefNavbarCustomKeyDoubletap = (ListPreference) findPreference(PREF_KEY_NAVBAR_CUSTOM_KEY_DOUBLETAP);
 
             mPrefCatPhoneTelephony = (PreferenceCategory) findPreference(PREF_CAT_KEY_PHONE_TELEPHONY);
-            mPrefCatPhoneDialer = (PreferenceCategory) findPreference(PREF_CAT_KEY_PHONE_DIALER);
             mPrefCallVibrations = (MultiSelectListPreference) findPreference(PREF_KEY_CALL_VIBRATIONS);
-            mPrefCallerUnknownPhotoEnable = (CheckBoxPreference) findPreference(PREF_KEY_CALLER_UNKNOWN_PHOTO_ENABLE);
-            mPrefCallerUnknownPhoto = findPreference(PREF_KEY_CALLER_UNKNOWN_PHOTO);
 
             mPrefQsNetworkModeSimSlot = (ListPreference) findPreference(PREF_KEY_QS_NETWORK_MODE_SIM_SLOT);
             //mPrefQsTileLabelStyle = (ListPreference) findPreference(PREF_KEY_QUICK_SETTINGS_TILE_LABEL_STYLE);
@@ -1660,23 +1646,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             Preference pb = findPreference(PREF_CAT_KEY_BRIGHTNESS);
             if (pb != null) mPrefCatDisplay.removePreference(pb);
 
-            // remove Dialer features if Dialer package unavailable
-            PackageInfo pi = null;
-            for (String pkg : ModDialer26.PACKAGE_NAMES) {
-                pi = Utils.getPackageInfo(getActivity(), pkg);
-                if (pi != null && pi.applicationInfo.targetSdkVersion < 28) break;
-                pi = null;
-            }
-            if (pi == null) {
-                mPrefCatPhone.removePreference(mPrefCatPhoneDialer);
-            } else {
-                // always remove these no longer supported features
-                Preference p = findPreference(PREF_KEY_CALLER_FULLSCREEN_PHOTO);
-                if (p != null) mPrefCatPhoneDialer.removePreference(p);
-                mPrefCatPhoneDialer.removePreference(mPrefCallerUnknownPhotoEnable);
-                mPrefCatPhoneDialer.removePreference(mPrefCallerUnknownPhoto);
-            }
-
             // Remove MTK specific preferences for non-MTK devices
             if (!Utils.isMtkDevice()) {
                 mPrefCatStatusbar.removePreference(mPrefDisableRoamingIndicators);
@@ -1713,7 +1682,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 if (p != null) mPrefCatLsOther.removePreference(p);
                 p = findPreference(PREF_CAT_KEY_BATTERY_TILE);
                 if (p != null) mPrefCatQsTileSettings.removePreference(p);
-                mPrefCatPhone.removePreference(mPrefCatPhoneDialer);
                 p = findPreference(PREF_KEY_STATUSBAR_HIDE_VIBRATE_ICON);
                 if (p != null) mPrefCatStatusbar.removePreference(p);
             } else {
@@ -2219,10 +2187,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
 
             if (key == null || key.equals(PREF_KEY_PIE_CONTROL_CUSTOM_KEY)) {
                 mPrefPieCustomKey.setSummary(mPrefPieCustomKey.getEntry());
-            }
-
-            if (key == null || key.equals(PREF_KEY_CALLER_UNKNOWN_PHOTO_ENABLE)) {
-                mPrefCallerUnknownPhoto.setEnabled(mPrefCallerUnknownPhotoEnable.isChecked());
             }
 
             if (key == null || key.equals(PREF_KEY_HWKEY_LOCKSCREEN_TORCH)) {
@@ -3504,9 +3468,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 pieIntent.putExtra(EXTRA_PIE_COLOR_SELECTED, selectedColor);
                 pieIntent.putExtra(EXTRA_PIE_COLOR_TEXT, textColor);
                 getActivity().sendBroadcast(pieIntent);
-            } else if (pref == mPrefCallerUnknownPhoto) {
-                setCustomCallerImage();
-                return true;
             } else if (PREF_CAT_HWKEY_ACTIONS.equals(pref.getKey()) &&
                     !mPrefs.getBoolean(PREF_KEY_NAVBAR_OVERRIDE, false) &&
                     !mPrefs.getBoolean("hw_keys_navbar_warning_shown", false)) {
@@ -3631,20 +3592,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             getActivity().startActivityFromFragment(this, intent, REQ_LOCKSCREEN_BACKGROUND);
         }
 
-        private void setCustomCallerImage() {
-            int width = getResources().getDimensionPixelSize(R.dimen.caller_id_photo_width);
-            int height = getResources().getDimensionPixelSize(R.dimen.caller_id_photo_height);
-            Intent intent = new Intent(getActivity(), PickImageActivity.class);
-            intent.putExtra(PickImageActivity.EXTRA_CROP_MODE, "CROP");
-            boolean isPortrait = getResources()
-                    .getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-            intent.putExtra(PickImageActivity.EXTRA_ASPECT_X, isPortrait ? width : height);
-            intent.putExtra(PickImageActivity.EXTRA_ASPECT_Y, isPortrait ? height : width);
-            intent.putExtra(PickImageActivity.EXTRA_OUTPUT_X, isPortrait ? width : height);
-            intent.putExtra(PickImageActivity.EXTRA_OUTPUT_Y, isPortrait ? height : width);
-            startActivityForResult(intent, REQ_CALLER_PHOTO);
-        }
-
         private void setNavbarCustomKeyImage() {
             int width = getResources().getDimensionPixelSize(R.dimen.navbar_custom_key_image_width);
             int height = getResources().getDimensionPixelSize(R.dimen.navbar_custom_key_image_height);
@@ -3737,21 +3684,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 }
                 Intent intent = new Intent(ACTION_PREF_LOCKSCREEN_BG_CHANGED);
                 getActivity().sendBroadcast(intent);
-            } else if (requestCode == REQ_CALLER_PHOTO) {
-                if (resultCode == Activity.RESULT_OK) {
-                    File f = new File(data.getStringExtra(PickImageActivity.EXTRA_FILE_PATH));
-                    if (f.exists()) {
-                        f.renameTo(callerPhotoFile);
-                    }
-                    callerPhotoFile.setReadable(true, false);
-                    Toast.makeText(getActivity(), getString(
-                            R.string.caller_unknown_photo_result_successful), 
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getActivity(), getString(
-                            R.string.caller_unkown_photo_result_not_successful),
-                            Toast.LENGTH_SHORT).show();
-                }
             } else if (requestCode == REQ_OBTAIN_SHORTCUT && mShortcutHandler != null) {
                 if (resultCode == Activity.RESULT_OK) {
                     String localIconResName = null;

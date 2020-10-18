@@ -46,8 +46,6 @@
 
     <string name="important">Importante</string>
 
-    <string name="caller_fullscreen_photo_title">Foto chiamante a schermo intero</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Sincronizzazione attiva</string>
     <string name="quick_settings_sync_off">Sincronizzazione disattivata</string>
@@ -529,12 +527,6 @@
     <string name="pref_pie_color_text_title">Colore del testo</string>
     <string name="pref_pie_color_reset_title">Reimposta colori</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Abilita foto per chiamante sconosciuto</string>
-    <string name="pref_caller_unknown_photo_title">Imposta foto per il chiamante sconosciuto</string>
-    <string name="caller_unknown_photo_result_successful">Foto impostata</string>
-    <string name="caller_unkown_photo_result_not_successful">Foto non impostata</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Il tuo schermo potrebbe non supportare valori inferiori a 20. Se il tuo schermo non si accende, 
         tieni premuto il tasto Volume su per almeno 7 secondi per resettare la luminosità e poi imposta un valore più alto.</string>
@@ -595,10 +587,6 @@
     <string name="screenrecord_toast_processing">Non è possibile iniziare una nuova registrazione mentre la precedente viene elaborata</string>
     <string name="screenrecord_toast_saved">Registrazione salvata sul file %s</string>
     <string name="screenrecord_toast_save_error">Impossibile salvare la registrazione</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Mostra automaticamente tastierino numerico</string>
-    <string name="pref_dialer_show_dialpad_summary">Mostra il tastierino numerico in automatico non appena si accede all\'app telefono</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Launcher</string>
@@ -1704,9 +1692,6 @@
     <string name="pref_force_aosp_summary">Tratta il sistema come AOSP.
          Abilita questa opzione nel caso in cui GravityBox rilevi erroneamente un sistema brandizzato sul dispositivo, 
          mentre in realtà è presente un sistema alternativo basato su AOSP (richiede il riavvio)</string>
-
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Dialer</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Mostra l\'icona della luminosità</string>

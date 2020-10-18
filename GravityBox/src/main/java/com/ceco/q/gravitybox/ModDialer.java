@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2020 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,11 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.q.gravitybox;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -24,22 +22,38 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.ceco.q.gravitybox.ledcontrol.QuietHours;
+import com.ceco.q.gravitybox.ledcontrol.QuietHoursActivity;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-public class ModDialer26 {
-    private static final String TAG = "GB:ModDialer26";
+public class ModDialer {
+    private static final String TAG = "GB:ModDialer";
     public static final List<String> PACKAGE_NAMES = new ArrayList<>(Arrays.asList(
             "com.google.android.dialer", "com.android.dialer"));
 
-    private static final String CLASS_DIALTACTS_ACTIVITY = "com.android.dialer.app.DialtactsActivity";
     private static final boolean DEBUG = false;
 
     private static QuietHours mQuietHours;
+
+    private static final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(QuietHoursActivity.ACTION_QUIET_HOURS_CHANGED)) {
+                mQuietHours = new QuietHours(intent.getExtras());
+                if (DEBUG) log("QuietHours updated");
+            }
+        }
+    };
 
     private static void log(String message) {
         XposedBridge.log(TAG + ": " + message);
@@ -48,20 +62,21 @@ public class ModDialer26 {
     static class ClassInfo {
         Class<?> clazz;
         Map<String,String> methods;
-        Object extra;
         ClassInfo(Class<?> cls) {
             clazz = cls;
             methods = new HashMap<>();
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static ClassInfo resolveDialpadFragment(ClassLoader cl) {
         ClassInfo info = null;
         String[] CLASS_NAMES = new String[] {
                 "com.android.dialer.app.dialpad.DialpadFragment",
-                "com.android.dialer.dialpadview.DialpadFragment"
+                "com.android.dialer.dialpadview.DialpadFragment",
+                "dyv"
         };
-        String[] METHOD_NAMES = new String[] { "onResume", "playTone" };
+        String[] METHOD_NAMES = new String[] { "onResume", "playTone", "onPause" };
         for (String className : CLASS_NAMES) {
             Class<?> clazz = XposedHelpers.findClassIfExists(className, cl);
             if (clazz == null || !Fragment.class.isAssignableFrom(clazz))
@@ -69,7 +84,7 @@ public class ModDialer26 {
             info = new ClassInfo(clazz);
             for (String methodName : METHOD_NAMES) {
                 Method m = null;
-                if (methodName.equals("onResume")) {
+                if (methodName.equals("onResume") || methodName.equals("onPause")) {
                     m = XposedHelpers.findMethodExactIfExists(clazz, methodName);
                 } else if (methodName.equals("playTone")) {
                     for (String realMethodName : new String[] { methodName, "a" }) {
@@ -88,51 +103,10 @@ public class ModDialer26 {
 
     public static void init(final XSharedPreferences prefs, final XSharedPreferences qhPrefs,
             final ClassLoader classLoader, final String packageName, int sdkVersion) {
-        if (sdkVersion < 28) {
-            try {
-                XposedHelpers.findAndHookMethod(CLASS_DIALTACTS_ACTIVITY, classLoader, 
-                        "onResume", new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        prefs.reload();
-                        if (!prefs.getBoolean(GravityBoxSettings.PREF_KEY_DIALER_SHOW_DIALPAD, false)) return;
-    
-                        final String realClassName = param.thisObject.getClass().getName();
-                        if (DEBUG) {
-                            log("DTActivity: realClassName=" + realClassName);
-                            for (Method m : param.thisObject.getClass().getDeclaredMethods()) {
-                                String buf = m.getName() + "(";
-                                for (Parameter p : m.getParameters()) {
-                                    buf += "," + p.getType();
-                                }
-                                buf += ")";
-                                log(buf);
-                            }
-                        }
-                        Method m = null;
-                        for (String mn : new String[] { "showDialpadFragment", "f" }) {
-                            if (realClassName.equals(CLASS_DIALTACTS_ACTIVITY)) {
-                                m = XposedHelpers.findMethodExactIfExists(
-                                        param.thisObject.getClass(), mn, boolean.class);
-                            } else if (param.thisObject.getClass().getSuperclass() != null &&
-                                    param.thisObject.getClass().getSuperclass().getName().equals(
-                                            CLASS_DIALTACTS_ACTIVITY)) {
-                                m = XposedHelpers.findMethodExactIfExists(
-                                        param.thisObject.getClass().getSuperclass(), mn, boolean.class);
-                            }
-                            if (m != null) break;
-                        }
-                        if (m == null) {
-                            GravityBox.log(TAG, "DialtactsActivity: couldn't identify showDialpadFragment method");
-                        } else {
-                            m.invoke(param.thisObject, false);
-                            if (DEBUG) log("showDialpadFragment() called within " + realClassName);
-                        }
-                    }
-                });
-            } catch (Throwable t) {
-                GravityBox.log(TAG, "DialtactsActivity: incompatible version of Dialer app", t);
-            }
+
+        if (sdkVersion < 29) {
+            log("SDK of Dialer app too old: " + sdkVersion);
+            return;
         }
 
         try {
@@ -140,10 +114,17 @@ public class ModDialer26 {
 
             XposedHelpers.findAndHookMethod(classInfoDialpadFragment.clazz,
                     classInfoDialpadFragment.methods.get("onResume"), new XC_MethodHook() {
+                @SuppressWarnings("deprecation")
                 @Override
-                protected void afterHookedMethod(MethodHookParam param2) {
-                    qhPrefs.reload();
-                    mQuietHours = new QuietHours(qhPrefs);
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (DEBUG) log("DialpadFragment: onResume");
+                    Context ctx = ((android.app.Fragment) param.thisObject).getContext();
+                    ctx.registerReceiver(mBroadcastReceiver,
+                            new IntentFilter(QuietHoursActivity.ACTION_QUIET_HOURS_CHANGED));
+                    Intent i = new Intent(QuietHoursActivity.ACTION_QUIET_HOURS_CHANGED);
+                    i.setComponent(new ComponentName(GravityBox.PACKAGE_NAME,
+                            GravityBoxService.class.getName()));
+                    ctx.startService(i);
                 }
             });
 
@@ -152,9 +133,21 @@ public class ModDialer26 {
                     int.class, int.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) {
-                    if (mQuietHours.isSystemSoundMuted(QuietHours.SystemSound.DIALPAD)) {
+                    if (mQuietHours != null &&
+                            mQuietHours.isSystemSoundMuted(QuietHours.SystemSound.DIALPAD)) {
                         param.setResult(null);
                     }
+                }
+            });
+
+            XposedHelpers.findAndHookMethod(classInfoDialpadFragment.clazz,
+                    classInfoDialpadFragment.methods.get("onPause"), new XC_MethodHook() {
+                @SuppressWarnings("deprecation")
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) {
+                    if (DEBUG) log("DialpadFragment: onPause");
+                    Context ctx = ((android.app.Fragment) param.thisObject).getContext();
+                    ctx.unregisterReceiver(mBroadcastReceiver);
                 }
             });
         } catch (Throwable t) {

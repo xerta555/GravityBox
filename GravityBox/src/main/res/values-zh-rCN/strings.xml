@@ -48,8 +48,6 @@
 
     <string name="important">重要</string>
 
-    <string name="caller_fullscreen_photo_title">全屏来电者照片</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">同步已开启</string>
     <string name="quick_settings_sync_off">同步已关闭</string>
@@ -531,12 +529,6 @@
     <string name="pref_pie_color_text_title">文字颜色</string>
     <string name="pref_pie_color_reset_title">重设颜色</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">开启未知来电者照片</string>
-    <string name="pref_caller_unknown_photo_title">设置未知来电照片</string>
-    <string name="caller_unknown_photo_result_successful">照片已更改</string>
-    <string name="caller_unkown_photo_result_not_successful">照片未更改</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">您的屏幕可能不支持低于 20 的值。如果屏幕无法点亮,请按住“音量+”键 7 秒以上来还原亮度,然后将最小亮度调整为更大的值</string>
     
@@ -597,10 +589,6 @@
     <string name="screenrecord_toast_processing">无法开始新的录制,之前的录制仍在处理中</string>
     <string name="screenrecord_toast_saved">录制文件已保存到 %s</string>
     <string name="screenrecord_toast_save_error">无法保存录制文件</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">自动显示拨号盘</string>
-    <string name="pref_dialer_show_dialpad_summary">打开拨号程序时自动显示拨号盘</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">桌面调整</string>
@@ -1707,9 +1695,6 @@
     <string name="pref_force_aosp_summary">将系统视为 AOSP
         在您的设备被识别为运行品牌系统的情况下使用
 	尽管它实际上运行的是基于 AOSP 修改的系统 (需要重启)</string>
-
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">拨号器</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">显示亮度图标</string>

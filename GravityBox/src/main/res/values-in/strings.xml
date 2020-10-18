@@ -44,8 +44,6 @@
 
     <string name="important">Penting</string>
 
-    <string name="caller_fullscreen_photo_title">Foto pemanggil fullscreen</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Sinkron hidup</string>
     <string name="quick_settings_sync_off">Sync Mati</string>
@@ -490,12 +488,6 @@
     <string name="pref_pie_color_selected_title">Warna tombol terpilih</string>
     <string name="pref_pie_color_text_title">Warna teks</string>
     <string name="pref_pie_color_reset_title">Reset warna</string>
-
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Hidupkan foto pemanggil tak dikenal</string>
-    <string name="pref_caller_unknown_photo_title">Tetapkan foto pemanggil tak dikenal</string>
-    <string name="caller_unknown_photo_result_successful">Foto diganti</string>
-    <string name="caller_unkown_photo_result_not_successful">Foto tidak diganti</string>
 
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Layar anda mungkin tidak mendukung nilai kurang dari 20. Jika layar anda tidak hidup,

@@ -30,8 +30,6 @@
 
     <string name="important">중요</string>
 
-    <string name="caller_fullscreen_photo_title">발신자 이미지 확대</string>
-
     <string name="quick_settings_sync_on">동기화 활성화</string>
     <string name="quick_settings_sync_off">동기화 비활성화</string>
     <string name="quick_settings_torch_on">손전등이 켜짐</string>
@@ -419,11 +417,6 @@
     <string name="pref_pie_color_text_title">글씨 색</string>
     <string name="pref_pie_color_reset_title">색깔 초기화</string>
 
-    <string name="pref_caller_unknown_photo_enable_title">알 수 없는 발신자 이미지</string>
-    <string name="pref_caller_unknown_photo_title">이미지 설정</string>
-    <string name="caller_unknown_photo_result_successful">이미지 변경 완료!</string>
-    <string name="caller_unkown_photo_result_not_successful">이미지 변경 실패</string>
-
     <string name="screen_brightness_min_warning">이 기기의 디스플레이가 20 이하의 밝기를 지원하지 않습니다. 만약 이 기기의 디스플레이가 켜지지 않으면,
         볼륨 상 키를 7초 이상 누르고 밝기 설정을 초기화 한 다음 최소값을 다시 맞춰 주시기 바랍니다.</string>
 
@@ -470,9 +463,6 @@
     <string name="screenrecord_toast_processing">이전 녹화가 처리 중이여서 새로 녹화를 할 수 없습니다. 잠시만 기다려 주세요.</string>
     <string name="screenrecord_toast_saved">화면 녹화 저장됨 : %s</string>
     <string name="screenrecord_toast_save_error">녹화된 파일을 저장 할 수 없습니다.</string>
-
-    <string name="pref_dialer_show_dialpad_title">다이얼패드 보이기</string>
-    <string name="pref_dialer_show_dialpad_summary">전화 앱을 실행하면 다이얼패드를 바로 보여지게 합니다.</string>
 
     <string name="pref_cat_launcher_tweaks_title">홈 런처 트윅</string>
     <string name="pref_cat_launcher_tweaks_summary">순정 AOSP 런처와 Google Now 런처의 설정을 수정합니다.</string>

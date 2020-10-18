@@ -42,8 +42,6 @@
 
     <string name="important">Important</string>
 
-    <string name="caller_fullscreen_photo_title">Imagine apelant pe tot ecranul</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Sincronizare activată</string>
     <string name="quick_settings_sync_off">Sincronizare dezactivată</string>
@@ -517,12 +515,6 @@
     <string name="pref_pie_color_text_title">Culoarea textului</string>
     <string name="pref_pie_color_reset_title">Resetați culorile</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Activați fotografia apelantului necunoscut</string>
-    <string name="pref_caller_unknown_photo_title">Setați o fotografie pentru apelantul necunoscut</string>
-    <string name="caller_unknown_photo_result_successful">Fotografia s-a schimbat</string>
-    <string name="caller_unkown_photo_result_not_successful">Fotografia nu s-a schimbat</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Este posibil ca ecranul să nu aibă valori mai mici de 20. Dacă ecranul nu se aprinde, țineți apăsat tasta Volume+ timp de cel puțin 7 secunde pentru a reseta luminozitatea și apoi reglaţi luminozitatea minimă utilizând valori mai mari.</string>
 
@@ -580,10 +572,6 @@
     <string name="screenrecord_toast_processing">Nu se poate porni o înregistrarea nouă, deoarece înregistrarea anterioară este încă procesată</string>
     <string name="screenrecord_toast_saved">Înregistrarea a fost salvată ca %s</string>
     <string name="screenrecord_toast_save_error">Imposibil de salvat înregistrarea în fișierul de ieșire</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Afișați automat tastatura</string>
-    <string name="pref_dialer_show_dialpad_summary">Afișează automat tastatura la deschiderea aplicației Telefon</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Setări lansator</string>
@@ -1641,9 +1629,6 @@
     <!-- Force AOSP -->
     <string name="pref_force_aosp_title">Forțare AOSP</string>
     <string name="pref_force_aosp_summary">Tratează sistemul ca AOSP. Utilizați în cazul în care dispozitivul dvs. este identificat ca fiind un sistem de marcă care rulează, în ciuda faptului că acesta rulează de fapt sistem alternativ bazat pe AOSP (necesită repornire)</string>
-
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Taste numerice</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Afișați pictograma luminozității</string>

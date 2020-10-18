@@ -45,8 +45,6 @@
 
     <string name="important">Важна</string>
 
-    <string name="caller_fullscreen_photo_title">Фота выкліку на ўвесь экран</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Сінхранізацыя ўключана</string>
     <string name="quick_settings_sync_off">Сінхранізацыя выключана</string>
@@ -520,12 +518,6 @@
     <string name="pref_pie_color_text_title">Колер тэксту</string>
     <string name="pref_pie_color_reset_title">Скінуць колеры</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Выява на кантакт без фота</string>
-    <string name="pref_caller_unknown_photo_title">Задаць выяву</string>
-    <string name="caller_unknown_photo_result_successful">Выява зменена</string>
-    <string name="caller_unkown_photo_result_not_successful">Выява не зменена</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Ваш экран можа не падтрымваць значэння менш 20. Калі Ваш экран не загараецца,
         зацісніце кнопку Гучнасць+ больш чым на 7 секундаў для скіду яскравасці і потым выпраўце значэнне яскравасці на большае.</string>
@@ -584,10 +576,6 @@
     <string name="screenrecord_toast_processing">Немагчыма пачаць новы запіс, бо ідзе апрацоўка папярэдняй</string>
     <string name="screenrecord_toast_saved">Запіс захаваны як %s</string>
     <string name="screenrecord_toast_save_error">Немагчыма захаваць запіс у выточны файл</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Паказаць панэль набору</string>
-    <string name="pref_dialer_show_dialpad_summary">Аўтаматычнае адлюстраванне панэлі набору нумара пры адкрыцці дадатку тэлефона</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Налады лончара</string>

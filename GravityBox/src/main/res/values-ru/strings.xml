@@ -46,8 +46,6 @@
 
     <string name="important">Важно</string>
 
-    <string name="caller_fullscreen_photo_title">Фото вызывающего на весь экран</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Синхр. вкл</string>
     <string name="quick_settings_sync_off">Синхр. выкл</string>
@@ -529,12 +527,6 @@
     <string name="pref_pie_color_text_title">Цвет текста</string>
     <string name="pref_pie_color_reset_title">Сбросить цвета</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Изображение на контакт без фото</string>
-    <string name="pref_caller_unknown_photo_title">Задать изображение</string>
-    <string name="caller_unknown_photo_result_successful">Изображение изменено</string>
-    <string name="caller_unkown_photo_result_not_successful">Изображение не изменено</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Ваш экран может не поддерживать значения меньше 20. Если Ваш экран не загорается,
         зажмите кнопку Громкость+ как минимум на 7 секунд для сброса яркости и затем исправьте значение яркости на большее.</string>
@@ -595,10 +587,6 @@
     <string name="screenrecord_toast_processing">Невозможно начать новую запись, так как идёт обработка предыдущей</string>
     <string name="screenrecord_toast_saved">Запись сохранена как %s</string>
     <string name="screenrecord_toast_save_error">Невозможно сохранить запись в исходный файл</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Показать панель набора</string>
-    <string name="pref_dialer_show_dialpad_summary">Автоматическое отображение панели набора номера при открытии приложения телефона</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Настройки лончера</string>
@@ -1704,9 +1692,6 @@
     <string name="pref_force_aosp_summary">Система будет восприниматься как AOSP. 
         Используйте, если система Вашего устройства идентифицируется как брендовая, хотя на самом
         деле она является альтернативной прошивкой на основе AOSP (необходима перезагрузка)</string>
-
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Набор номера</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Значок яркости</string>

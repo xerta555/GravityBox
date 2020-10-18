@@ -45,8 +45,6 @@
 
     <string name="important">Importante</string>
 
-    <string name="caller_fullscreen_photo_title">Foto del contacto que llama a pantalla completa</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Sincronización activada</string>
     <string name="quick_settings_sync_off">Sincronización</string>
@@ -521,12 +519,6 @@
     <string name="pref_pie_color_text_title">Color del texto</string>
     <string name="pref_pie_color_reset_title">Restablecer colores</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Habilitar foto para una llamada entrante desconocida</string>
-    <string name="pref_caller_unknown_photo_title">Establecer foto para una llamada entrante desconocida</string>
-    <string name="caller_unknown_photo_result_successful">Foto cambiada</string>
-    <string name="caller_unkown_photo_result_not_successful">Foto NO cambiada</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Tu pantalla podría no soportar valores menores que 20. Si tu pantalla no se enciende,
         mantén pulsado el botón Volumen+ durante al menos 7 segundos para restablecer el brillo y así ajustar el valor mínimo para usar valores mayores.</string>
@@ -585,10 +577,6 @@
     <string name="screenrecord_toast_processing">No se puede grabar aún porque la grabación anterior se está procesando</string>
     <string name="screenrecord_toast_saved">Grabación guardada como %s</string>
     <string name="screenrecord_toast_save_error">Imposible guardar grabación en el archivo de salida</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Mostrar teclado numérico automáticamente</string>
-    <string name="pref_dialer_show_dialpad_summary">Muestra el teclado automáticamente al abrir la aplicación Teléfono</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Ajustes del lanzador</string>
