@@ -16,6 +16,7 @@
 package com.ceco.q.gravitybox;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -807,50 +808,63 @@ public class ModLedControl {
                 }
             });
 
-            XposedHelpers.findAndHookMethod(CLASS_NOTIF_INTERRUPTION_STATE_PROVIDER, classLoader,
-                    "canHeadsUpCommon", CLASS_NOTIF_DATA_ENTRY, new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) {
-                    StatusBarNotification sbn = (StatusBarNotification) XposedHelpers
-                            .getObjectField(param.args[0], "notification");
-                    Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
-                    Notification n = sbn.getNotification();
-                    int statusBarWindowState = XposedHelpers.getIntField(mStatusBar, "mStatusBarWindowState");
+            Method mtdCanAlertCommon = XposedHelpers.findMethodExactIfExists(
+                    CLASS_NOTIF_INTERRUPTION_STATE_PROVIDER,
+                    classLoader, "canHeadsUpCommon", CLASS_NOTIF_DATA_ENTRY);
+            if (mtdCanAlertCommon == null) {
+                mtdCanAlertCommon = XposedHelpers.findMethodExactIfExists(
+                        CLASS_NOTIF_INTERRUPTION_STATE_PROVIDER,
+                        classLoader, "canAlertCommon", CLASS_NOTIF_DATA_ENTRY);
+            }
 
-                    boolean showHeadsUp = false;
+            if (mtdCanAlertCommon != null) {
+                XposedBridge.hookMethod(mtdCanAlertCommon, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        StatusBarNotification sbn = (StatusBarNotification) XposedHelpers
+                                .getObjectField(param.args[0], "notification");
+                        Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+                        Notification n = sbn.getNotification();
+                        int statusBarWindowState = XposedHelpers.getIntField(mStatusBar, "mStatusBarWindowState");
 
-                    // no heads up if app with DND enabled is in the foreground
-                    if (shouldNotDisturb(context)) {
-                        if (DEBUG) log("shouldInterrupt: NO due to DND app in the foreground");
-                        showHeadsUp = false;
-                    // get desired mode set by UNC or use default
-                    } else {
-                        HeadsUpMode mode = n.extras.containsKey(NOTIF_EXTRA_HEADS_UP_MODE) ?
-                                HeadsUpMode.valueOf(n.extras.getString(NOTIF_EXTRA_HEADS_UP_MODE)) :
+                        boolean showHeadsUp = false;
+
+                        // no heads up if app with DND enabled is in the foreground
+                        if (shouldNotDisturb(context)) {
+                            if (DEBUG)
+                                log("shouldInterrupt: NO due to DND app in the foreground");
+                            showHeadsUp = false;
+                            // get desired mode set by UNC or use default
+                        } else {
+                            HeadsUpMode mode = n.extras.containsKey(NOTIF_EXTRA_HEADS_UP_MODE) ?
+                                    HeadsUpMode.valueOf(n.extras.getString(NOTIF_EXTRA_HEADS_UP_MODE)) :
                                     HeadsUpMode.DEFAULT;
-                        if (DEBUG) log("Heads up mode: " + mode.toString());
-    
-                        switch (mode) {
-                            default:
-                            case DEFAULT:
-                                showHeadsUp = (Boolean) param.getResult();
-                                break;
-                            case ALWAYS: 
-                                showHeadsUp = isHeadsUpAllowed(param.args[0], sbn, context);
-                                break;
-                            case OFF: 
-                                showHeadsUp = false; 
-                                break;
-                            case IMMERSIVE:
-                                showHeadsUp = isStatusBarHidden(statusBarWindowState) &&
-                                                isHeadsUpAllowed(param.args[0], sbn, context);
-                                break;
-                        }
-                    }
+                            if (DEBUG) log("Heads up mode: " + mode.toString());
 
-                    param.setResult(showHeadsUp);
-                }
-            });
+                            switch (mode) {
+                                default:
+                                case DEFAULT:
+                                    showHeadsUp = (Boolean) param.getResult();
+                                    break;
+                                case ALWAYS:
+                                    showHeadsUp = isHeadsUpAllowed(param.args[0], sbn, context);
+                                    break;
+                                case OFF:
+                                    showHeadsUp = false;
+                                    break;
+                                case IMMERSIVE:
+                                    showHeadsUp = isStatusBarHidden(statusBarWindowState) &&
+                                            isHeadsUpAllowed(param.args[0], sbn, context);
+                                    break;
+                            }
+                        }
+
+                        param.setResult(showHeadsUp);
+                    }
+                });
+            } else {
+                GravityBox.log(TAG, "Could not find canHeadsUpCommon nor canAlertCommon method");
+            }
 
             XposedHelpers.findAndHookMethod(CLASS_ALERT_ENTRY, classLoader, "updateEntry",
                     boolean.class, new XC_MethodHook() {
