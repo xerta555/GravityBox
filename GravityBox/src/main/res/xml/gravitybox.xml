@@ -1793,32 +1793,6 @@
 
         </PreferenceCategory>
 
-        <PreferenceCategory
-            android:key="pref_cat_phone_dialer"
-            android:title="@string/pref_cat_phone_dialer_title">
-
-            <CheckBoxPreference 
-                android:key="pref_caller_fullscreen_photo3"
-                android:title="@string/caller_fullscreen_photo_title"
-                android:defaultValue="false" />
-
-            <CheckBoxPreference 
-                android:key="pref_caller_unknown_photo_enable"
-                android:title="@string/pref_caller_unknown_photo_enable_title"
-                android:defaultValue="false" />
-
-            <Preference
-                android:key="pref_caller_unknown_photo"
-                android:title="@string/pref_caller_unknown_photo_title" />
-
-            <CheckBoxPreference 
-                android:key="pref_dialer_show_dialpad"
-                android:title="@string/pref_dialer_show_dialpad_title"
-                android:summary="@string/pref_dialer_show_dialpad_summary"
-                android:defaultValue="false" />
-
-        </PreferenceCategory>
-
         <PreferenceCategory 
             android:key="pref_cat_phone_mobile_data"
             android:title="@string/pref_cat_phone_mobile_data_title">

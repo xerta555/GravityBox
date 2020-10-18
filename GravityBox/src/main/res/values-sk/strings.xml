@@ -29,8 +29,6 @@
 
     <string name="important">Dôležité</string>
 
-    <string name="caller_fullscreen_photo_title">Foto volajúceho na celú obrazovku</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Synch zap</string>
     <string name="quick_settings_sync_off">Synch vyp</string>
@@ -509,12 +507,6 @@
     <string name="pref_pie_color_text_title">Farba textu</string>
     <string name="pref_pie_color_reset_title">Resetovať farby</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Povoliť foto neznámeho čísla</string>
-    <string name="pref_caller_unknown_photo_title">Nastaviť foto neznámeho čísla</string>
-    <string name="caller_unknown_photo_result_successful">Foto nastavené</string>
-    <string name="caller_unkown_photo_result_not_successful">Foto nebolo nastavené</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Vaša obrazovka nemusí podporovať hodnoty jasu nižšie ako 20. Ak sa obrazovka nerozsvieti,
         držte tlačidlo Hlasitosť+ po dobu 7 sekúnd pre rozsvietenie obrazovky. Následne zmeňte nastavenie minimálneho jasu na vyššiu hodnotu.</string>
@@ -577,10 +569,6 @@
     <string name="screenrecord_toast_save_error">Nie je možné uložiť záznam do výstupného súboru</string>
     <string name="action_screenrecord">Záznam obrazovky</string>
     <string name="pref_powermenu_screenrecord_title">Záznam obrazovky v ponuke napájania</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Zobraziť ciferník automaticky</string>
-    <string name="pref_dialer_show_dialpad_summary">Zobrazí ciferník automaticky po otvorení aplikácie hovorov</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Nastavenia spúšťača</string>
@@ -1659,9 +1647,6 @@
     <string name="pref_force_aosp_summary">Považuje systém za AOSP. 
         Použite v prípade ak GravityBox identifikuje systém s nadstavbou výrobcu 
         aj napriek tomu, že v skutočnosti je AOSP.</string>
-
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Dialer</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Zobraziť ikonu jasu</string>

@@ -45,8 +45,6 @@
     <string name="vol_key_cursor_control_on_reverse">Ses yukarı/aşağı tuşu imleci sağa/sola taşır</string>
     <string name="important">Önemli</string>
 
-    <string name="caller_fullscreen_photo_title">Tam ekran arayan fotoğrafı</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Senk Açık</string>
     <string name="quick_settings_sync_off">Senk Kapalı</string>
@@ -529,12 +527,6 @@
     <string name="pref_pie_color_text_title">Yazı rengi</string>
     <string name="pref_pie_color_reset_title">Renkleri sıfırla</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Bilinmeyen arayan fotoğrafını etkinleştir</string>
-    <string name="pref_caller_unknown_photo_title">Bilinmeyen arayan fotoğrafını ayarla</string>
-    <string name="caller_unknown_photo_result_successful">Fotoğraf değiştirildi</string>
-    <string name="caller_unkown_photo_result_not_successful">Fotoğraf değiştirilmedi</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">"Ekranınız 20'den aşağı değerleri desteklemiyor olabilir. Eğer ekranınız açılmazsa, parlaklığı sıfırlamak için ses açma tuşuna en az 7 saniye boyunca basılı tutun ve minimum değerleri tekrardan ayarlayın."</string>
 
@@ -594,10 +586,6 @@
     <string name="screenrecord_toast_save_error">Kayıt çıkış dosyasına yazılamıyor</string>
     <string name="action_screenrecord">Ekran kaydı</string>
     <string name="pref_powermenu_screenrecord_title">Güç menüsünde ekran kaydı</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Tuş takımını otomatik göster</string>
-    <string name="pref_dialer_show_dialpad_summary">Arama uygulaması açıldığında otomatik olarak tuş takımını gösterir</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Başlatıcı iyileştirmeleri</string>
@@ -1679,9 +1667,6 @@ Devam ederseniz, kendi sorumluluğunuz altındadır ve herhangi bir destek bekle
     <!-- Force AOSP -->
     <string name="pref_force_aosp_title">"AOSP'yi zorla"</string>
     <string name="pref_force_aosp_summary">Sistem, AOSP gibi davranır. Cihazınızın alternatif AOSP-tabanlı bir sistem çalıştırmasına rağmen markalı sistem çalıştırıyor gibi tanımlanması durumunda kullanın (yeniden başlatma gerektirir)</string>
-
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Çevirici</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Parlaklık simgesini göster</string>

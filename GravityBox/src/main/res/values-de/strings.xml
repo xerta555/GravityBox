@@ -45,8 +45,6 @@
 
     <string name="important">Wichtig</string>
 
-    <string name="caller_fullscreen_photo_title">Anruferfoto im Vollbild</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Sync an</string>
     <string name="quick_settings_sync_off">Sync aus</string>
@@ -525,12 +523,6 @@
     <string name="pref_pie_color_text_title">Textfarbe</string>
     <string name="pref_pie_color_reset_title">Farben zurücksetzen</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Bild für unbekannte Anrufer aktivieren</string>
-    <string name="pref_caller_unknown_photo_title">Bild unbekannter Anrufer festlegen</string>
-    <string name="caller_unknown_photo_result_successful">Bild wurde geändert</string>
-    <string name="caller_unkown_photo_result_not_successful">Bild wurde nicht geändert</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Ihr Bildschirm unterstützt eventuell keine Werte unter 20. Falls Ihr Bildschirm nicht aufleuchtet, halten Sie die Lauter-Taste für mindestens 7 Sekunden gedrückt, um die Helligkeit zurückzusetzen. Wählen Sie dann einen höheren Wert für die minimale Helligkeit.</string>
 
@@ -590,10 +582,6 @@
     <string name="screenrecord_toast_save_error">Kann Aufnahme nicht speichern</string>
     <string name="action_screenrecord">Bildschirmaufnahme</string>
     <string name="pref_powermenu_screenrecord_title">Bildschirmaufnahme im Ausschaltmenü</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Wählfeld anzeigen</string>
-    <string name="pref_dialer_show_dialpad_summary">Wählfeld beim Öffnen des Dialers sofort anzeigen</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Launcher anpassen</string>
@@ -1673,9 +1661,6 @@
     <string name="pref_force_aosp_title">Erzwinge AOSP</string>
     <string name="pref_force_aosp_summary">Behandle System als AOSP. 
         Dies auswählen, wenn Ihr Gerät als ein angepasstes System erkannt wird, obwohl es mit einem alternativen AOSP-basierten System läuft (Neustart erforderlich)</string>
-
-        <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Dialer</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Zeige Helligkeitssymbol</string>

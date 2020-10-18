@@ -44,8 +44,6 @@
 
     <string name="important">Important</string>
 
-    <string name="caller_fullscreen_photo_title">صورة المتصل بكامل الشاشة</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">تشغيل المزامنة</string>
     <string name="quick_settings_sync_off">اطفاء المزامنة</string>

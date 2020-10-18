@@ -49,8 +49,6 @@
 
     <string name="important">Σημαντικό</string>
 
-    <string name="caller_fullscreen_photo_title">Εικόνα καλούντος σε πλήρη οθόνη</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Συγχρονισμος Ενεργος</string>
     <string name="quick_settings_sync_off">Συγχρονισμος Ανενεργος</string>
@@ -513,12 +511,6 @@
     <string name="pref_pie_color_text_title">Χρώμα κειμένου</string>
     <string name="pref_pie_color_reset_title">Επαναφορά χρωμάτων</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Ενεργοποίηση εικόνας άγνωστου καλούντος</string>
-    <string name="pref_caller_unknown_photo_title">Ορισμός εικόνας άγνωστου καλούντος</string>
-    <string name="caller_unknown_photo_result_successful">Η εικόνα άλλαξε</string>
-    <string name="caller_unkown_photo_result_not_successful">Η εικόνα δεν άλλαξε</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Η οθόνη σας μπορεί να μην υποστηρίζει τιμές μικρότερες από 20. Αν η οθόνη δεν ανάβει,
         κρατείστε το Πάνω πλήκτρο έντασης για 7 δευτερόλεπτα για επαναφορά φωτεινότητας και αλλάξτε την ελάχιστη φωτεινότητα σε μεγαλύτερη τιμή.</string>
@@ -579,10 +571,6 @@
     <string name="screenrecord_toast_save_error">Αδυναμία αποθήκευσης εγγραφής στο αρχείο εξαγωγής</string>
     <string name="action_screenrecord">Εγγραφή οθόνης</string>
     <string name="pref_powermenu_screenrecord_title">Εγγραφή οθόνης στο μενού λειτουργίας</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Εμφάνιση πληκτρολογίου αυτόματα</string>
-    <string name="pref_dialer_show_dialpad_summary">Εμφανίζει το πληκτρολόγιο κλήσεων αυτόματα με το άνοιγμα της εφαρμογής κλήσεων</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Αρχική οθόνη</string>

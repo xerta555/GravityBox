@@ -45,8 +45,6 @@
 
     <string name="important">Quan trọng</string>
 
-    <string name="caller_fullscreen_photo_title">Ảnh người gọi toàn màn hình</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Đồng bộ Bật</string>
     <string name="quick_settings_sync_off">Đồng bộ Tắt</string>
@@ -527,12 +525,6 @@
     <string name="pref_pie_color_text_title">Màu chữ</string>
     <string name="pref_pie_color_reset_title">Đặt lại</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Cho phép ảnh người gọi của số chưa lưu</string>
-    <string name="pref_caller_unknown_photo_title">Đặt ảnh người gọi của số chưa lưu</string>
-    <string name="caller_unknown_photo_result_successful">Đã đổi ảnh</string>
-    <string name="caller_unkown_photo_result_not_successful">Chưa đổi được ảnh</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Màn hình của bạn có thể không hỗ trợ độ sáng thấp hơn 20. Nếu màn hình không sáng lên,
         giữ phím Tăng âm lượng trong ít nhất 7 giây để đặt lại độ sáng và sau đó chỉnh lại độ sáng tối thiểu sử dụng giá trị cao hơn.</string>
@@ -593,10 +585,6 @@
     <string name="screenrecord_toast_save_error">Không thể lưu</string>
     <string name="action_screenrecord">Quay phim màn hình</string>
     <string name="pref_powermenu_screenrecord_title">Quay phim MH trong menu phím nguồn</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Tự động hiện bàn quay số</string>
-    <string name="pref_dialer_show_dialpad_summary">Tự động hiện bàn quay số khi mở ứng dụng điện thoại</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Tỉnh chỉnh Launcher</string>

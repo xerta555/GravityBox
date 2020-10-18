@@ -22,7 +22,6 @@
 <string name="vol_key_cursor_control_on">دکمه بالا و پایین مکان‌نما را به چپ و راست حرکت میدهد</string>
 <string name="vol_key_cursor_control_on_reverse">دکمه بالا و پایین مکان‌نما را به راست و چپ حرکت میدهد</string>
 <string name="important">مهم</string>
-<string name="caller_fullscreen_photo_title">نمایش تمام‌صفحه تصویر تماس‌ گیرنده</string>
 <string name="quick_settings_sync_on">همگام‌سازی</string>
 <string name="quick_settings_sync_off">"همگام‌سازی "</string>
 <string name="quick_settings_torch_on">چراغ قوه</string>
@@ -341,10 +340,6 @@
 <string name="pref_pie_color_selected_title">رنگ کلید انتخاب شده</string>
 <string name="pref_pie_color_text_title">رنگ متن</string>
 <string name="pref_pie_color_reset_title">بازنشانی رنگ‌ها</string>
-<string name="pref_caller_unknown_photo_enable_title">فعالسازی تصویر تماس گیرنده ناشناس</string>
-<string name="pref_caller_unknown_photo_title">"تنظیم تصویر تماس گیرنده ناشناس "</string>
-<string name="caller_unknown_photo_result_successful">تصویر تغییر یافت</string>
-<string name="caller_unkown_photo_result_not_successful">تصویر تغییر نیافت</string>
 <string name="screen_brightness_min_warning">صفحه نمایش شما از مقدار کمتر از ۲۰ پشتیبانی نمی کند. اگر روشنایی صفحه نمایش شما کم است، دکمه حجم صدای + را برای ۷ ثانیه بفشارید و نگه بدارید تا مقیاس سطح روشنایی صفحه نمایش شما بازنشانی شود وپایین‌ترین حد روشنایی را بروی مقدار بیشتر تنظیم کنید</string>
 <string name="pref_cat_navbar_general_title">عمومی</string>
 <string name="pref_cat_navbar_keys_title">کلیدهای ناوبری</string>
@@ -381,8 +376,6 @@
 <string name="screenrecord_toast_save_error">ناتوان در ذخیره مورد ضبط شده در فایل خروجی</string>
 <string name="action_screenrecord">ضبط تصاویر صفحه‌نمایش</string>
 <string name="pref_powermenu_screenrecord_title">ضبط تصاویر صفحه‌نمایش در منو پاور</string>
-<string name="pref_dialer_show_dialpad_title">نمایش خودکار صفحه کلید شماره‌گیری</string>
-<string name="pref_dialer_show_dialpad_summary">نمایش خودکار کلید شماره‌گیری پس از باز کردن برنامه تلفن</string>
 <string name="pref_cat_launcher_tweaks_title">ترفندهای لانچر</string>
 <string name="pref_cat_launcher_tweaks_summary">"اعمال برای لانچر پیشفرض و لانچر Google Now "</string>
 <string name="pref_cat_launcher_desktop_grid_title">شبکه دسکتاپ</string>
@@ -1038,7 +1031,6 @@
 <string name="turn_off">خاموش کردن</string>
 <string name="pref_force_aosp_title">شبیه‌ساز اجباری سیستم AOSP</string>
 <string name="pref_force_aosp_summary">"شبیه ساز سیستم AOSP. در صورتیکه عملکرد دستگاه شما  بعنوان سیستم یک برند و مارک شناسایی شده‌است مورد استفاده قرار می‌گیرد، با این وجود در واقع  با یک سیستم AOSP جایگزین اجرا میشود(نیازمند راه‌اندازی مجدد)"</string>
-<string name="pref_cat_phone_dialer_title">شماره‌گیر</string>
 <string name="pref_qs_brightness_icon_title">نمایش آیکون تنظیم روشنایی</string>
 <string name="pref_qs_brightness_icon_summary">نمایش آیکون نشانگر حالت روشنایی . با یک لمس وضعیت را تغییر داده و با لمس طولانی تنظیمات صفحه نمایش را باز خواهد کرد</string>
 <string name="pref_lc_active_screen_ignore_update_title">نادیده گرفتن اعلانات بروزرسانی</string>

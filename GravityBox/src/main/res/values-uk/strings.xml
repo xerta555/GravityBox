@@ -46,8 +46,6 @@
 
     <string name="important">Важливо</string>
 
-    <string name="caller_fullscreen_photo_title">Фото абонента на весь екран</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Синхронізація увімкнена</string>
     <string name="quick_settings_sync_off">Синхронізація вимкнена</string>
@@ -529,12 +527,6 @@
     <string name="pref_pie_color_text_title">Колір тексту</string>
     <string name="pref_pie_color_reset_title">Скинути кольори</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Фото для невідомого абонента</string>
-    <string name="pref_caller_unknown_photo_title">Задати фото для невідомого</string>
-    <string name="caller_unknown_photo_result_successful">Фото змінено</string>
-    <string name="caller_unkown_photo_result_not_successful">Фото не змінено</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Ваш екран може не підтримувати значення менше ніж 20. Якщо ваш екран не засвітиться, затисніть кнопку «Гучність+» як мінімум на 7 секунд для скидання яскравості й потім виправте значення яскравості на більше.</string>
 
@@ -594,10 +586,6 @@
     <string name="screenrecord_toast_save_error">Неможливо зберегти запис у вихідний файл</string>
     <string name="action_screenrecord">Запис екрану</string>
     <string name="pref_powermenu_screenrecord_title">Запис екрану в меню вимикання</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Показати панель набору</string>
-    <string name="pref_dialer_show_dialpad_summary">Показ панелі набору відбуватиметься автоматично при відкритті додатку «Телефон»</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Налаштування пускача</string>
@@ -1669,9 +1657,6 @@
     <!-- Force AOSP -->
     <string name="pref_force_aosp_title">Примусово AOSP</string>
     <string name="pref_force_aosp_summary">Позначити систему як AOSP. Використовуйте, якщо ваш пристрій ідентифікується як брендована система, хоча насправді це кастомна на базі AOSP</string>
-
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Набір номеру</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Показати значок яскравості</string>

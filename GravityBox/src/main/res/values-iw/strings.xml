@@ -43,8 +43,6 @@
 
     <string name="important">חשוב</string>
 
-    <string name="caller_fullscreen_photo_title">תמונת משתמש על כל המסך</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">סינכרון מופעל</string>
     <string name="quick_settings_sync_off">סינכרון כבוי</string>
@@ -506,12 +504,6 @@
     <string name="pref_pie_color_text_title">צבע טקסט</string>
     <string name="pref_pie_color_reset_title">איפוס צבעים</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">הפעל תמונה של מתקשר ממספר לא מזוהה</string>
-    <string name="pref_caller_unknown_photo_title">קבע תמונה למתקשר ממספר לא מזוהה</string>
-    <string name="caller_unknown_photo_result_successful">התמונה שונתה</string>
-    <string name="caller_unkown_photo_result_not_successful">התמונה לא שונתה</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">ייתכן ומסך מכשירך לא תומך בערכים פחות מ-20. במידה והמסך שלך אינו נדלק,
         החזק את כפתור הגברת השמע למשך 7 שניות על מנת לאפס את הגדרות הבהירות ולאחר מכן קבע ערכי בהירות גבוהים יותר.</string>
@@ -572,10 +564,6 @@
     <string name="screenrecord_toast_save_error">לא ניתן ליצור קובץ פלט של הקלטה</string>
     <string name="action_screenrecord">הקלטת מסך</string>
     <string name="pref_powermenu_screenrecord_title">הקלטת מסך בתפריט הפעלה/כיבוי</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">הצג חייגן באופן אוטומטי</string>
-    <string name="pref_dialer_show_dialpad_summary">הצג מקשי חיוג באופן אוטומטי בעת פתיחת החייגן</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">הגדרות לאונצ\'ר</string>

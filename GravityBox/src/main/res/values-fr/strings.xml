@@ -37,7 +37,6 @@
     <string name="vol_key_cursor_control_on">Volume haut/bas déplace le curseur à gauche/droite</string>
     <string name="vol_key_cursor_control_on_reverse">Volume haut/bas déplace le curseur à droite/gauche</string>
     <string name="important">Important</string>
-    <string name="caller_fullscreen_photo_title">Photo de l\'appelant plein écran</string>
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Synchro On</string>
     <string name="quick_settings_sync_off">Synchro Off</string>
@@ -442,11 +441,6 @@
     <string name="pref_pie_color_selected_title">Couleur de la touche sélectionnée</string>
     <string name="pref_pie_color_text_title">Couleur du texte</string>
     <string name="pref_pie_color_reset_title">Réinitialiser les couleurs</string>
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Activer la photo pour appelant non identifié</string>
-    <string name="pref_caller_unknown_photo_title">Définir la photo pour appelant non identifié</string>
-    <string name="caller_unknown_photo_result_successful">Photo changée</string>
-    <string name="caller_unkown_photo_result_not_successful">Photo non changée</string>
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Il se pourrait que votre écran ne supporte pas de valeurs inférieures à 20. Si votre écran ne s\'allume pas,
         maintenez la touche Volume+ enfoncée au moins 7 secondes pour réinitialiser la luminosité, règlez-la ensuite à une valeur supérieure</string>
@@ -497,9 +491,6 @@
     <string name="screenrecord_toast_save_error">Impossible de sauvegarder l\'enregistrement vers le fichier de destination</string>
     <string name="action_screenrecord">Enregistrer l\'écran</string>
     <string name="pref_powermenu_screenrecord_title">Enregistrer l\'écran depuis le menu d\'extinction</string>
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Afficher le pavé numérique automatiquement</string>
-    <string name="pref_dialer_show_dialpad_summary">Affiche le pavé numérique automatiquement à l\'ouverture de l\'application de numérotation</string>
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Modifications du lanceur</string>
     <string name="pref_cat_launcher_tweaks_summary">S\'applique au lanceur par défaut ainsi qu\'au lanceur Google Now</string>
@@ -1398,8 +1389,6 @@ y compris les vibrations de notification, le retour haptique, etc.</string>
     <string name="pref_force_aosp_title">Forcer AOSP</string>
     <string name="pref_force_aosp_summary">Traite le système comme AOSP.
 A utiliser dans le cas où votre appareil est identifié comme étant un système avec surcouche malgré l\'exécution d\'une ROM alternative AOSP (nécessite un redémarrage)</string>
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Clavier</string>
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Afficher l\'icône de luminosité</string>
     <string name="pref_qs_brightness_icon_summary">Affiche une icône indiquant le mode de luminosité actuel.

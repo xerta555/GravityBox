@@ -48,8 +48,6 @@
 
     <string name="important">Penting</string>
 
-    <string name="caller_fullscreen_photo_title">Skrin penuh gambar pemanggil</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Hidupkan penyegera</string>
     <string name="quick_settings_sync_off">Matikan penyegera</string>
@@ -533,12 +531,6 @@
     <string name="pref_pie_color_text_title">Warna text</string>
     <string name="pref_pie_color_reset_title">Set semula warna</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Aktifkan gambar pemanggil tidak dikenali</string>
-    <string name="pref_caller_unknown_photo_title">Set gambar pemanggil tidak dikenali</string>
-    <string name="caller_unknown_photo_result_successful">Gambar ditukar</string>
-    <string name="caller_unkown_photo_result_not_successful">Gambar tidak ditukar</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Skrin anda tidak menyokong nilai dibawah 20. Jika skrin anda tidak hidup,
         Tahan butang volume+ selama 7 saat untuk set semula kecerahan dan set semula kecerahan maximum.</string>
@@ -600,10 +592,6 @@
     <string name="screenrecord_toast_save_error">Rakaman tidak boleh disimpan.Ralat</string>
     <string name="action_screenrecord">Rakaman skrin</string>
     <string name="pref_powermenu_screenrecord_title">Rakaman skrin di butang menu</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Tunjuk pad nombor automatik</string>
-    <string name="pref_dialer_show_dialpad_summary">Tunjuk pad nombor automatik ketika ingin membuat panggilan</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Modifikasi pelancar</string>
@@ -1712,9 +1700,6 @@
     <string name="pref_force_aosp_summary">Anggap sistem sebagai AOSP. 
         Guna jika sistem dianggap bukan AOSP
         walaupun anda sedang menggunakan AOSP alternatif (perlukan reboot)</string>
-
-    <!-- Dialer category -->
-    <string name="pref_cat_phone_dialer_title">Papan kekunci</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Tunjukkan ikon kecerahan</string>

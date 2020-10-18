@@ -36,7 +36,6 @@
     <string name="vol_key_cursor_control_on">音量キー上/下で左/右に移動</string>
     <string name="vol_key_cursor_control_on_reverse">音量キー上/下で右/左に移動</string>
     <string name="important">重要</string>
-    <string name="caller_fullscreen_photo_title">発信者の写真を全画面表示</string>
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">同期オン</string>
     <string name="quick_settings_sync_off">同期オフ</string>
@@ -437,11 +436,6 @@
     <string name="pref_pie_color_selected_title">選択したキーの色</string>
     <string name="pref_pie_color_text_title">文字色</string>
     <string name="pref_pie_color_reset_title">色の初期化</string>
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">不明な発信者画像を有効化</string>
-    <string name="pref_caller_unknown_photo_title">不明な発信者用の画像をセット</string>
-    <string name="caller_unknown_photo_result_successful">変更しました。</string>
-    <string name="caller_unkown_photo_result_not_successful">変更しませんでした。</string>
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">20以下の明るさに対応していない画面です。 画面が点灯しなくなった場合、
          音量上キーを7秒以上押し続けると明るさを初期化できるので最低値を修正してください。</string>
@@ -491,9 +485,6 @@
     <string name="screenrecord_toast_save_error">録画を保存できませんでした</string>
     <string name="action_screenrecord">画面の録画</string>
     <string name="pref_powermenu_screenrecord_title">電源メニューに画面の録画を追加</string>
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">ダイアルパッドを自動表示</string>
-    <string name="pref_dialer_show_dialpad_summary">電話アプリを開いた時に自動的にダイアルパッドを表示します。</string>
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">ランチャー調整</string>
     <string name="pref_cat_launcher_tweaks_summary">標準ランチャーとGoogle Now Launcherに適用されます。</string>
@@ -1407,7 +1398,6 @@
     <string name="pref_battery_style_header_title">ステータスバーヘッダーに適用</string>
     <string name="pref_battery_tile_temp_title">温度を表示</string>
     <string name="pref_battery_tile_voltage_title">電圧を表示</string>
-    <string name="pref_cat_phone_dialer_title">ダイヤラ</string>
     <string name="pref_cat_qs_bt_tile_title">Bluetoothタイルの設定</string>
     <string name="pref_cat_qs_cell_tile_title">"セルラータイルの設定 "</string>
     <string name="pref_cat_qs_location_tile_title">"位置情報タイル(SlimKat)の設定 "</string>

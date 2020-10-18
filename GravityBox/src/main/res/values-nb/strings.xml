@@ -43,8 +43,6 @@
 
     <string name="important">Important</string>
 
-    <string name="caller_fullscreen_photo_title">Fullscreen caller photo</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Synkronisering På</string>
     <string name="quick_settings_sync_off">Synkronisering Av</string>
@@ -523,12 +521,6 @@
     <string name="pref_pie_color_text_title">Text color</string>
     <string name="pref_pie_color_reset_title">Reset colors</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Enable unknown caller photo</string>
-    <string name="pref_caller_unknown_photo_title">Set unknown caller photo</string>
-    <string name="caller_unknown_photo_result_successful">Photo changed</string>
-    <string name="caller_unkown_photo_result_not_successful">Photo not changed</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Your screen might not support values lower than 20. If your screen doesn\'t light up,
         hold Volume+ key for at least 7 seconds to reset brightness and then adjust minimum brightness to use higher values.</string>
@@ -589,10 +581,6 @@
     <string name="screenrecord_toast_save_error">Unable to save recording to output file</string>
     <string name="action_screenrecord">Screen record</string>
     <string name="pref_powermenu_screenrecord_title">Screen record in power menu</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Show dialpad automatically</string>
-    <string name="pref_dialer_show_dialpad_summary">Shows dialpad automatically upon opening dialer app</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Launcher tweaks</string>

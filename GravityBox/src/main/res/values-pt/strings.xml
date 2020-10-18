@@ -28,8 +28,6 @@
 
     <string name="important">Importante</string>
 
-    <string name="caller_fullscreen_photo_title">Foto do contato em tela cheia em ligação</string>
-
     <!-- QuickSettings strings -->
     <string name="quick_settings_sync_on">Sinc. ativada</string>
     <string name="quick_settings_sync_off">Sinc. desativada</string>
@@ -498,12 +496,6 @@
     <string name="pref_pie_color_text_title">Cor do texto</string>
     <string name="pref_pie_color_reset_title">Redefinir cores</string>
 
-    <!-- Custom unknown caller photo -->
-    <string name="pref_caller_unknown_photo_enable_title">Habilitar imagem de contato desconhecido</string>
-    <string name="pref_caller_unknown_photo_title">Definir imagem de contato desconhecido</string>
-    <string name="caller_unknown_photo_result_successful">Foto alterada</string>
-    <string name="caller_unkown_photo_result_not_successful">Foto não alterada</string>
-
     <!-- Minimum screen brightness warning -->
     <string name="screen_brightness_min_warning">Sua tela pode não suportar valores de brilho inferior a 20. Se sua tela não ligar,
         mantenha pressionada a tecla de volume+ por pelo menos 7 segundos para resetar os valores de brilho e ajuste os valores de brilho mínimo para um valor maior</string>
@@ -564,10 +556,6 @@
     <string name="screenrecord_toast_save_error">Não pôde salvar o arquivo da gravação</string>
     <string name="action_screenrecord">Gravação de tela</string>
     <string name="pref_powermenu_screenrecord_title">Gravação de tela no menu de energia</string>
-
-    <!-- Show dialpad automatically -->
-    <string name="pref_dialer_show_dialpad_title">Mostrar teclado automaticamente</string>
-    <string name="pref_dialer_show_dialpad_summary">Mostra o teclado automaticamente quando aberto o aplicativo de Discador</string>
 
     <!-- Launcher tweaks -->
     <string name="pref_cat_launcher_tweaks_title">Ajustes do launcher</string>
