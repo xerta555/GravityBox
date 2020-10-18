@@ -578,15 +578,6 @@
     <string name="screenrecord_toast_saved">Đã lưu như %s</string>
     <string name="screenrecord_toast_save_error">Không thể lưu</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Tỉnh chỉnh Launcher</string>
-    <string name="pref_cat_launcher_tweaks_summary">Áp dụng cho launcher gốc và Google Now launcher</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Lưới Destop</string>
-    <string name="pref_launcher_desktop_grid_info_title">Sử dụng giá trị khác mặc định có thể làm hỏng bố cục của tiện ích. Dùng cẩn thận. Thay đổi yêu cầu launcher phải khởi động lại.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Số dòng</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Số cột</string>
-    <string name="desktop_grid_default">Mặc định</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Toggle quay phim màn hình</string>
 
@@ -822,14 +813,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Độ trễ khi giữ</string>
     <string name="pie_longpress_delay_default">Mặc định hệ thống</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Ngăn chứa Launcher</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Khác</string>
-    <string name="pref_launcher_resize_widget_title">Chỉnh cỡ tiện ích bất kỳ</string>
-    <string name="pref_launcher_resize_widget_summary">Chỉnh kích thước của bất kỳ tiện ích nào trên MH chính (yêu cầu khởi động lại launcher)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Chọn biểu tượng</string>

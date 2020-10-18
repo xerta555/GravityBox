@@ -588,15 +588,6 @@
     <string name="screenrecord_toast_saved">Запись сохранена как %s</string>
     <string name="screenrecord_toast_save_error">Невозможно сохранить запись в исходный файл</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Настройки лончера</string>
-    <string name="pref_cat_launcher_tweaks_summary">Только для стокового лончера и Google Now</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Сетка рабочего стола</string>
-    <string name="pref_launcher_desktop_grid_info_title">Использование значений, отличных от значений по умолчанию, может привести к проблемам с виджетами. Используйте с осторожностью. Изменения требуют перезапуска лончера</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Количество строк</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Количество столбцов</string>
-    <string name="desktop_grid_default">По умолчанию</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Запись экрана</string>
 
@@ -833,14 +824,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Задержка удержания</string>
     <string name="pie_longpress_delay_default">Системная по умолчанию</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Панель лончера</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Другое</string>
-    <string name="pref_launcher_resize_widget_title">Изменение виджетов</string>
-    <string name="pref_launcher_resize_widget_summary">Возможность изменять размеры любого виджета на домашнем экране (необходима перезагрузка лончера)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Выбрать значок</string>

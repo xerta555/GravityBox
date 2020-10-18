@@ -557,15 +557,6 @@
     <string name="screenrecord_toast_saved">הקלטה נשמרה בתור %s</string>
     <string name="screenrecord_toast_save_error">לא ניתן ליצור קובץ פלט של הקלטה</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">הגדרות לאונצ\'ר</string>
-    <string name="pref_cat_launcher_tweaks_summary">חל על לאונצ\'ר סטוק ועל לאונצ\'ר Google Now</string>
-    <string name="pref_cat_launcher_desktop_grid_title">פריסת רשת של מסכי הבית</string>
-    <string name="pref_launcher_desktop_grid_info_title">שימשו בערכים שונים מערכי ברירת מחדל עלול לשבש תצוגה תקינה של ווידג\'טים. השתמש בחכמה. שינויים דורשים הפעלה מחדש של לאונצ\'ר.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">מספר שורות</string>
-    <string name="pref_launcher_desktop_grid_cols_title">מספר עמודות</string>
-    <string name="desktop_grid_default">ברירת מחדל</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">הפעלה/כיבוי של הקלטת מסך</string>
 
@@ -800,14 +791,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">השהיית לחיצה ארוכה</string>
     <string name="pie_longpress_delay_default">ברירת מחדל של מערכת</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">מגירת לאונצ\'ר</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">אחר</string>
-    <string name="pref_launcher_resize_widget_title">שנה גודל של כל ווידג\'ט</string>
-    <string name="pref_launcher_resize_widget_summary">שנה גודל של כל ווידג\'ט במסך הבית (דורש איתחול של לאונצ\'ר)</string>
 
     <!-- HW Key Actions: expand quick settings -->
     <string name="hwkey_action_expand_quicksettings">הרחב תפריט QuickSettings</string>

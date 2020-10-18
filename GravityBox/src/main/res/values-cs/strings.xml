@@ -560,15 +560,6 @@
     <string name="screenrecord_toast_saved">Záznam uložen jako %s</string>
     <string name="screenrecord_toast_save_error">Nelze uložit záznam do výstupního souboru</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Nastavení spouštěče</string>
-    <string name="pref_cat_launcher_tweaks_summary">Vztahuje se na standardní Android spouštěč nebo Google Now spouštěč</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Mřížka plochy</string>
-    <string name="pref_launcher_desktop_grid_info_title">Použití jiných než výchozích hodnot může způsobit narušení vzhledu widgetů. Změny vyžadují restart spouštěče.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Počet řádků</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Počet sloupců</string>
-    <string name="desktop_grid_default">Standardní</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Zapnout/vypnout záznam obrazovky</string>
 
@@ -801,14 +792,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Zpoždění dlouhého podržení</string>
     <string name="pie_longpress_delay_default">Systémové</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Seznam aplikací spouštěče</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Jiné</string>
-    <string name="pref_launcher_resize_widget_title">Změna velikosti widgetů</string>
-    <string name="pref_launcher_resize_widget_summary">Povolí změnu velikosti widgetů na obrazovkách spouštěče (vyžaduje restart spouštěče)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Vyberte ikonu</string>

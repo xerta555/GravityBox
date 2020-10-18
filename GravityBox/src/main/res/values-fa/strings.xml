@@ -372,13 +372,6 @@
 <string name="screenrecord_toast_processing">شروع ضبط جدید تا پایان پردازش ضبط قبلی ممکن نیست</string>
 <string name="screenrecord_toast_saved">مورد ضبط شده در %s ذخیره شد</string>
 <string name="screenrecord_toast_save_error">ناتوان در ذخیره مورد ضبط شده در فایل خروجی</string>
-<string name="pref_cat_launcher_tweaks_title">ترفندهای لانچر</string>
-<string name="pref_cat_launcher_tweaks_summary">"اعمال برای لانچر پیشفرض و لانچر Google Now "</string>
-<string name="pref_cat_launcher_desktop_grid_title">شبکه دسکتاپ</string>
-<string name="pref_launcher_desktop_grid_info_title">استفاده از مقادیر دیگر غیر از پیشفرض ممکن است موجب صدمه زدن به لایه ابزارک شود.بصورت صحیح استفاده شود.تغییرات نیازمند راه‌اندازی مجدد لانچر است</string>
-<string name="pref_launcher_desktop_grid_rows_title">تعداد ردیف</string>
-<string name="pref_launcher_desktop_grid_cols_title">تعداد ستون‌ها</string>
-<string name="desktop_grid_default">پیشفرض</string>
 <string name="hwkey_action_screen_recording">"ضبط تصاویر صفحه‌نمایش "</string>
 <string name="battery_percent_text_title">متن نمایش درصد باطری</string>
 <string name="battery_percent_text_size_title">اندازه متن نمایش درصد باطری</string>
@@ -511,10 +504,6 @@
 <string name="pref_pie_sysinfo_disable_title">غیرفعالسازی مشخصات سیستم</string>
 <string name="pref_pie_longpress_delay_title">تأخیر زمانی لمس طولانی</string>
 <string name="pie_longpress_delay_default">پیشفرض سیستم</string>
-<string name="shortcut_launcher_drawer">منوی لانچر سیستم</string>
-<string name="pref_cat_launcher_other_title">غیره</string>
-<string name="pref_launcher_resize_widget_title">تغییر اندازه ویجت‌ها</string>
-<string name="pref_launcher_resize_widget_summary">تغییر اندازه ویجت‌ها به اندازه دلخواه (نیازمند شروع مجدد لانچر)</string>
 <string name="icon_picker_choose_icon_title">انتخاب آیکون</string>
 <string name="shortcuts_icon_picker_alarm">آلارم</string>
 <string name="shortcuts_icon_picker_andy">Andy</string>

@@ -485,14 +485,6 @@
     <string name="screenrecord_toast_processing">Impossible de démarrer un nouvel enregistrement alors que le précédent n\'est pas encore terminé</string>
     <string name="screenrecord_toast_saved">Enregistrement sauvegardé sous %s</string>
     <string name="screenrecord_toast_save_error">Impossible de sauvegarder l\'enregistrement vers le fichier de destination</string>
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Modifications du lanceur</string>
-    <string name="pref_cat_launcher_tweaks_summary">S\'applique au lanceur par défaut ainsi qu\'au lanceur Google Now</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Grille du bureau</string>
-    <string name="pref_launcher_desktop_grid_info_title">Utiliser des valeurs autres que celles par défaut peut perturber l\'agencement des widgets. Utiliser à bon escient. Il faut redémarrer le lanceur pour que les changements prennent effet</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Nombre de lignes</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Nombres de colonnes</string>
-    <string name="desktop_grid_default">Par défaut</string>
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Enclencher l\'enregistrement d\'écran</string>
     <!-- Battery percent text -->
@@ -678,12 +670,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Délai appui long</string>
     <string name="pie_longpress_delay_default">Valeur système par défaut</string>
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Tiroir de lancement d\'appli</string>
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Autre</string>
-    <string name="pref_launcher_resize_widget_title">Redimensionner tout widget</string>
-    <string name="pref_launcher_resize_widget_summary">Permet de redimensionner n\'importe quel widget à n\'importe quelle taille sur l\'écran d\'accueil (nécessite de redémarrer le lanceur d\'applications)</string>
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Choisir une icône</string>
     <string name="shortcuts_icon_picker_alarm">Alarme</string>

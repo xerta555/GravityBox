@@ -585,15 +585,6 @@
     <string name="screenrecord_toast_saved">Rakaman disimpan sebagai %s</string>
     <string name="screenrecord_toast_save_error">Rakaman tidak boleh disimpan.Ralat</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Modifikasi pelancar</string>
-    <string name="pref_cat_launcher_tweaks_summary">Hanya untuk pelancar asal dan GEL sahaja</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Grid desktop</string>
-    <string name="pref_launcher_desktop_grid_info_title">Nilai selain asal boleh merosakkan widget\' susun atur. Gunakan sebaiknya. Pelancar perlu di restart</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Bilangan baris</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Bilangan kolum</string>
-    <string name="desktop_grid_default">Tetapan asal</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Butang rakaman skrin</string>
 
@@ -829,14 +820,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Kadar tekan lama</string>
     <string name="pie_longpress_delay_default">Tetapan asal</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Drawer pelancar</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Lain-lain</string>
-    <string name="pref_launcher_resize_widget_title">Saizkan mana-mana widget</string>
-    <string name="pref_launcher_resize_widget_summary">Saizkan mana-mana widget di skrin utama (perlukan pelancar untuk restart)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Pilih ikon</string>

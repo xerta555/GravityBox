@@ -584,15 +584,6 @@
     <string name="screenrecord_toast_saved">A rögzítés %s-ként elmentésre került</string>
     <string name="screenrecord_toast_save_error">Nem lehetséges a felvétel elmentése kimeneti fájlba</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Indító módosítások</string>
-    <string name="pref_cat_launcher_tweaks_summary">A gyári és a Google Now Indítóra vonatkozik</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Képernyőrács</string>
-    <string name="pref_launcher_desktop_grid_info_title">Az alapértelmezettől eltérő értékek használata a modulok megjelenítésében problémát okozhat. Körültekintően használd. A változtatásokhoz a launcher újraindítása szükséges.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Sorok száma</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Oszlopok száma</string>
-    <string name="desktop_grid_default">Alapértelmezett</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Képernyő videofelvétel ki-bekapcsolása</string>
 
@@ -824,14 +815,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Hosszú érintés késleltetése</string>
     <string name="pie_longpress_delay_default">Gyári beállítás</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Indító alkalmazástár</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Egyéb</string>
-    <string name="pref_launcher_resize_widget_title">Bármely modul átméretezése</string>
-    <string name="pref_launcher_resize_widget_summary">Átméretezi bármelyik modult bármely méretre a kezdőképernyőn (Indító alkalmazás újraindítása szükséges)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Ikon kiválasztása</string>

@@ -578,15 +578,6 @@
     <string name="screenrecord_toast_saved">Grabación guardada como %s</string>
     <string name="screenrecord_toast_save_error">Imposible guardar grabación en el archivo de salida</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Ajustes del lanzador</string>
-    <string name="pref_cat_launcher_tweaks_summary">Se aplica al lanzador predeterminado y a Google Now Launcher</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Cuadrícula del escritorio</string>
-    <string name="pref_launcher_desktop_grid_info_title">Cambiar los valores predeterminados podría desajustar la posición y/o tamaño de los widgets. Requiere reiniciar el lanzador.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Número de filas</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Número de columnas</string>
-    <string name="desktop_grid_default">Predeterminado</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Activar/desactivar grabar pantalla</string>
 
@@ -823,14 +814,6 @@
     <string name="pref_pie_longpress_delay_title">Tiempo de pulsación larga</string>
     <string name="pie_longpress_delay_default">Predeterminado</string>
     
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Cajón de aplicaciones</string> <!-- launcher drawer -->
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Otro</string>
-    <string name="pref_launcher_resize_widget_title">Redimensionar cualquier widget</string>
-    <string name="pref_launcher_resize_widget_summary">Redimensiona cualquier widget a cualquier tamaño en la pantalla de inicio (requiere reiniciar el lanzador)</string>
- 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Elegir icono</string>
     <string name="shortcuts_icon_picker_alarm">Alarma</string>

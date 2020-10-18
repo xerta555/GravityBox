@@ -464,14 +464,6 @@
     <string name="screenrecord_toast_saved">화면 녹화 저장됨 : %s</string>
     <string name="screenrecord_toast_save_error">녹화된 파일을 저장 할 수 없습니다.</string>
 
-    <string name="pref_cat_launcher_tweaks_title">홈 런처 트윅</string>
-    <string name="pref_cat_launcher_tweaks_summary">순정 AOSP 런처와 Google Now 런처의 설정을 수정합니다.</string>
-    <string name="pref_cat_launcher_desktop_grid_title">바탕화면 격자</string>
-    <string name="pref_launcher_desktop_grid_info_title">다른 값을 설정하면 위젯의 레이아웃이 깨질 수 있습니다. 주의하여 사용하세요. 런처가 재시작해야 값이 적용됩니다.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">열 갯수 (세로)</string>
-    <string name="pref_launcher_desktop_grid_cols_title">행 갯수 (가로)</string>
-    <string name="desktop_grid_default">기본값</string>
-
     <string name="hwkey_action_screen_recording">화면 녹화 토글</string>
 
     <string name="battery_percent_text_title">배터리 잔량 표시</string>
@@ -655,12 +647,6 @@
 
     <string name="pref_pie_longpress_delay_title">길게 누르기 지연시간</string>
     <string name="pie_longpress_delay_default">시스템 기본값</string>
-
-    <string name="shortcut_launcher_drawer">런처 앱 서랍</string>
-
-    <string name="pref_cat_launcher_other_title">기타</string>
-    <string name="pref_launcher_resize_widget_title">위젯 크기 조정</string>
-    <string name="pref_launcher_resize_widget_summary">런처 앱 전용 위젯들의 크기를 마음대로 조절합니다. (런처 재시작 필요)</string>
 
     <string name="icon_picker_choose_icon_title">아이콘 고르기</string>
     <string name="shortcuts_icon_picker_alarm">알람</string>

@@ -579,15 +579,6 @@
     <string name="screenrecord_toast_saved">Запис збережено як %s</string>
     <string name="screenrecord_toast_save_error">Неможливо зберегти запис у вихідний файл</string>
 
-    <!-- Launcher tweaks -->
-    <string name="pref_cat_launcher_tweaks_title">Налаштування пускача</string>
-    <string name="pref_cat_launcher_tweaks_summary">Лише для стокового пускача та Google Now</string>
-    <string name="pref_cat_launcher_desktop_grid_title">Сітка робочого столу</string>
-    <string name="pref_launcher_desktop_grid_info_title">Використання значень, які відрізняються від типових, може призвести до проблем із віджетами. Використовуйте обачно. Зміни потребують перезавантаження пускача.</string>
-    <string name="pref_launcher_desktop_grid_rows_title">Кількість рядків</string>
-    <string name="pref_launcher_desktop_grid_cols_title">Кількість стовпців</string>
-    <string name="desktop_grid_default">Типово</string>
-
     <!-- HW Key Acctions: toggle screen recording -->
     <string name="hwkey_action_screen_recording">Показник запису</string>
 
@@ -819,14 +810,6 @@
     <!-- Pie: long press delay -->
     <string name="pref_pie_longpress_delay_title">Затримка утримання</string>
     <string name="pie_longpress_delay_default">Типово</string>
-
-    <!-- GB Actions: Launcher drawer shortcut -->
-    <string name="shortcut_launcher_drawer">Панель пускача</string>
-
-    <!-- Launcher tweaks: resize any widget -->
-    <string name="pref_cat_launcher_other_title">Інше</string>
-    <string name="pref_launcher_resize_widget_title">Зміна віджетів</string>
-    <string name="pref_launcher_resize_widget_summary">Можливість змінювати розмір віджетів на робочому столі (потребує перезапуск пускача)</string>
 
     <!-- Icon picker -->
     <string name="icon_picker_choose_icon_title">Вибрати значок</string>
