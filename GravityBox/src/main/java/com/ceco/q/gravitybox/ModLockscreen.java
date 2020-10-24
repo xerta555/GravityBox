@@ -449,20 +449,11 @@ public class ModLockscreen {
                     ViewGroup kgStatusView = (ViewGroup) XposedHelpers.getObjectField(
                             param.thisObject, "mKeyguardStatusView");
                     Resources res = kgStatusView.getResources();
-                    // try mtk container first
-                    int containerId = res.getIdentifier("mtk_keyguard_clock_container",
-                            "id", PACKAGE_NAME);
-                    if (containerId == 0) {
-                        // fallback to AOSP container
-                        containerId = res.getIdentifier("keyguard_clock_container", "id", PACKAGE_NAME);
-                    }
+                    int containerId = res.getIdentifier("keyguard_status_area", "id", PACKAGE_NAME);
                     if (containerId != 0) {
-                        ViewGroup container;
+                        ViewGroup container = kgStatusView.findViewById(containerId);
                         if (Utils.isSamsungRom()) {
                             container = (ViewGroup) kgStatusView.getChildAt(0);
-                        } else {
-                            container = kgStatusView.findViewById(containerId);
-                            container = (ViewGroup) container.getParent();
                         }
                         if (container != null) {
                             mAppBar = new LockscreenAppBar(mContext, mGbContext, container,

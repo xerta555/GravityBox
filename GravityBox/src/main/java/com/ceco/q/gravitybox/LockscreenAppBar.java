@@ -42,7 +42,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.ceco.q.gravitybox.managers.SysUiConfigChangeMonitor;
 import com.ceco.q.gravitybox.managers.SysUiKeyguardStateMonitor;
@@ -107,14 +106,6 @@ public class LockscreenAppBar implements SysUiKeyguardStateMonitor.Listener,
 
         LayoutInflater inflater = LayoutInflater.from(mGbContext);
         mRootView = (ViewGroup) inflater.inflate(R.layout.lockscreen_app_bar, mContainer, false);
-        if (mContainer instanceof RelativeLayout) {
-            int ownerInfoResId = mContext.getResources().getIdentifier("owner_info", "id", ModStatusBar.PACKAGE_NAME);
-            if (ownerInfoResId != 0) {
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mRootView.getLayoutParams();
-                lp.addRule(RelativeLayout.BELOW, ownerInfoResId);
-                mRootView.setLayoutParams(lp);
-            }
-        }
         mContainer.addView(mRootView);
         mContainer.setClipChildren(false);
         if (mContainer.getParent() instanceof ViewGroup) {
