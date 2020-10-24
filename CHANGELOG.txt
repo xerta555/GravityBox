@@ -1,3 +1,20 @@
+Changelog 10.0.1 - 24/10/2020
+--------------------------------------
+- General improvement of compatibility with Pixel devices (Google OS)
+- Lockscreen: improved positioning of application bar
+- Fixed status bar state change handler on Pixel devices:
+--- fixed Media Visualizer not showing in lock screen
+--- fixed Download progress bar not showing in lockscreen
+--- fixed Data taffic meter not showing in lockscreen
+- BatteryStyle: fixed color theming of custom battery in notification panel header on Pixel devices
+- CLock: fixed positioning of clock in notification panel header on Pixel devices
+- Ultimate notification control:
+--- fixed Heads Up policy feature on Pixel devices
+--- fixed dialer keypad muting during Quiet Hours (compatibility with the latest Google Dialer app)
+- Fixed XSharedPreferences Unexpected EOF errors showing in Xposed log
+- Updated Chinese (Simplified) translations (thanks to tuchit)
+- HUGE THANKS TO FRANK93 FOR DONATING PIXEL 3A FOR DEVELOPMENT
+
 Changelog 10.0.0-beta-7 - 21/06/2020
 --------------------------------------
 - Clock: changed hooking strategy to avoid EdXposed ART crashes
