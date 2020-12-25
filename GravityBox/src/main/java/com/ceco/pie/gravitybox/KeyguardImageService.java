@@ -95,7 +95,7 @@ public class KeyguardImageService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mKisImageFile = new File(Utils.getFilesDir(this) + "/kis_image.png");
+        mKisImageFile = new File(SettingsManager.getInstance(this).getPreferenceDir(), "kis_image.png");
         mPrefs = SettingsManager.getInstance(this).getMainPrefs();
     }
 

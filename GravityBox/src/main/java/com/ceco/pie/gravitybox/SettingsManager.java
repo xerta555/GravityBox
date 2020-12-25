@@ -110,7 +110,8 @@ public class SettingsManager {
             return false;
         }
 
-        File targetDir = new File(BACKUP_PATH);
+        // create all necessary backup folders/subfolders in one go
+        File targetDir = new File(BACKUP_PATH + "/files/app_picker");
         if (!(targetDir.exists() && targetDir.isDirectory())) {
             if (!targetDir.mkdirs()) {
                 Toast.makeText(mContext, R.string.settings_backup_failed, Toast.LENGTH_LONG).show();
@@ -137,12 +138,15 @@ public class SettingsManager {
                 mContext.getPackageName() + "_preferences.xml",
                 "ledcontrol.xml",
                 "quiet_hours.xml",
-                "tuner.xml"
+                "tuner.xml",
+                "navbar_custom_key_image",
+                "lockwallpaper"
         };
         for (String prefsFileName : prefsFileNames) {
             File prefsFile = new File(getPreferenceDir(), prefsFileName);
             if (prefsFile.exists()) {
-                File prefsDestFile = new File(BACKUP_PATH + "/" + prefsFileName);
+                String bupPath = prefsFileName.endsWith(".xml") ? BACKUP_PATH : BACKUP_PATH + "/files";
+                File prefsDestFile = new File(bupPath, prefsFileName);
                 try {
                     Utils.copyFile(prefsFile, prefsDestFile);
                 } catch (IOException e) {
@@ -157,48 +161,36 @@ public class SettingsManager {
             }
         }
 
-        // other files
-        String targetFilesDirPath = BACKUP_PATH + "/files";
-        File targetFilesDir = new File(targetFilesDirPath);
-        if (!(targetFilesDir.exists() && targetFilesDir.isDirectory())) {
-            if (!targetFilesDir.mkdirs()) {
-                Toast.makeText(mContext, R.string.settings_backup_failed, Toast.LENGTH_LONG).show();
-                return false;
+        // app picker
+        String appPickerFilesDirPath = BACKUP_PATH + "/files/app_picker";
+        File sourceDir = new File(getPreferenceDir() + "/app_picker");
+        File[] appPickerfileList = sourceDir.listFiles();
+        if (appPickerfileList != null) {
+            for (File apf : appPickerfileList) {
+                File outFile = new File(appPickerFilesDirPath, apf.getName());
+                try {
+                    Utils.copyFile(apf, outFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(mContext, R.string.settings_backup_failed, Toast.LENGTH_LONG).show();
+                    return false;
+                }
             }
         }
+
+        // other files
+        String targetFilesDirPath = BACKUP_PATH + "/files";
         File[] fileList = mContext.getFilesDir().listFiles();
         if (fileList != null) {
             for (File f : fileList) {
-                if (f.isFile() && !f.getName().equals("kis_image.png")) {
-                    File outFile = new File(targetFilesDirPath + "/" + f.getName());
+                if (f.isFile()) {
+                    File outFile = new File(targetFilesDirPath, f.getName());
                     try {
                         Utils.copyFile(f, outFile);
                     } catch (IOException e) {
                         e.printStackTrace();
                         Toast.makeText(mContext, R.string.settings_backup_failed, Toast.LENGTH_LONG).show();
                         return false;
-                    }
-                } else if (f.isDirectory() && f.getName().equals("app_picker")) {
-                    String appPickerFilesDirPath = targetFilesDirPath + "/app_picker";
-                    File appPickerFilesDir = new File(appPickerFilesDirPath);
-                    if (!(appPickerFilesDir.exists() && appPickerFilesDir.isDirectory())) {
-                        if (!appPickerFilesDir.mkdirs()) {
-                            Toast.makeText(mContext, R.string.settings_backup_failed, Toast.LENGTH_LONG).show();
-                            return false;
-                        }
-                    }
-                    File[] appPickerfileList = f.listFiles();
-                    if (appPickerfileList != null) {
-                        for (File apf : appPickerfileList) {
-                            File outFile = new File(appPickerFilesDirPath + "/" + apf.getName());
-                            try {
-                                Utils.copyFile(apf, outFile);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(mContext, R.string.settings_backup_failed, Toast.LENGTH_LONG).show();
-                                return false;
-                            }
-                        }
                     }
                 }
             }
@@ -251,22 +243,25 @@ public class SettingsManager {
                 mContext.getPackageName() + "_preferences.xml",
                 "ledcontrol.xml",
                 "quiet_hours.xml",
-                "tuner.xml"
+                "tuner.xml",
+                "navbar_custom_key_image",
+                "lockwallpaper"
         };
         for (String prefsFileName : prefsFileNames) {
-            File prefsFile = new File(BACKUP_PATH + "/" + prefsFileName);
+            String bupPath = prefsFileName.endsWith(".xml") ? BACKUP_PATH : BACKUP_PATH + "/files";
+            File prefsFile = new File(bupPath, prefsFileName);
             // try O preferences if no P prefs file exists
             if (prefsFileName.equals(prefsFileNames[0]) && !prefsFile.exists())
-                prefsFile = new File(BACKUP_PATH + "/" + O_PREFERENCES);
+                prefsFile = new File(bupPath, O_PREFERENCES);
             // try N preferences if no O prefs file exists
             if (prefsFileName.equals(prefsFileNames[0]) && !prefsFile.exists())
-                prefsFile = new File(BACKUP_PATH + "/" + N_PREFERENCES);
+                prefsFile = new File(bupPath, N_PREFERENCES);
             // try MM preferences if no N prefs file exists
             if (prefsFileName.equals(prefsFileNames[0]) && !prefsFile.exists())
-                prefsFile = new File(BACKUP_PATH + "/" + MM_PREFERENCES);
+                prefsFile = new File(bupPath, MM_PREFERENCES);
             // try LP preferences if no MM prefs file exists
             if (prefsFileName.equals(prefsFileNames[0]) && !prefsFile.exists())
-                prefsFile = new File(BACKUP_PATH + "/" + LP_PREFERENCES);
+                prefsFile = new File(bupPath, LP_PREFERENCES);
             if (prefsFile.exists()) {
                 File prefsDestFile = new File(getPreferenceDir(), prefsFileName);
                 try {
@@ -280,6 +275,31 @@ public class SettingsManager {
             } else if (prefsFileName.equals(prefsFileNames[0])) {
                 Toast.makeText(mContext, R.string.settings_restore_no_backup, Toast.LENGTH_SHORT).show();
                 return false;
+            }
+        }
+
+        // app picker
+        String appPickerFilesDirPath = getPreferenceDir() + "/app_picker";
+        File appPickerFilesDir = new File(appPickerFilesDirPath);
+        if (!(appPickerFilesDir.exists() && appPickerFilesDir.isDirectory())) {
+            if (appPickerFilesDir.mkdirs()) {
+                appPickerFilesDir.setExecutable(true, false);
+                appPickerFilesDir.setReadable(true, false);
+            }
+        }
+        File sourceDir = new File(BACKUP_PATH + "/files/app_picker");
+        File[] appPickerfileList = sourceDir.listFiles();
+        if (appPickerfileList != null) {
+            for (File apf : appPickerfileList) {
+                File outFile = new File(appPickerFilesDirPath, apf.getName());
+                try {
+                    Utils.copyFile(apf, outFile);
+                    outFile.setReadable(true, false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(mContext, R.string.settings_restore_failed, Toast.LENGTH_LONG).show();
+                    return true;
+                }
             }
         }
 
@@ -304,29 +324,6 @@ public class SettingsManager {
                         e.printStackTrace();
                         Toast.makeText(mContext, R.string.settings_restore_failed, Toast.LENGTH_LONG).show();
                         return false;
-                    }
-                } else if (f.isDirectory() && f.getName().equals("app_picker")) {
-                    String appPickerFilesDirPath = targetFilesDirPath + "/app_picker";
-                    File appPickerFilesDir = new File(appPickerFilesDirPath);
-                    if (!(appPickerFilesDir.exists() && appPickerFilesDir.isDirectory())) {
-                        if (appPickerFilesDir.mkdirs()) {
-                            appPickerFilesDir.setExecutable(true, false);
-                            appPickerFilesDir.setReadable(true, false);
-                        }
-                    }
-                    File[] appPickerfileList = f.listFiles();
-                    if (appPickerfileList != null) {
-                        for (File apf : appPickerfileList) {
-                            File outFile = new File(appPickerFilesDirPath + "/" + apf.getName());
-                            try {
-                                Utils.copyFile(apf, outFile);
-                                outFile.setReadable(true, false);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(mContext, R.string.settings_restore_failed, Toast.LENGTH_LONG).show();
-                                return true;
-                            }
-                        }
                     }
                 }
             }
@@ -378,7 +375,7 @@ public class SettingsManager {
                 }
             }
             // app picker
-            File appPickerFolder = new File(mContext.getFilesDir() + "/app_picker");
+            File appPickerFolder = new File(getPreferenceDir() + "/app_picker");
             if (appPickerFolder.exists()) {
                 appPickerFolder.setExecutable(true, false);
                 appPickerFolder.setReadable(true, false);

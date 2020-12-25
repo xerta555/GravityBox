@@ -824,7 +824,7 @@ public class ModLockscreen {
                       GravityBoxSettings.PREF_KEY_LOCKSCREEN_BACKGROUND_COLOR, Color.BLACK);
                 mCustomBg = BitmapUtils.drawableToBitmap(new ColorDrawable(color));
             } else if (bgType.equals(GravityBoxSettings.LOCKSCREEN_BG_IMAGE)) {
-                String wallpaperFile = mGbContext.getFilesDir() + "/lockwallpaper";
+                String wallpaperFile = mPrefs.getFile().getParent() + "/lockwallpaper";
                 mCustomBg = BitmapFactory.decodeFile(wallpaperFile);
             } else if (bgType.equals(GravityBoxSettings.LOCKSCREEN_BG_LAST_SCREEN)) {
                 setLastScreenBackground(false);
@@ -851,7 +851,7 @@ public class ModLockscreen {
 
     private static synchronized void setLastScreenBackground(boolean refresh) {
         try {
-            String kisImageFile = mGbContext.getFilesDir() + "/kis_image.png";
+            String kisImageFile = mPrefs.getFile().getParent() + "/kis_image.png";
             mCustomBg = BitmapFactory.decodeFile(kisImageFile);
             if (refresh && mStatusBar != null) {
                 XposedHelpers.callMethod(mStatusBar, "updateMediaMetaData", false, false);
