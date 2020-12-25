@@ -84,6 +84,7 @@ public class ModNavigationBar {
     private static boolean mHideImeSwitcher;
     private static PowerManager mPm;
     private static Integer mRecentsKeyCodeOriginal;
+    private static String mPreferenceDir;
 
     // Navbar dimensions
     private static int mNavbarHeight;
@@ -239,6 +240,7 @@ public class ModNavigationBar {
     };
 
     public static void init(final XSharedPreferences prefs, final ClassLoader classLoader) {
+        mPreferenceDir = prefs.getFile().getParent();
         mAlwaysShowMenukey = prefs.getBoolean(GravityBoxSettings.PREF_KEY_NAVBAR_MENUKEY, false);
 
         try {
@@ -1016,7 +1018,7 @@ public class ModNavigationBar {
     private static Drawable getCustomKeyIconDrawable() {
         switch (mCustomKeyIconStyle) {
             case CUSTOM:
-                File f = new File(mGbContext.getFilesDir() + "/navbar_custom_key_image");
+                File f = new File(mPreferenceDir, "navbar_custom_key_image");
                 if (f.exists() && f.canRead()) {
                     Bitmap b = BitmapFactory.decodeFile(f.getAbsolutePath());
                     if (b != null) {
