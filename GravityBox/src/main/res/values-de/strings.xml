@@ -1640,11 +1640,6 @@
     <!-- Turn off -->
     <string name="turn_off">Ausschalten</string>
 
-    <!-- Force AOSP -->
-    <string name="pref_force_aosp_title">Erzwinge AOSP</string>
-    <string name="pref_force_aosp_summary">Behandle System als AOSP. 
-        Dies auswählen, wenn Ihr Gerät als ein angepasstes System erkannt wird, obwohl es mit einem alternativen AOSP-basierten System läuft (Neustart erforderlich)</string>
-
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Zeige Helligkeitssymbol</string>
     <string name="pref_qs_brightness_icon_summary">Zeige Symbol des aktuellen Helligkeitsmodus. 

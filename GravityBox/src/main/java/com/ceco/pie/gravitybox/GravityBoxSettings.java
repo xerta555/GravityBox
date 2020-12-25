@@ -787,8 +787,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
     public static final String PREF_KEY_NM_TILE_ENABLED_MODES = "pref_nm_tile_enabled_modes";
     public static final String EXTRA_NM_TILE_ENABLED_MODES = "nmTileEnabledModes";
 
-    public static final String PREF_KEY_FORCE_AOSP = "pref_force_aosp";
-
     public static final String PREF_CAT_KEY_FINGERPRINT_LAUNCHER = "pref_cat_fingerprint_launcher";
     public static final String PREF_KEY_FINGERPRINT_LAUNCHER_ENABLE = "pref_fingerprint_launcher_enable";
     public static final String PREF_KEY_FINGERPRINT_LAUNCHER_PAUSE = "pref_fingerprint_launcher_pause";
@@ -1344,9 +1342,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             }
             
             mPrefs = SettingsManager.getInstance(getActivity()).getMainPrefs();
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
             addPreferencesFromResource(R.xml.gravitybox);
 
             AppPickerPreference.sPrefsFragment = this;
@@ -2364,11 +2360,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 if (p != null && p2 != null)
                     p2.setEnabled(mPrefs.getBoolean(PREF_KEY_NAVBAR_CUSTOM_KEY_ENABLE, false) &&
                         "CUSTOM".equals(p.getValue()));
-            }
-
-            if (key == null || key.equals(PREF_KEY_FORCE_AOSP)) {
-                CheckBoxPreference p = (CheckBoxPreference) findPreference(PREF_KEY_FORCE_AOSP);
-                if (p != null) p.setChecked(Utils.isAospForced());
             }
 
             if (key == null || key.equals(PREF_KEY_LOCKSCREEN_BOTTOM_ACTIONS_HIDE)) {
@@ -3509,20 +3500,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 intent.putExtra(TunerMainActivity.EXTRA_TRIAL_COUNTDOWN, sSystemProperties.tunerTrialCountdown);
             } else if (PREF_KEY_NAVBAR_CUSTOM_KEY_IMAGE.equals(pref.getKey())) {
                 setNavbarCustomKeyImage();
-            } else if (PREF_KEY_FORCE_AOSP.equals(pref.getKey())) {
-                File file = new File(Utils.AOSP_FORCED_FILE_PATH);
-                if (((CheckBoxPreference)pref).isChecked()) {
-                    if (!file.exists()) {
-                        try {
-                            file.createNewFile();
-                            file.setReadable(true, false);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else if (file.exists()) {
-                    file.delete();
-                }
             } else if (PREF_KEY_FINGERPRINT_LAUNCHER_PAUSE.equals(pref.getKey())) {
                 Intent fplPauseIntent = new Intent(ACTION_FPL_SETTINGS_CHANGED);
                 fplPauseIntent.putExtra(EXTRA_FPL_PAUSE, true);

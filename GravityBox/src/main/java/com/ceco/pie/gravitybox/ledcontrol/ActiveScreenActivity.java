@@ -46,9 +46,7 @@ public class ActiveScreenActivity extends GravityBoxActivity {
             super.onCreate(savedInstanceState);
 
             getPreferenceManager().setSharedPreferencesName("ledcontrol");
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
             mPrefs = SettingsManager.getInstance(getActivity()).getLedControlPrefs();
             addPreferencesFromResource(R.xml.led_control_active_screen_settings);
 

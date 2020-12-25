@@ -1018,8 +1018,6 @@
 <string name="pref_navbar_custom_key_image_title">تنظیم تصویر شخصی</string>
 <string name="pref_volume_rocker_wake_allow_music_title">اجازه بیدارشدن هنگام فعال بودن موسیقی</string>
 <string name="turn_off">خاموش کردن</string>
-<string name="pref_force_aosp_title">شبیه‌ساز اجباری سیستم AOSP</string>
-<string name="pref_force_aosp_summary">"شبیه ساز سیستم AOSP. در صورتیکه عملکرد دستگاه شما  بعنوان سیستم یک برند و مارک شناسایی شده‌است مورد استفاده قرار می‌گیرد، با این وجود در واقع  با یک سیستم AOSP جایگزین اجرا میشود(نیازمند راه‌اندازی مجدد)"</string>
 <string name="pref_qs_brightness_icon_title">نمایش آیکون تنظیم روشنایی</string>
 <string name="pref_qs_brightness_icon_summary">نمایش آیکون نشانگر حالت روشنایی . با یک لمس وضعیت را تغییر داده و با لمس طولانی تنظیمات صفحه نمایش را باز خواهد کرد</string>
 <string name="pref_lc_active_screen_ignore_update_title">نادیده گرفتن اعلانات بروزرسانی</string>

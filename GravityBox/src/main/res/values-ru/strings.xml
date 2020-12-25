@@ -1681,12 +1681,6 @@
     <!-- Turn off -->
     <string name="turn_off">Отключить</string>
 
-    <!-- Force AOSP -->
-    <string name="pref_force_aosp_title">Принудительно AOSP</string>
-    <string name="pref_force_aosp_summary">Система будет восприниматься как AOSP. 
-        Используйте, если система Вашего устройства идентифицируется как брендовая, хотя на самом
-        деле она является альтернативной прошивкой на основе AOSP (необходима перезагрузка)</string>
-
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Значок яркости</string>
     <string name="pref_qs_brightness_icon_summary">Показать значок с индикатором текущего режима яркости. 

@@ -126,9 +126,7 @@ public class LedSettingsFragment extends PreferenceFragment implements OnPrefere
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-            getPreferenceManager().setStorageDeviceProtected();
-        }
+        getPreferenceManager().setStorageDeviceProtected();
         addPreferencesFromResource(R.xml.led_control_settings);
 
         mColorPref = (ColorPickerPreference) findPreference(PREF_KEY_LED_COLOR);

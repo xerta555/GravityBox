@@ -560,10 +560,13 @@
             android:value="true" />
         <meta-data
             android:name="xposedminversion"
-            android:value="90+" />
+            android:value="90" />
         <meta-data
             android:name="xposeddescription"
             android:value="GravityBox by C3C076@XDA" />
+        <meta-data
+            android:name="xposedsharedprefs"
+            android:value="true" />
     </application>
 
 </manifest>

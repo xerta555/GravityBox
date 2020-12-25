@@ -175,9 +175,7 @@ public class QuietHoursActivity extends GravityBoxActivity {
             super.onCreate(savedInstanceState);
 
             getPreferenceManager().setSharedPreferencesName("quiet_hours");
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
             mPrefs = SettingsManager.getInstance(getActivity()).getQuietHoursPrefs();
 
             addPreferencesFromResource(R.xml.led_control_quiet_hours_settings);

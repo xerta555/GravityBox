@@ -1647,10 +1647,6 @@ Devam ederseniz, kendi sorumluluğunuz altındadır ve herhangi bir destek bekle
     <!-- Turn off -->
     <string name="turn_off">Kapat</string>
 
-    <!-- Force AOSP -->
-    <string name="pref_force_aosp_title">"AOSP'yi zorla"</string>
-    <string name="pref_force_aosp_summary">Sistem, AOSP gibi davranır. Cihazınızın alternatif AOSP-tabanlı bir sistem çalıştırmasına rağmen markalı sistem çalıştırıyor gibi tanımlanması durumunda kullanın (yeniden başlatma gerektirir)</string>
-
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Parlaklık simgesini göster</string>
     <string name="pref_qs_brightness_icon_summary">Geçerli parlaklık modunu belirten simgeyi gösterir. Tek basmada uyarlamalı parlaklığı, uzun basmada ekran ayarlarını açar.</string>

@@ -1620,10 +1620,6 @@
     <!-- Turn off -->
     <string name="turn_off">Opriți</string>
 
-    <!-- Force AOSP -->
-    <string name="pref_force_aosp_title">Forțare AOSP</string>
-    <string name="pref_force_aosp_summary">Tratează sistemul ca AOSP. Utilizați în cazul în care dispozitivul dvs. este identificat ca fiind un sistem de marcă care rulează, în ciuda faptului că acesta rulează de fapt sistem alternativ bazat pe AOSP (necesită repornire)</string>
-
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Afișați pictograma luminozității</string>
     <string name="pref_qs_brightness_icon_summary">Afișează pictograma care indică modul luminozităţii curente. Comută luminozitatea adaptivă la o apăsare, deschide setările de afișare la o apăsare lungă.</string>
