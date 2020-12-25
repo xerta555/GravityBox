@@ -1626,10 +1626,6 @@
     <!-- Turn off -->
     <string name="turn_off">Вимкнути</string>
 
-    <!-- Force AOSP -->
-    <string name="pref_force_aosp_title">Примусово AOSP</string>
-    <string name="pref_force_aosp_summary">Позначити систему як AOSP. Використовуйте, якщо ваш пристрій ідентифікується як брендована система, хоча насправді це кастомна на базі AOSP</string>
-
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Показати значок яскравості</string>
     <string name="pref_qs_brightness_icon_summary">Показує значок з поточним режимом яскравості. Дотик перемикає стан адаптивної яскравості, утримування - відкриває налаштування.</string>

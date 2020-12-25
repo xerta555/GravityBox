@@ -1395,7 +1395,6 @@
     <string name="qs_tile_op_screen_resolution">画面の解像度</string>
     <string name="search">検索</string>
     <string name="pref_navbar_custom_key_image_title">画像をセット</string>
-    <string name="pref_force_aosp_title">AOSPを強制</string>
     <string name="pref_imprint_vibe_disable_title">Imprintバイブレーションを無効</string>
     <string name="pref_lc_active_screen_ignore_update_summary">"既存の通知が更新されたときにアクティブ画面を実行しない "</string>
     <string name="pref_lc_active_screen_ignore_update_title">更新された通知を無視</string>
@@ -1504,9 +1503,6 @@
     <string name="pref_log_errors_title">エラーログ</string>
     <string name="pref_lc_notif_hide_persistent_title">永続的な通知を非表示</string>
     <string name="pref_lc_notif_hide_persistent_summary">このアプリからの進行中の通知およびその他のクリアできない通知をすべて非表示にする</string>
-    <string name="pref_force_aosp_summary">システムをAOSPとして扱う。
-        実際に代替のAOSPベースのシステムを実行しているにもかかわらず、
-        カスタムシステムを実行しているとデバイスが識別された場合に使用する（要再起動）</string>
     <string name="pref_lc_led_dnd_dialog_title">じゃましないでモード時にLEDを消灯したままにするのを選択</string>
     <string name="pref_lc_led_dnd_summary">選択したモードのLEDを抑制します</string>
     <string name="pref_lc_led_dnd_title">じゃましないで</string>

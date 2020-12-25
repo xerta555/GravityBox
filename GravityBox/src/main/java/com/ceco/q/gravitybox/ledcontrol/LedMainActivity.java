@@ -71,9 +71,7 @@ public class LedMainActivity extends GravityBoxActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
             addPreferencesFromResource(R.xml.led_control_main_activity_prefs);
         }
 

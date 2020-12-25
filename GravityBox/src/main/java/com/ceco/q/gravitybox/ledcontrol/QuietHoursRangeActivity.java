@@ -108,9 +108,7 @@ public class QuietHoursRangeActivity extends GravityBoxActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
             addPreferencesFromResource(R.xml.quiet_hours_range_settings);
 
             mPrefDays = (MultiSelectListPreference) findPreference(PREF_QH_RANGE_DAYS); 

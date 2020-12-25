@@ -1629,12 +1629,6 @@
     <!-- Turn off -->
     <string name="turn_off">Wyłącz</string>
 
-    <!-- Force AOSP -->
-    <string name="pref_force_aosp_title">Wymuś AOSP</string>
-    <string name="pref_force_aosp_summary">Traktuje system jako AOSP. 
-        Użyj w przypadku kiedy twoje urządzenie jest wykrywane jako brandowane pomimo tego, że faktycznie
-        działający system oparty jest o AOSP (wymaga ponownego uruchomienia)</string>
-
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Pokaż ikonę jasności</string>
     <string name="pref_qs_brightness_icon_summary">Pokaż ikonę wskazującą bieżący tryb jasności.

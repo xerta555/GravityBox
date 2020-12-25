@@ -1609,12 +1609,6 @@
     <!-- Turn off -->
     <string name="turn_off">Vypnout</string>
 
-    <!-- Force AOSP -->
-    <string name="pref_force_aosp_title">Vynutit AOSP</string>
-    <string name="pref_force_aosp_summary">Považuje systém za AOSP. 
-        Použijte v případě pokud GravityBox identifikuje systém s nástavbou výrobce 
-        i přesto, že ve skutečnosti je AOSP.</string>
-
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Zobrazit ikonu jasu</string>
     <string name="pref_qs_brightness_icon_summary">Zobrazí ikonu indikující aktuální režim jasu. 

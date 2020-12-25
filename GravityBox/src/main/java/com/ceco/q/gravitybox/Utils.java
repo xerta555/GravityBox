@@ -61,12 +61,6 @@ public class Utils {
     private static final String TAG = "GB:Utils";
     @SuppressWarnings("unused")
     private static final boolean DEBUG = false;
-    public static final boolean USE_DEVICE_PROTECTED_STORAGE = true;
-
-    @SuppressLint("SdCardPath")
-    public static final String AOSP_FORCED_FILE_PATH = USE_DEVICE_PROTECTED_STORAGE ?
-            "/data/user_de/0/com.ceco.q.gravitybox/files/aosp_forced" :
-            "/data/data/com.ceco.q.gravitybox/files/aosp_forced";
 
     // Device types
     private static final int DEVICE_PHONE = 0;
@@ -107,9 +101,7 @@ public class Utils {
         if (mGbContext == null) {
             mGbContext = context.createPackageContext(GravityBox.PACKAGE_NAME,
                     Context.CONTEXT_IGNORE_SECURITY);
-            if (USE_DEVICE_PROTECTED_STORAGE) {
-                mGbContext = mGbContext.createDeviceProtectedStorageContext();
-            }
+            mGbContext = mGbContext.createDeviceProtectedStorageContext();
         }
         return (config == null ? mGbContext : mGbContext.createConfigurationContext(config));
     }
@@ -119,19 +111,13 @@ public class Utils {
     }
 
     public static File getFilesDir(Context ctx) {
-        if (USE_DEVICE_PROTECTED_STORAGE) {
-            return ctx.isDeviceProtectedStorage() ?
-                    ctx.getFilesDir() : ctx.createDeviceProtectedStorageContext().getFilesDir();
-        }
-        return ctx.getFilesDir();
+        return ctx.isDeviceProtectedStorage() ?
+                ctx.getFilesDir() : ctx.createDeviceProtectedStorageContext().getFilesDir();
     }
 
     public static File getCacheDir(Context ctx) {
-        if (USE_DEVICE_PROTECTED_STORAGE) {
-            return ctx.isDeviceProtectedStorage() ?
-                    ctx.getCacheDir() : ctx.createDeviceProtectedStorageContext().getCacheDir();
-        }
-        return ctx.getCacheDir();
+        return ctx.isDeviceProtectedStorage() ?
+                ctx.getCacheDir() : ctx.createDeviceProtectedStorageContext().getCacheDir();
     }
 
     private static int getScreenType(Context con) {
@@ -189,7 +175,7 @@ public class Utils {
             mIsMtkDevice = Build.HARDWARE.toLowerCase(Locale.US).matches("^mt[68][1-9][1-9][1-9]$") &&
                 !isMotoXtDevice();
         }
-        return (mIsMtkDevice && !isAospForced());
+        return (mIsMtkDevice);
     }
 
     /**
@@ -200,7 +186,7 @@ public class Utils {
             mIsXperiaDevice = Build.MANUFACTURER.equalsIgnoreCase("sony")
                 && !isMtkDevice() && !isGpeDevice();
         }
-        return (mIsXperiaDevice && !isAospForced());
+        return (mIsXperiaDevice);
     }
 
     /**
@@ -215,7 +201,7 @@ public class Utils {
                      model.contains("moto")) &&
                      !isGpeDevice();
         }
-        return (mIsMotoXtDevice && !isAospForced());
+        return (mIsMotoXtDevice);
     }
 
     public static boolean isGpeDevice() {
@@ -226,13 +212,6 @@ public class Utils {
                 || productName.contains("ged") || productName.contains("gpe") ||
                 productName.contains("aosp");
         return mIsGpeDevice;
-    }
-
-    /**
-     * NOTE: Always returns false when called from Zygote!
-     */
-    public static boolean isAospForced() {
-        return (new File(AOSP_FORCED_FILE_PATH).exists());
     }
 
     public static boolean isExynosDevice() {

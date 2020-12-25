@@ -1631,11 +1631,6 @@
 
     <!-- Turn off -->
     <string name="turn_off">Kikapcsol</string>
-    
-    <!-- Force AOSP -->
-    <string name="pref_force_aosp_title">AOSP kényszerítés</string>
-    <string name="pref_force_aosp_summary">Rendszer kezelése AOSP-ként. 
-        Akkor használd, ha az eszközöd rendszere gyártóiként került azonosításra annak ellenére, hogy valójában alternatív AOSP-alapú rendszer (újraindítás szükséges)</string>
 
     <!-- QS: Brightness control -->
     <string name="pref_qs_brightness_icon_title">Fényerő ikon megjelenítése</string>
