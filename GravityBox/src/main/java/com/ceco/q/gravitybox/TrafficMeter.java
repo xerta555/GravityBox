@@ -138,7 +138,7 @@ public class TrafficMeter extends TrafficMeterAbstract {
             long newBytes = currentRxBytes - mTotalRxBytes;
 
             boolean disconnected = false;
-            if (canReadFromFile() && newBytes < 0) {
+            if (newBytes < 0) {
                 // It's impossible to get a speed under 0
                 currentRxBytes = 0;
                 newBytes = 0;
@@ -146,7 +146,7 @@ public class TrafficMeter extends TrafficMeterAbstract {
             }
 
             if (mTrafficMeterHide && newBytes == 0) {
-                long trafficBurstBytes = (canReadFromFile() && disconnected) ?
+                long trafficBurstBytes = (disconnected) ?
                         mTotalRxBytes - mTrafficBurstStartBytes : 
                             currentRxBytes - mTrafficBurstStartBytes;
 
@@ -183,7 +183,7 @@ public class TrafficMeter extends TrafficMeterAbstract {
                 }
             }
 
-            mTotalRxBytes = (canReadFromFile() && disconnected) ? 
+            mTotalRxBytes = (disconnected) ?
                     mTotalRxBytes : currentRxBytes;
             mLastUpdateTime = SystemClock.elapsedRealtime();
             getHandler().postDelayed(mRunnable, mInterval);

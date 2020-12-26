@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2020 Peter Gregus for GravityBox Project (C3C076@xda)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.q.gravitybox;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.lang.reflect.Method;
 
 import com.ceco.q.gravitybox.ProgressBarController.Mode;
 import com.ceco.q.gravitybox.ProgressBarController.ProgressInfo;
@@ -34,6 +30,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.TrafficStats;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -73,9 +72,11 @@ public abstract class TrafficMeterAbstract extends TextView
     protected boolean mShowOnlyForMobileData;
     protected boolean mIsTrackingProgress;
     protected boolean mAllowInLockscreen;
-    private Boolean mCanReadFromFile;
     private boolean mHiddenByPolicy;
     private boolean mHiddenByHeadsUp;
+    private Method mGetRxBytesMethod;
+    private Method mGetTxBytesMethod;
+    private final ConnectivityManager mConManager;
 
     protected static void log(String message) {
         XposedBridge.log(TAG + ": " + message);
@@ -93,6 +94,8 @@ public abstract class TrafficMeterAbstract extends TextView
 
     protected TrafficMeterAbstract(Context context) {
         super(context);
+
+        mConManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
@@ -339,17 +342,30 @@ public abstract class TrafficMeterAbstract extends TextView
     protected abstract void startTrafficUpdates();
     protected abstract void stopTrafficUpdates();
 
-    protected boolean canReadFromFile() {
-        if (mCanReadFromFile == null) {
-            File f = new File("/proc/net/xt_qtaguid/iface_stat_fmt");
-            mCanReadFromFile = (f.exists() && f.canRead());
+    @SuppressLint("DiscouragedPrivateApi")
+    protected boolean canUsePrimaryMethod() {
+        if (mGetRxBytesMethod == null) {
+            try {
+                mGetRxBytesMethod = TrafficStats.class.getDeclaredMethod("getRxBytes", String.class);
+                mGetRxBytesMethod.setAccessible(true);
+            } catch (Throwable t) {
+                if (DEBUG) log("canUsePrimaryMethod: error resolving getRxBytes method: " + t.getMessage());
+            }
         }
-        return mCanReadFromFile;
+        if (mGetTxBytesMethod == null) {
+            try {
+                mGetTxBytesMethod = TrafficStats.class.getDeclaredMethod("getTxBytes", String.class);
+                mGetTxBytesMethod.setAccessible(true);
+            } catch (Throwable t) {
+                if (DEBUG) log("canUsePrimaryMethod: error resolving getTxBytes method: " + t.getMessage());
+            }
+        }
+        return (mGetRxBytesMethod != null && mGetTxBytesMethod != null);
     }
 
     protected long[] getTotalRxTxBytes() {
-        return (canReadFromFile() ? getTotalRxTxBytesFromFile() :
-            getTotalRxTxBytesFromStats());
+        return (canUsePrimaryMethod() ? getTotalRxTxBytesPrimary() :
+                getTotalRxTxBytesSecondary());
     }
 
     private static boolean isCountedInterface(String iface) {
@@ -367,36 +383,35 @@ public abstract class TrafficMeterAbstract extends TextView
         }
     }
 
-    private static long[] getTotalRxTxBytesFromFile() {
-        String line;
-        String[] segs;
-        BufferedReader in = null;
-        long[] bytes = new long[] { 0, 0 };
+    @SuppressLint("MissingPermission")
+    private long[] getTotalRxTxBytesPrimary() {
         try {
-            FileReader fr = new FileReader("/proc/net/xt_qtaguid/iface_stat_fmt");
-            in = new BufferedReader(fr);
-            while ((line = in.readLine()) != null) {
-                segs = line.split(" ");
-                if (segs.length < 4)
-                    throw new UnsupportedOperationException("Unsupported length of net params");
-
-                if (isCountedInterface(segs[0])) {
-                    if (DEBUG) log("iface:"+segs[0]+"; RX="+segs[1]+"; TX="+segs[3]);
-                    bytes[0] += tryParseLong(segs[1]);
-                    bytes[1] += tryParseLong(segs[3]);
+            long[] bytes = new long[] {0, 0};
+            Network[] networks = mConManager.getAllNetworks();
+            for (Network network : networks){
+                NetworkCapabilities nCap = mConManager.getNetworkCapabilities(network);
+                if (nCap == null) continue;
+                if (nCap.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                        nCap.hasCapability(NetworkCapabilities.NET_CAPABILITY_FOREGROUND) &&
+                        nCap.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)) {
+                    LinkProperties lp = mConManager.getLinkProperties(network);
+                    if (lp == null || lp.getInterfaceName() == null) continue;
+                    long bytesRx = (long) mGetRxBytesMethod.invoke(null, lp.getInterfaceName());
+                    long bytesTx = (long) mGetTxBytesMethod.invoke(null, lp.getInterfaceName());
+                    if (DEBUG) log("getTotalRxTxBytesPrimary: iface=" + lp.getInterfaceName() +
+                            "; bytesRx=" + bytesRx + "; bytesTx=" + bytesTx);
+                    bytes[0] += bytesRx;
+                    bytes[1] += bytesTx;
                 }
             }
+            return bytes;
         } catch (Throwable t) {
-            GravityBox.log(TAG, t);
-            // fallback to TrafficStats
-            bytes = getTotalRxTxBytesFromStats();
-        } finally {
-            if (in != null) try { in.close(); } catch(IOException ignored) {}
+            if (DEBUG) log("getTotalRxTxBytesPrimary: error: " + t.getMessage());
+            return getTotalRxTxBytesSecondary();
         }
-        return bytes;
     }
 
-    private static long[] getTotalRxTxBytesFromStats() {
+    private static long[] getTotalRxTxBytesSecondary() {
         return new long[] { TrafficStats.getTotalRxBytes(),
                 TrafficStats.getTotalTxBytes() };
     }
