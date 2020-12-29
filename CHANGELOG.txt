@@ -1,3 +1,26 @@
+Changelog 9.2.0 - 29/12/2020
+--------------------------------------
+- Added compatibility with EdXposed v0.5 (requires latest canary version)
+- Maintains backwards compatibility with EdXposed v0.4
+- Location tiles: adjusted for changes since SDK 28:
+--- fixed GPS tile to show proper state when location is fixed
+--- adjusted SlimKat style tile to work with Location providers instead of deprecated modes:
+------- Battery saving: uses network provider
+------- Device only: uses GPS provider (GPS sensor)
+------- High accuracy: uses both providers
+- Clock: changed hooking strategy to avoid EdXposed ART crashes
+- Clock: keep master switch for Clock tweaks off by default (thanks to aviraxp)
+- TrafficMeter: fixed not working when data saver is enabled
+- TrafficMeter: improved to avoid double counting in case of VPN traffic
+- Dialer: adjusted for compatibility with the latest Google Dialer
+- Fixed XSharedPreferences Unexpected EOF errors showing in Xposed log
+- Updated Italian translations (thanks to Fs00)
+- Updated Russian translations (thanks to gaich)
+- Updated Chinese (Simplified) translations (thanks to liveasx)
+IMPORTANT: Module settings are reset when EdXposed is upgraded from v0.4 to v0.5
+due to changes in preferences storage location for modules in EdXposed v0.5.
+It is recommended to create a backup of GravityBox settings before upgrading to EdXposed v0.5.
+
 Changelog 9.1.3 - 19/10/2019
 --------------------------------------
 - QuickSettings: added option to show Memory usage bar in QS panel
