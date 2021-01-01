@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,10 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.r.gravitybox;
 
-import java.util.List;
+import java.util.Collection;
 
 import android.Manifest.permission;
 import de.robv.android.xposed.XC_MethodHook;
@@ -28,7 +27,7 @@ public class PermissionGranter {
 
     private static final String CLASS_PERMISSION_MANAGER_SERVICE = "com.android.server.pm.permission.PermissionManagerService";
     private static final String CLASS_PERMISSION_CALLBACK = "com.android.server.pm.permission.PermissionManagerServiceInternal.PermissionCallback";
-    private static final String CLASS_PACKAGE_PARSER_PACKAGE = "android.content.pm.PackageParser.Package";
+    private static final String CLASS_ANDROID_PACKAGE = "com.android.server.pm.parsing.pkg.AndroidPackage";
     private static final String PERM_ACCESS_SURFACE_FLINGER = "android.permission.ACCESS_SURFACE_FLINGER";
 
     private static void log(String message) {
@@ -40,16 +39,20 @@ public class PermissionGranter {
             final Class<?> pmServiceClass = XposedHelpers.findClass(CLASS_PERMISSION_MANAGER_SERVICE, classLoader);
 
             XposedHelpers.findAndHookMethod(pmServiceClass, "restorePermissionState",
-                    CLASS_PACKAGE_PARSER_PACKAGE, boolean.class, String.class,
+                    CLASS_ANDROID_PACKAGE, boolean.class, String.class,
                     CLASS_PERMISSION_CALLBACK, new XC_MethodHook() {
                 @SuppressWarnings("unchecked")
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
-                    final String pkgName = (String) XposedHelpers.getObjectField(param.args[0], "packageName");
-                    final Object extras = XposedHelpers.getObjectField(param.args[0], "mExtras");
-                    final Object ps = XposedHelpers.callMethod(extras, "getPermissionsState");
-                    final List<String> grantedPerms =
-                            (List<String>) XposedHelpers.getObjectField(param.args[0], "requestedPermissions");
+                    final String pkgName = (String) XposedHelpers.callMethod(param.args[0], "getPackageName");
+                    final Object pmInt = XposedHelpers.getObjectField(param.thisObject, "mPackageManagerInt");
+                    final Object pkgSettings = XposedHelpers.callMethod(pmInt, "getPackageSetting", pkgName);
+                    if (pkgSettings == null)
+                        return;
+
+                    final Object ps = XposedHelpers.callMethod(pkgSettings, "getPermissionsState");
+                    final Collection<String> grantedPerms =
+                            (Collection<String>) XposedHelpers.callMethod(param.args[0], "getRequestedPermissions");
                     final Object settings = XposedHelpers.getObjectField(param.thisObject, "mSettings");
                     final Object permissions = XposedHelpers.getObjectField(settings, "mPermissions");
 
