@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,6 +16,7 @@ package com.ceco.r.gravitybox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.ceco.r.gravitybox.TrafficMeterAbstract.TrafficMeterMode;
 import com.ceco.r.gravitybox.managers.BroadcastMediator;
@@ -66,13 +67,14 @@ public class ModStatusBar {
     private static final String CLASS_PHONE_STATUSBAR_VIEW = "com.android.systemui.statusbar.phone.PhoneStatusBarView";
     private static final String CLASS_POWER_MANAGER = "android.os.PowerManager";
     private static final String CLASS_EXPANDABLE_NOTIF_ROW = "com.android.systemui.statusbar.notification.row.ExpandableNotificationRow";
-    private static final String CLASS_STATUSBAR_WC = "com.android.systemui.statusbar.phone.StatusBarWindowController";
-    private static final String CLASS_PANEL_VIEW = "com.android.systemui.statusbar.phone.PanelView";
+    private static final String CLASS_PANEL_VIEW_CTRL = "com.android.systemui.statusbar.phone.PanelViewController";
     public static final String CLASS_NOTIF_PANEL_VIEW = "com.android.systemui.statusbar.phone.NotificationPanelView";
+    public static final String CLASS_NOTIF_PANEL_VIEW_CTRL = "com.android.systemui.statusbar.phone.NotificationPanelViewController";
     private static final String CLASS_COLLAPSED_SB_FRAGMENT = "com.android.systemui.statusbar.phone.CollapsedStatusBarFragment";
     private static final String CLASS_NOTIF_ICON_CONTAINER = "com.android.systemui.statusbar.phone.NotificationIconContainer";
     private static final String CLASS_NOTIF_ENTRY_MANAGER = "com.android.systemui.statusbar.notification.NotificationEntryManager";
     private static final String CLASS_QS_FRAGMENT = "com.android.systemui.qs.QSFragment";
+    public static final String CLASS_TOUCH_HANDLER = CLASS_PANEL_VIEW_CTRL + ".TouchHandler";
     private static final boolean DEBUG = false;
     private static final boolean DEBUG_LAYOUT = false;
 
@@ -274,7 +276,7 @@ public class ModStatusBar {
     }
 
     private static ViewGroup getKeyguardStatusBar() {
-        Object notifPanel = XposedHelpers.getObjectField(mStatusBar, "mNotificationPanel");
+        Object notifPanel = XposedHelpers.getObjectField(mStatusBar, "mNotificationPanelViewController");
         return (ViewGroup) XposedHelpers.getObjectField(notifPanel, "mKeyguardStatusBar");
     }
 
@@ -530,8 +532,6 @@ public class ModStatusBar {
             final Class<?> statusBarClass =
                     XposedHelpers.findClass(CLASS_STATUSBAR, classLoader);
             final Class<?> expandableNotifRowClass = XposedHelpers.findClass(CLASS_EXPANDABLE_NOTIF_ROW, classLoader);
-            final Class<?> statusBarWcClass = XposedHelpers.findClass(CLASS_STATUSBAR_WC, classLoader);
-            final Class<?> notifPanelViewClass = XposedHelpers.findClass(CLASS_NOTIF_PANEL_VIEW, classLoader);
 
             QuickStatusBarHeader.init(classLoader);
 
@@ -660,7 +660,7 @@ public class ModStatusBar {
                             if (mJustPeeked && XposedHelpers.getBooleanField(
                                     param.thisObject, "mExpandedVisible")) {
                                 Object notifPanel = XposedHelpers.getObjectField(
-                                        param.thisObject, "mNotificationPanel");
+                                        param.thisObject, "mNotificationPanelViewController");
                                 XposedHelpers.callMethod(notifPanel, "fling", 10, false);
                             }
                         }
@@ -731,11 +731,12 @@ public class ModStatusBar {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
                         if (mProgressBarCtrl != null) {
-                            Object notifData = XposedHelpers.getObjectField(param.thisObject, "mNotificationData");
-                            Object entry = XposedHelpers.callMethod(notifData, "get", param.args[0]);
+                            Map<String, ?> notifMap = (Map<String, ?>) XposedHelpers.getObjectField(
+                                    param.thisObject, "mActiveNotifications");
+                            Object entry = notifMap.get(param.args[0].toString());
                             if (entry != null) {
                                 mProgressBarCtrl.onNotificationRemoved((StatusBarNotification)
-                                        XposedHelpers.getObjectField(entry, "notification"));
+                                        XposedHelpers.getObjectField(entry, "mSbn"));
                             }
                         }
                     }
@@ -774,12 +775,11 @@ public class ModStatusBar {
 
             // status bar state change handling
             try {
-                XposedHelpers.findAndHookMethod(statusBarWcClass, "notifyStateChangedCallbacks",
-                        new XC_MethodHook() {
+                XposedHelpers.findAndHookMethod(statusBarClass, "onStateChanged",
+                        int.class, new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) {
-                        Object currentState = XposedHelpers.getObjectField(param.thisObject, "mCurrentState");
-                        mStatusBarState = XposedHelpers.getIntField(currentState, "statusBarState");
+                        mStatusBarState = (int) param.args[0];
                         if (DEBUG) log("setStatusBarState: newState="+mStatusBarState);
                         for (StatusBarStateChangedListener listener : mStateChangeListeners) {
                             listener.onStatusBarStateChanged(mStatusBarState);
@@ -803,7 +803,7 @@ public class ModStatusBar {
 
             // Disable peek
             try {
-                XposedHelpers.findAndHookMethod(CLASS_PANEL_VIEW, classLoader,
+                XposedHelpers.findAndHookMethod(CLASS_PANEL_VIEW_CTRL, classLoader,
                         "runPeekAnimation", long.class, float.class, boolean.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
@@ -812,7 +812,7 @@ public class ModStatusBar {
                         }
                     }
                 });
-                XposedBridge.hookAllMethods(XposedHelpers.findClass(CLASS_PANEL_VIEW, classLoader),
+                XposedBridge.hookAllMethods(XposedHelpers.findClass(CLASS_NOTIF_PANEL_VIEW_CTRL, classLoader),
                         "expand", new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
@@ -864,15 +864,17 @@ public class ModStatusBar {
 
             // brightness control in lock screen
             try {
-                XposedHelpers.findAndHookMethod(notifPanelViewClass, "onTouchEvent",
-                        MotionEvent.class, new XC_MethodHook() {
+                XposedHelpers.findAndHookMethod(CLASS_TOUCH_HANDLER, classLoader, "onTouch",
+                        View.class, MotionEvent.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
-                        if (mBrightnessControlEnabled) {
+                        if (mBrightnessControlEnabled &&
+                                CLASS_NOTIF_PANEL_VIEW.equals(param.args[0].getClass().getName())) {
+                            Object host = XposedHelpers.getSurroundingThis(param.thisObject);
                             View kgHeader = (View) XposedHelpers.getObjectField(
-                                    param.thisObject, "mKeyguardStatusBar");
+                                    host, "mKeyguardStatusBar");
                             if (kgHeader.getVisibility() == View.VISIBLE) {
-                                brightnessControl((MotionEvent) param.args[0]);
+                                brightnessControl((MotionEvent) param.args[1]);
                             }
                         }
                     }
@@ -1394,7 +1396,7 @@ public class ModStatusBar {
     private static void setNotificationPanelState(Intent intent, boolean withQs) {
         try {
             if (!intent.hasExtra(AShortcut.EXTRA_ENABLE)) {
-                Object notifPanel = XposedHelpers.getObjectField(mStatusBar, "mNotificationPanel");
+                Object notifPanel = XposedHelpers.getObjectField(mStatusBar, "mNotificationPanelViewController");
                 if ((boolean) XposedHelpers.callMethod(notifPanel, "isFullyCollapsed")) {
                     expandNotificationPanel(withQs);
                 } else {
@@ -1413,7 +1415,7 @@ public class ModStatusBar {
     }
 
     private static void expandNotificationPanel(boolean withQs) {
-        Object notifPanel = XposedHelpers.getObjectField(mStatusBar, "mNotificationPanel");
+        Object notifPanel = XposedHelpers.getObjectField(mStatusBar, "mNotificationPanelViewController");
         if (withQs && XposedHelpers.getBooleanField(notifPanel, "mQsExpansionEnabled")) {
             XposedHelpers.callMethod(notifPanel, "expand", false);
             XposedHelpers.callMethod(notifPanel, "setQsExpansion",

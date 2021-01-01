@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,8 +36,8 @@ import de.robv.android.xposed.XSharedPreferences;
 
 public class SysUiKeyguardStateMonitor implements BroadcastMediator.Receiver {
     public static final String TAG="GB:KeyguardStateMonitor";
-    public static final String CLASS_KG_MONITOR_IMPL =
-            "com.android.systemui.statusbar.policy.KeyguardMonitorImpl";
+    public static final String CLASS_KG_STATE_CTRL_IMPL =
+            "com.android.systemui.statusbar.policy.KeyguardStateControllerImpl";
     public static final String CLASS_KG_UPDATE_MONITOR =
             "com.android.keyguard.KeyguardUpdateMonitor";
     public static final String CLASS_KG_VIEW_MEDIATOR =
@@ -107,9 +107,9 @@ public class SysUiKeyguardStateMonitor implements BroadcastMediator.Receiver {
     private void createHooks() {
         try {
             ClassLoader cl = mContext.getClassLoader();
-            Class<?> monitorClass = XposedHelpers.findClass(CLASS_KG_MONITOR_IMPL, cl);
+            Class<?> kgStateCtrlClass = XposedHelpers.findClass(CLASS_KG_STATE_CTRL_IMPL, cl);
 
-            XposedBridge.hookAllConstructors(monitorClass, new XC_MethodHook() {
+            XposedBridge.hookAllConstructors(kgStateCtrlClass, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(final MethodHookParam param) {
                     mMonitor = param.thisObject;
@@ -134,8 +134,8 @@ public class SysUiKeyguardStateMonitor implements BroadcastMediator.Receiver {
                     }
                 }
             };
-            XposedHelpers.findAndHookMethod(monitorClass, "notifyKeyguardChanged", stateChangeHook);
-            XposedBridge.hookAllMethods(monitorClass, "notifyKeyguardState", stateChangeHook);
+            XposedHelpers.findAndHookMethod(kgStateCtrlClass, "notifyKeyguardChanged", stateChangeHook);
+            XposedBridge.hookAllMethods(kgStateCtrlClass, "notifyKeyguardState", stateChangeHook);
 
             XposedHelpers.findAndHookMethod(CLASS_KG_VIEW_MEDIATOR, cl,
                     "setKeyguardEnabled", boolean.class, new XC_MethodHook() {
@@ -316,7 +316,7 @@ public class SysUiKeyguardStateMonitor implements BroadcastMediator.Receiver {
 
     private void handleFingerprintAuthenticated(int userId) {
         try {
-            XposedHelpers.callMethod(mUpdateMonitor, "handleFingerprintAuthenticated", userId);
+            XposedHelpers.callMethod(mUpdateMonitor, "handleFingerprintAuthenticated", userId, true);
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
         }

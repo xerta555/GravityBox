@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,7 @@ public class SysUiNotificationDataMonitor {
     public static final String TAG="GB:NotificationDataMonitor";
     private static boolean DEBUG = false;
 
-    private static final String CLASS_NOTIF_DATA = "com.android.systemui.statusbar.notification.collection.NotificationData";
+    private static final String CLASS_NOTIF_COLLECTION = "com.android.systemui.statusbar.notification.collection.NotifCollection";
     private static final String CLASS_NOTIF_ENTRY_MANAGER = "com.android.systemui.statusbar.notification.NotificationEntryManager";
 
     private static void log(String msg) {
@@ -44,7 +44,7 @@ public class SysUiNotificationDataMonitor {
     }
 
     private Context mContext;
-    private Object mNotifData;
+    private Object mNotifCollection;
     private final List<Listener> mListeners = new ArrayList<>();
 
     protected SysUiNotificationDataMonitor(Context context) {
@@ -59,18 +59,18 @@ public class SysUiNotificationDataMonitor {
     private void createHooks() {
         try {
             ClassLoader cl = mContext.getClassLoader();
-            Class<?> classNotifData = XposedHelpers.findClass(CLASS_NOTIF_DATA, cl);
+            Class<?> classNotifCollection = XposedHelpers.findClass(CLASS_NOTIF_COLLECTION, cl);
             Class<?> classNotifEntryManager = XposedHelpers.findClass(CLASS_NOTIF_ENTRY_MANAGER, cl);
 
-            XposedBridge.hookAllConstructors(classNotifData, new XC_MethodHook() {
+            XposedBridge.hookAllConstructors(classNotifCollection, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(final MethodHookParam param) {
-                    mNotifData = param.thisObject;
-                    if (DEBUG) log("NotificatioData object constructed");
+                    mNotifCollection = param.thisObject;
+                    if (DEBUG) log("NotifCollection object constructed");
                 }
             });
 
-            XposedBridge.hookAllMethods(classNotifData, "add", new XC_MethodHook() {
+            XposedBridge.hookAllMethods(classNotifCollection, "postNotification", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(final MethodHookParam param) {
                     if (DEBUG) log("Notification entry added");
@@ -79,15 +79,11 @@ public class SysUiNotificationDataMonitor {
                 }
             });
 
-            XposedBridge.hookAllMethods(classNotifData, "remove", new XC_MethodHook() {
+            XposedBridge.hookAllMethods(classNotifCollection, "tryRemoveNotification", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(final MethodHookParam param) {
                     if (DEBUG) log("Notification entry removed");
-                    StatusBarNotification sbn = null;
-                    if (hasNotificationField(param.getResult())) {
-                        sbn = (StatusBarNotification) XposedHelpers.getObjectField(
-                                param.getResult(), "notification");
-                    }
+                    StatusBarNotification sbn = getSbNotificationFromArgs(param.args);
                     notifyDataChanged(sbn);
                 }
             });
@@ -111,14 +107,14 @@ public class SysUiNotificationDataMonitor {
                 return (StatusBarNotification) o;
             else if (hasNotificationField(o))
                 return (StatusBarNotification)
-                        XposedHelpers.getObjectField(o, "notification");
+                        XposedHelpers.getObjectField(o, "mSbn");
         }
         return null;
     }
 
     private boolean hasNotificationField(Object o) {
         try {
-            XposedHelpers.getObjectField(o, "notification");
+            XposedHelpers.getObjectField(o, "mSbn");
             return true;
         } catch (Throwable t) {
             return false;
@@ -150,15 +146,15 @@ public class SysUiNotificationDataMonitor {
     }
 
     public int getNotifCountFor(String pkg) {
-        if (pkg == null || mNotifData == null) return 0;
+        if (pkg == null || mNotifCollection == null) return 0;
 
         int count = 0;
 
         try {
-            Map<?,?> entries = (Map<?,?>) XposedHelpers.getObjectField(mNotifData, "mEntries");
+            Map<?,?> entries = (Map<?,?>) XposedHelpers.getObjectField(mNotifCollection, "mNotificationSet");
             for (Object entry : entries.values()) {
                 StatusBarNotification sbn = (StatusBarNotification)
-                        XposedHelpers.getObjectField(entry, "notification");
+                        XposedHelpers.getObjectField(entry, "mSbn");
                 if (pkg.equals(sbn.getPackageName())) {
                     final Notification n = sbn.getNotification();
                     count += (n.number > 0 ? n.number : 1);

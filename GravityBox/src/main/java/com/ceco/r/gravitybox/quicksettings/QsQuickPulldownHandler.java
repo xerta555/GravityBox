@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,6 +18,7 @@ import java.util.List;
 
 import com.ceco.r.gravitybox.GravityBox;
 import com.ceco.r.gravitybox.GravityBoxSettings;
+import com.ceco.r.gravitybox.ModStatusBar;
 import com.ceco.r.gravitybox.managers.BroadcastMediator;
 import com.ceco.r.gravitybox.managers.SysUiManagers;
 
@@ -26,6 +27,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.view.MotionEvent;
+import android.view.View;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
@@ -56,7 +59,7 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
     private int mMode;
     private int mModeAuto;
     private int mSizePercent;
-    private Object mNotificationData;
+    private Object mNotificationManager;
 
     public QsQuickPulldownHandler(Context context, XSharedPreferences prefs, 
             QsTileEventDistributor eventDistributor) {
@@ -111,31 +114,34 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
 
             final String qsExpandFieldName = getQsExpandFieldName();
 
-            XposedHelpers.findAndHookMethod(CLASS_NOTIF_PANEL, cl,
-                    "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(ModStatusBar.CLASS_TOUCH_HANDLER, cl,
+                    "onTouch", View.class, MotionEvent.class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
-                    final Object o = param.thisObject;
+                    if (!CLASS_NOTIF_PANEL.equals(param.args[0].getClass().getName()))
+                        return;
+
+                    final Object host = XposedHelpers.getSurroundingThis(param.thisObject);
                     if ((mMode == MODE_OFF && mModeAuto == MODE_AUTO_OFF) ||
-                        XposedHelpers.getBooleanField(o, "mBlockTouches") ||
-                        XposedHelpers.getBooleanField(o, "mOnlyAffordanceInThisMotion") ||
-                        XposedHelpers.getBooleanField(o, qsExpandFieldName) ||
-                        isQsContainerCustomizing(o) ||
-                        (!XposedHelpers.getBooleanField(o, qsExpandFieldName) && 
-                                XposedHelpers.getBooleanField(o, "mQsTracking") &&
-                                !XposedHelpers.getBooleanField(o, "mConflictingQsExpansionGesture"))) {
+                        XposedHelpers.getBooleanField(host, "mBlockTouches") ||
+                        XposedHelpers.getBooleanField(host, "mOnlyAffordanceInThisMotion") ||
+                        XposedHelpers.getBooleanField(host, qsExpandFieldName) ||
+                        isQsContainerCustomizing(host) ||
+                        (!XposedHelpers.getBooleanField(host, qsExpandFieldName) &&
+                                XposedHelpers.getBooleanField(host, "mQsTracking") &&
+                                !XposedHelpers.getBooleanField(host, "mConflictingQsExpansionGesture"))) {
                         return;
                     }
 
-                    final MotionEvent event = (MotionEvent) param.args[0];
+                    final MotionEvent event = (MotionEvent) param.args[1];
                     boolean oneFingerQsOverride = event.getActionMasked() == MotionEvent.ACTION_DOWN
-                            && shouldQuickSettingsIntercept(o, event.getX(), event.getY(), -1)
+                            && shouldQuickSettingsIntercept(host, event.getX(), event.getY(), -1)
                             && event.getY(event.getActionIndex()) < 
-                                XposedHelpers.getIntField(o, "mStatusBarMinHeight");
+                                XposedHelpers.getIntField(host, "mStatusBarMinHeight");
                     if (oneFingerQsOverride) {
-                        XposedHelpers.setBooleanField(o, qsExpandFieldName, true);
-                        XposedHelpers.callMethod(o, "requestPanelHeightUpdate");
-                        XposedHelpers.callMethod(o, "setListening", true);
+                        XposedHelpers.setBooleanField(host, qsExpandFieldName, true);
+                        XposedHelpers.callMethod(host, "requestPanelHeightUpdate");
+                        XposedHelpers.callMethod(host, "setListening", true);
                     }
                 }
             });
@@ -169,18 +175,17 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
         return showQsOverride;
     }
 
-    private Object getNotificationData(Object o) {
-        if (mNotificationData == null) {
-            Object entryManager = XposedHelpers.getObjectField(
+    private Object getNotificationManager(Object o) {
+        if (mNotificationManager == null) {
+            mNotificationManager = XposedHelpers.getObjectField(
                     XposedHelpers.getObjectField(o, "mStatusBar"), "mEntryManager");
-            mNotificationData = XposedHelpers.callMethod(entryManager, "getNotificationData");
         }
-        return mNotificationData;
+        return mNotificationManager;
     }
 
     private boolean hasNotifications(Object o) {
         try {
-            List<?> list = (List<?>)XposedHelpers.callMethod(getNotificationData(o),
+            List<?> list = (List<?>)XposedHelpers.callMethod(getNotificationManager(o),
                     "getActiveNotifications");
             return list.size() > 0;
         } catch (Throwable t) {
@@ -191,11 +196,11 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
 
     private boolean hasClearableNotifications(Object o) {
         try {
-            List<?> list = (List<?>)XposedHelpers.callMethod(getNotificationData(o),
-                    "getActiveNotifications");
+            List<?> list = (List<?>)XposedHelpers.callMethod(getNotificationManager(o),
+                    "getVisibleNotifications");
             boolean hasClearableNotifications = false;
             for (Object entry : list) {
-                StatusBarNotification sbn = (StatusBarNotification) XposedHelpers.getObjectField(entry, "notification");
+                StatusBarNotification sbn = (StatusBarNotification) XposedHelpers.getObjectField(entry, "mSbn");
                 hasClearableNotifications |= sbn.isClearable();
             }
             return hasClearableNotifications;

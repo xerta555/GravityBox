@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.r.gravitybox;
 
 import java.lang.reflect.Constructor;
@@ -72,9 +71,8 @@ public class ModLedControl {
     private static final String CLASS_NOTIF_FILTER = "com.android.systemui.statusbar.notification.NotificationFilter";
     private static final String CLASS_NOTIF_DATA_ENTRY = "com.android.systemui.statusbar.notification.collection.NotificationEntry";
     private static final String CLASS_NOTIFICATION_RECORD = "com.android.server.notification.NotificationRecord";
-    private static final String CLASS_HEADS_UP_MANAGER_ENTRY = "com.android.systemui.statusbar.policy.HeadsUpManager.HeadsUpEntry";
     private static final String CLASS_ALERT_ENTRY = "com.android.systemui.statusbar.AlertingNotificationManager.AlertEntry";
-    private static final String CLASS_NOTIF_INTERRUPTION_STATE_PROVIDER = "com.android.systemui.statusbar.notification.NotificationInterruptionStateProvider";
+    private static final String CLASS_NOTIF_INTERRUPTION_STATE_PROVIDER = "com.android.systemui.statusbar.notification.interruption.NotificationInterruptStateProviderImpl";
     public static final String PACKAGE_NAME_SYSTEMUI = "com.android.systemui";
 
     private static final String NOTIF_EXTRA_HEADS_UP_MODE = "gbHeadsUpMode";
@@ -758,7 +756,7 @@ public class ModLedControl {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) {
                     StatusBarNotification sbn = (StatusBarNotification)
-                            XposedHelpers.getObjectField(param.args[0], "notification");
+                            XposedHelpers.getObjectField(param.args[0], "mSbn");
                     Notification n = sbn.getNotification();
 
                     // whether to hide persistent everywhere
@@ -822,8 +820,8 @@ public class ModLedControl {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) {
                         StatusBarNotification sbn = (StatusBarNotification) XposedHelpers
-                                .getObjectField(param.args[0], "notification");
-                        Context context = (Context) XposedHelpers.getObjectField(param.thisObject, "mContext");
+                                .getObjectField(param.args[0], "mSbn");
+                        Context context = (Context) XposedHelpers.getObjectField(mStatusBar, "mContext");
                         Notification n = sbn.getNotification();
                         int statusBarWindowState = XposedHelpers.getIntField(mStatusBar, "mStatusBarWindowState");
 
@@ -879,7 +877,7 @@ public class ModLedControl {
 
                         XposedHelpers.callMethod(param.thisObject, "removeAutoRemovalCallbacks");
                         StatusBarNotification sbNotif = (StatusBarNotification)
-                                XposedHelpers.getObjectField(entry, "notification");
+                                XposedHelpers.getObjectField(entry, "mSbn");
                         Notification n = sbNotif.getNotification();
                         int timeout = n.extras.containsKey(NOTIF_EXTRA_HEADS_UP_TIMEOUT) ?
                                 n.extras.getInt(NOTIF_EXTRA_HEADS_UP_TIMEOUT) * 1000 :

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -442,7 +442,7 @@ public class ModLockscreen {
 
         // Lockscreen App Bar
         try {
-            XposedHelpers.findAndHookMethod(ModStatusBar.CLASS_NOTIF_PANEL_VIEW, classLoader,
+            XposedHelpers.findAndHookMethod(ModStatusBar.CLASS_NOTIF_PANEL_VIEW_CTRL, classLoader,
                     "onFinishInflate", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(final MethodHookParam param) {
@@ -474,16 +474,18 @@ public class ModLockscreen {
 
         // double-tap to sleep
         try {
-            XposedHelpers.findAndHookMethod(ModStatusBar.CLASS_NOTIF_PANEL_VIEW, classLoader,
-                    "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(ModStatusBar.CLASS_TOUCH_HANDLER, classLoader,
+                    "onTouch", View.class, MotionEvent.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(final MethodHookParam param) {
                     if (mPrefs.getBoolean(GravityBoxSettings.PREF_KEY_LOCKSCREEN_D2TS, false) &&
                             mGestureDetector != null &&
-                            (int) XposedHelpers.getIntField(
-                                XposedHelpers.getObjectField(param.thisObject, "mStatusBar"),
+                            ModStatusBar.CLASS_NOTIF_PANEL_VIEW.equals(param.args[0].getClass().getName())) {
+                        Object host = XposedHelpers.getSurroundingThis(param.thisObject);
+                        if ((int) XposedHelpers.getIntField(XposedHelpers.getObjectField(host, "mStatusBar"),
                                 "mState") == StatusBarState.KEYGUARD) {
-                        mGestureDetector.onTouchEvent((MotionEvent) param.args[0]);
+                            mGestureDetector.onTouchEvent((MotionEvent) param.args[1]);
+                        }
                     }
                 }
             });

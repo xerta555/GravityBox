@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2014 The CyanogenMod Project
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ import de.robv.android.xposed.XposedHelpers;
 public class ModPower {
     private static final String TAG = "GB:ModPower";
     private static final String CLASS_PM_SERVICE = "com.android.server.power.PowerManagerService";
-    private static final String CLASS_PM_HANDLER = "com.android.server.power.PowerManagerService$PowerManagerHandler";
+    private static final String CLASS_PM_HANDLER = "com.android.server.power.PowerManagerService$PowerManagerHandlerCallback";
     private static final String CLASS_PM_NOTIFIER = "com.android.server.power.Notifier";
     private static final String CLASS_SHUTDOWN_THREAD = "com.android.server.power.ShutdownThread";
     private static final boolean DEBUG = false;
@@ -195,7 +195,7 @@ public class ModPower {
                     GravityBoxSettings.PREF_KEY_CHARGER_PLUGGED_SOUND, null));
 
             XposedHelpers.findAndHookMethod(CLASS_PM_NOTIFIER, classLoader,
-                    "playChargingStartedFeedback", int.class, new XC_MethodHook() {
+                    "playChargingStartedFeedback", int.class, boolean.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(final MethodHookParam param) {
                     if (mIsChargingSoundCustom || mQh.isSystemSoundMuted(QuietHours.SystemSound.CHARGER)) {

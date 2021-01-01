@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ public class FrameworkManagers {
     private static final boolean DEBUG = false;
 
     private static final String CLASS_SYSTEM_SERVER = "com.android.server.SystemServer";
+    private static final String CLASS_TIMINGS_TRACE_AND_SLOG = "com.android.server.utils.TimingsTraceAndSlog";
 
     private static void log(String message) {
         XposedBridge.log(TAG + ": " + message);
@@ -44,7 +45,7 @@ public class FrameworkManagers {
     private static void hookStartCoreServices(ClassLoader classLoader) {
         try {
             XposedHelpers.findAndHookMethod(CLASS_SYSTEM_SERVER, classLoader, "startCoreServices",
-                    new XC_MethodHook() {
+                    CLASS_TIMINGS_TRACE_AND_SLOG, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
                     if (DEBUG) log("Core services started");

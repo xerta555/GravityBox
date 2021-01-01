@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2013 The CyanogenMod Project (Jens Doll)
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * This code is loosely based on portions of the ParanoidAndroid Project source, Copyright (C) 2012.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -15,7 +15,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package com.ceco.r.gravitybox;
 
 import java.util.HashSet;
@@ -57,7 +56,7 @@ public class ModPieControls {
 
     private static final String CLASS_SYSTEM_UI = "com.android.systemui.SystemUI";
     private static final String CLASS_STATUSBAR = "com.android.systemui.statusbar.phone.StatusBar";
-    private static final String CLASS_COMMAND_QUEUE = "com.android.systemui.statusbar.CommandQueue";
+    private static final String CLASS_NAVBAR_FRAGMENT = "com.android.systemui.statusbar.phone.NavigationBarFragment";
 
     public static final int STATUS_BAR_DISABLE_HOME = 0x00200000;
     public static final int STATUS_BAR_DISABLE_SEARCH = 0x02000000;
@@ -383,7 +382,7 @@ public class ModPieControls {
                 }
             });
 
-            XposedHelpers.findAndHookMethod(CLASS_COMMAND_QUEUE, classLoader, "setImeWindowStatus",
+            XposedHelpers.findAndHookMethod(CLASS_NAVBAR_FRAGMENT, classLoader, "setImeWindowStatus",
                     int.class, IBinder.class, int.class, int.class, boolean.class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
@@ -398,8 +397,9 @@ public class ModPieControls {
                 }
             });
 
-            XposedHelpers.findAndHookMethod(CLASS_COMMAND_QUEUE, classLoader,
-                    "topAppWindowChanged", int.class, boolean.class, new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(CLASS_STATUSBAR, classLoader,
+                    "topAppWindowChanged", int.class, boolean.class, boolean.class,
+                    new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
                     if (mPieController == null) return;
