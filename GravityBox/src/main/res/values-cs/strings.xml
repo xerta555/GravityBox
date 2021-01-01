@@ -1339,7 +1339,7 @@
 
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">POZOR</string>
-    <string name="gb_new_package_dialog_message">Byla nalezena předcházející verze GravityBox pro Pie.
+    <string name="gb_new_package_dialog_message">Byla nalezena předcházející verze GravityBox pro Q.
         Před použitím nové verze, je potřeba odinstalovat předešlou verzi. Stlačte OK pro spuštění procesu odinstalace. 
         Po odinstalování, aktivujte novou verzi v Xposed instalátoru a restartuje zařízení.</string>
 

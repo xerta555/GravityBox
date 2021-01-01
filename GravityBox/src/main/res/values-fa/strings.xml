@@ -860,7 +860,7 @@
 <string name="pref_reboot_allow_softreboot_title">راه‌اندازی نرم</string>
 <string name="pref_reboot_allow_softreboot_summary">توجه داشته باشید که راه اندازی مجدد نرم سبب تخلیه بیشتر باطری و یا بی‌ثباتی و مسائل غیرمنتظره میشود. بهترین راه همیشه استفاده از راه‌اندازی مجدد سیستم بصورت عادی ست.</string>
 <string name="gb_new_package_dialog_title">توجه</string>
-<string name="gb_new_package_dialog_message">GravityBox for Pie found installed. Before new version can be used, old one has to be uninstalled. Press OK to start uninstallation process. After uninstallation, do not forget to activate new module in Xposed Installer and REBOOT IMMEDIATELLY.</string>
+<string name="gb_new_package_dialog_message">GravityBox for Q found installed. Before new version can be used, old one has to be uninstalled. Press OK to start uninstallation process. After uninstallation, do not forget to activate new module in Xposed Installer and REBOOT IMMEDIATELLY.</string>
 <string name="settings_restore_backup_obsolete">پشتیبان ایجاد شده در نسخه های قدیمی آندروید نمی تواند با توجه به تفاوت گسترده سیستم عامل ترمیم شود.توصیه می‌شود جعبه جذاب از ابتدا پیکربندی شود</string>
 <string name="pref_data_traffic_lockscreen_title">نمایش در صفحه قفل</string>
 <string name="pref_data_traffic_lockscreen_summary">نمایش همیشگی در مرکز صفحه قفل</string>

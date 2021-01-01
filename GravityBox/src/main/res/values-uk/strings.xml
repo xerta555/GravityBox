@@ -1343,7 +1343,7 @@
 
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">УВАГА</string>
-    <string name="gb_new_package_dialog_message">Виявлено GravityBox для Pie. Перед використанням нової версії, стару буде вилучено. Натисніть ГАРАЗД, аби почати процес вилучення. Після вилучення, не забудьте активувати новий модуль в Xposed Installer та ОБОВ\'ЯЗКОВО ПЕРЕЗАВАНТАЖИТИ пристрій.</string>
+    <string name="gb_new_package_dialog_message">Виявлено GravityBox для Q. Перед використанням нової версії, стару буде вилучено. Натисніть ГАРАЗД, аби почати процес вилучення. Після вилучення, не забудьте активувати новий модуль в Xposed Installer та ОБОВ\'ЯЗКОВО ПЕРЕЗАВАНТАЖИТИ пристрій.</string>
 
     <!-- Restore settings: warn if old backup exists -->
     <string name="settings_restore_backup_obsolete">Резервна копія, яка була зроблена на старій версії Android, не може бути відновлена через значні відмінності систем. Наполегливо рекомендуємо налаштувати GravityBox наново.</string>

@@ -1329,7 +1329,7 @@
 
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">ATENŢIE</string>
-    <string name="gb_new_package_dialog_message">GravityBox pentru Pie a fost instalat. Înainte ca noua versiune să poată fi utilizată, vechea versine trebuie dezinstalată. Apăsați OK pentru a începe procesul de dezinstalare. După dezinstalare, nu uitați să activați modulul nou în Xposed Installer și REPORNIRE IMEDIATĂ.</string>
+    <string name="gb_new_package_dialog_message">GravityBox pentru Q a fost instalat. Înainte ca noua versiune să poată fi utilizată, vechea versine trebuie dezinstalată. Apăsați OK pentru a începe procesul de dezinstalare. După dezinstalare, nu uitați să activați modulul nou în Xposed Installer și REPORNIRE IMEDIATĂ.</string>
 
     <!-- Restore settings: warn if old backup exists -->
     <string name="settings_restore_backup_obsolete">Backup-ul realizat în versiunea mai veche a Android nu poate fi restabilit datorită diferențelor extinse ale sistemului de operare. Se recomandă foarte mult să configurați GravityBox de la zero.</string>

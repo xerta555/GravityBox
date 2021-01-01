@@ -1359,7 +1359,7 @@
 
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">ATENCIÓN</string>
-    <string name="gb_new_package_dialog_message">GravityBox para Pie se encuentra instalada.
+    <string name="gb_new_package_dialog_message">GravityBox para Q se encuentra instalada.
          Antes de usar una nueva versión, debe desinstalar la vieja. Pulse OK para iniciar el proceso de desinstalación.
          Después de la desinstalación, no se olvide de activar el nuevo módulo en el gestor de Xposed y reiniciar INMEDIATAMENTE.</string>
 

@@ -1318,7 +1318,7 @@ se o tráfego de dados móveis atual excede o limite definido (Ajuste para 0 par
 
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">ATENÇÃO</string>
-    <string name="gb_new_package_dialog_message">GravityBox para Pie encontrado.
+    <string name="gb_new_package_dialog_message">GravityBox para Q encontrado.
         Antes que a nova versão possa ser usada, a antiga precisa ser desinstalada. Pressione OK para começar o processo de desinstalação.
         Depois de desinstalar, não se esqueça de ativar o novo módulo no instalador do Xposed e REINICIE IMEDIATAMENTE.
     </string>

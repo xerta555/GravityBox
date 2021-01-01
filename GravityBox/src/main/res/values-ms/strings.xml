@@ -1372,7 +1372,7 @@
 
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">PERHATIAN</string>
-    <string name="gb_new_package_dialog_message">GravityBox dari Pie didapati ada.
+    <string name="gb_new_package_dialog_message">GravityBox dari Q didapati ada.
         Sebelum memasang versi baru,versi lama perlu dibuang. Tekan ok untuk buang versi lama.
         Selepas buang, jangan lupa untuk aktifkan modul di dalam xposed dan REBOOT SEGERA.</string>
 

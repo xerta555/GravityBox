@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId 'com.ceco.q.gravitybox'
+        applicationId 'com.ceco.r.gravitybox'
         minSdkVersion 29
         //noinspection OldTargetApi
         targetSdkVersion 29

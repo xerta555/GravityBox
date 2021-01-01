@@ -1121,7 +1121,7 @@
 バッテリーの異常消費や不安定な動作を引き起こす可能性があります。通常の再起動を使う方がおすすめです。</string>
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">注意</string>
-    <string name="gb_new_package_dialog_message">Pie向けGravityBoxがインストールされています。
+    <string name="gb_new_package_dialog_message">Q向けGravityBoxがインストールされています。
         新しいバージョンを使う前に、古いバージョンをアンインストールしてください。OKをタップするとアンインストールを始めます。
         アンインストールが終わったら、Pie向けをXposed Installerで有効にして、すぐ再起動してください。</string>
     <!-- Restore settings: warn if old backup exists -->

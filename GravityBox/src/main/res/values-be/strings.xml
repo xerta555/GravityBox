@@ -1356,7 +1356,7 @@ ID транзакцыі ахвяравання PayPal. Спробавы перы
 
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">УВАГА</string>
-    <string name="gb_new_package_dialog_message">Выяўлены ўсталяваны GravityBox для Pie.
+    <string name="gb_new_package_dialog_message">Выяўлены ўсталяваны GravityBox для Q.
 Перад выкарыстаннем новай версіі трэба выдаліць старую. Націсніце OK для запуску працэсу выдалення.
 Пасля выдалення не забудзьцеся актываваць новы модуль у Xposed Installer і АДРАЗУ Ж ПЕРАЗАГРУЗІЦЦА.</string>
 

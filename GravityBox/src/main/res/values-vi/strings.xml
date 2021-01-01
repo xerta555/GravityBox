@@ -1358,7 +1358,7 @@
 
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">CHÚ Ý</string>
-    <string name="gb_new_package_dialog_message">GravityBox cho Pie đã được cài đặt.
+    <string name="gb_new_package_dialog_message">GravityBox cho Q đã được cài đặt.
         Trước khi phiên bản mới có thể sử dụng, p.bản cũ phải được gỡ cài đặt. Nhấn OK để gỡ cài đặt.
         Sau khi gỡ cài đặt, đừng quên kích hoạt module mới trong Xposed Installer và KHỞI ĐỘNG LẠI LUÔN.</string>
 

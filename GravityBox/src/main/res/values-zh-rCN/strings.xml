@@ -1378,7 +1378,7 @@
 
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">注意</string>
-    <string name="gb_new_package_dialog_message">发现 GravityBox 已安装 Pie 版本
+    <string name="gb_new_package_dialog_message">发现 GravityBox 已安装 Q 版本
 	在新版本可以使用之前必须卸载旧的,按确认开始卸载
 	卸载后,不要忘记在Xposed安装器中激活新模块并重新启动</string>
 

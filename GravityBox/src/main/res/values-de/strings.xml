@@ -1344,7 +1344,7 @@
 
 	 <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">ACHTUNG</string>
-    <string name="gb_new_package_dialog_message">GravityBox für Pie wurde gefunden.
+    <string name="gb_new_package_dialog_message">GravityBox für Q wurde gefunden.
         Bevor die neue Version verwendet werden kann, muss die alte Installation entfernt werden. Drücken Sie OK, um die Deinstallation zu starten.
         Aktivieren Sie nach der Deinstallieren unverzüglich das neue Modul im Xposed Installer und starten Sie SOFORT neu!</string>
 

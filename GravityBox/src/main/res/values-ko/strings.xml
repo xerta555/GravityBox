@@ -1086,7 +1086,7 @@
     <string name="pref_reboot_allow_softreboot_summary">빠른 재시작은 기기를 불안정하게 하고 배터리를 빨리 닳아지게끔 합니다. 기본 재시작을 사용하는 습관을 들이세요.</string>
 
     <string name="gb_new_package_dialog_title">주의 !!</string>
-    <string name="gb_new_package_dialog_message">Pie용 GravityBox가 설치되어 있는 것 같습니다.
+    <string name="gb_new_package_dialog_message">Q용 GravityBox가 설치되어 있는 것 같습니다.
         새 버전을 사용하기 위해서는 구 버전을 지우셔야 합니다. 확인을 누르면 구 버전의 GravityBox를 지웁니다.
         제거 후, Xposed 설치기에서 새 모듈을 활성화하고 즉시 재시작해 주세요.</string>
 

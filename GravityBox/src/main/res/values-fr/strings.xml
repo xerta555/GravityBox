@@ -1132,7 +1132,7 @@ Assurez-vous que ses dimensions soient proches de : %1$dx%2$dpx</string>
         une consommation de batterie inattendue ou des problèmes d\'instabilité. Le meilleur usage est de toujours redémarrer normalement.</string>
     <!-- Old GB to new GB one-time dialog -->
     <string name="gb_new_package_dialog_title">ATTENTION</string>
-    <string name="gb_new_package_dialog_message">Une installation de GravityBox pour Pie a été détectée.
+    <string name="gb_new_package_dialog_message">Une installation de GravityBox pour Q a été détectée.
         Avant de pouvoir utiliser la nouvelle version, l\'ancienne doit être désintallée. Appuyez sur OK pour commencer le processus de désinstallation.
         Après la désinstallation, n\'oubliez pas d\'activer le nouveau module dans Xposed Installer et REDÉMARREZ IMMÉDIATEMENT.</string>
     <!-- Restore settings: warn if old backup exists -->
