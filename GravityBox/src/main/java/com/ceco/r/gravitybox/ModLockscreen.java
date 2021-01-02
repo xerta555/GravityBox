@@ -70,6 +70,7 @@ public class ModLockscreen {
     private static final String CLASS_SCRIM_STATE = "com.android.systemui.statusbar.phone.ScrimState";
     private static final String CLASS_KG_SLICE_PROVIDER = "com.android.systemui.keyguard.KeyguardSliceProvider";
     private static final String CLASS_NOTIF_MEDIA_MANAGER = "com.android.systemui.statusbar.NotificationMediaManager";
+    private static final String CLASS_LOCKSCREEN_CREDENTIAL = "com.android.internal.widget.LockscreenCredential";
 
     private static final boolean DEBUG = false;
     private static final boolean DEBUG_KIS = false;
@@ -77,6 +78,7 @@ public class ModLockscreen {
     private static int MSG_SMART_UNLOCK = 1;
     private static int MSG_DIRECT_UNLOCK = 2;
 
+    private enum UnlockType { PIN, PASSWORD };
     private enum DirectUnlock { OFF, STANDARD, SEE_THROUGH }
 
     private enum UnlockPolicy { DEFAULT, NOTIF_NONE, NOTIF_ONGOING }
@@ -294,7 +296,8 @@ public class ModLockscreen {
                     passwordEntry.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void afterTextChanged(Editable s) {
-                            doQuickUnlock(param.thisObject, passwordEntry.getText().toString());
+                            doQuickUnlock(param.thisObject, passwordEntry.getText().toString(),
+                                    UnlockType.PASSWORD, classLoader);
                         }
                         @Override
                         public void beforeTextChanged(CharSequence arg0,int arg1, int arg2, int arg3) { }
@@ -359,7 +362,7 @@ public class ModLockscreen {
                     if (pinView != null) {
                         if (DEBUG) log("quickUnlock: PasswordText belongs to PIN view");
                         String entry = (String) XposedHelpers.getObjectField(param.thisObject, "mText");
-                        doQuickUnlock(pinView, entry);
+                        doQuickUnlock(pinView, entry, UnlockType.PIN, classLoader);
                     }
                 }
             });
@@ -727,7 +730,8 @@ public class ModLockscreen {
         }
     }
 
-    private static void doQuickUnlock(final Object securityView, final String entry) {
+    private static void doQuickUnlock(final Object securityView, final String entry,
+                                      UnlockType type, final ClassLoader classLoader) {
         if (entry.length() != mPrefs.getInt(
                 GravityBoxSettings.PREF_KEY_LOCKSCREEN_PIN_LENGTH, 4)) return;
 
@@ -735,7 +739,11 @@ public class ModLockscreen {
             try {
                 final Object lockPatternUtils = XposedHelpers.getObjectField(securityView, "mLockPatternUtils");
                 final int userId = mKgMonitor.getCurrentUserId();
-                final boolean valid = (boolean) XposedHelpers.callMethod(lockPatternUtils, "checkPassword", entry, userId);
+                final Class<?> lsCredClass = XposedHelpers.findClass(CLASS_LOCKSCREEN_CREDENTIAL, classLoader);
+                final Object lsCred = XposedHelpers.callStaticMethod(lsCredClass,
+                        type == UnlockType.PASSWORD ? "createPassword" : "createPin", entry);
+                final boolean valid = (boolean) XposedHelpers.callMethod(lockPatternUtils,
+                        "checkCredential", lsCred, userId, (Object)null);
                 if (valid) {
                     final Object callback = XposedHelpers.getObjectField(securityView, "mCallback");
                     new Handler(Looper.getMainLooper()).post(() -> {
