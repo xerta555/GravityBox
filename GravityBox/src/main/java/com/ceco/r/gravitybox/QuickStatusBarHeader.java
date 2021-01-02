@@ -36,7 +36,8 @@ public class QuickStatusBarHeader {
         XposedBridge.log(TAG + ": " + message);
     }
 
-    private static ViewGroup mViewGroup;
+    private static ViewGroup mQsHeader;
+    private static LinearLayout mSystemIcons;
     private static Object mStatusBar;
     private static String mClockLongpressLink;
     private static LinearLayout mCenterLayout;
@@ -50,7 +51,6 @@ public class QuickStatusBarHeader {
 
     static void init(ClassLoader classLoader) {
         hookOnFinishInflate(classLoader);
-        hookUpdateResources(classLoader);
     }
 
     static void setStatusBar(Object statusBar) {
@@ -76,7 +76,12 @@ public class QuickStatusBarHeader {
                     "onFinishInflate", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
-                    mViewGroup = (ViewGroup)param.thisObject;
+                    mQsHeader = (ViewGroup)param.thisObject;
+                    int sysIconsResId = mQsHeader.getResources().getIdentifier("quick_status_bar_system_icons",
+                        "id", ModStatusBar.PACKAGE_NAME);
+                    if (sysIconsResId != 0) {
+                        mSystemIcons = mQsHeader.findViewById(sysIconsResId);
+                    }
                     prepareHeaderTimeView();
                     prepareCenterLayout();
                     if (mClockPosition != StatusbarClock.ClockPosition.DEFAULT) {
@@ -89,32 +94,9 @@ public class QuickStatusBarHeader {
         }
     }
 
-    private static void hookUpdateResources(ClassLoader classLoader) {
-        try {
-            XposedHelpers.findAndHookMethod(CLASS_QUICK_STATUSBAR_HEADER, classLoader,
-                    "updateResources", new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) {
-                    updateResources();
-                }
-            });
-        } catch (Throwable t) {
-            GravityBox.log(TAG, "Error hooking updateResources:", t);
-        }
-    }
-
-    private static void updateResources() {
-        if (mClockParent != null && mCenterLayout != null) {
-            mCenterLayout.getLayoutParams().height =
-                    mClockParent.getLayoutParams().height;
-            mCenterLayout.setLayoutParams(mCenterLayout.getLayoutParams());
-            if (DEBUG) log("updateResources: height=" + mClockParent.getLayoutParams().height);
-        }
-    }
-
     private static void prepareHeaderTimeView() {
         try {
-            mClockView = (TextView) XposedHelpers.getObjectField(mViewGroup, "mClockView");
+            mClockView = (TextView) XposedHelpers.getObjectField(mQsHeader, "mClockView");
             if (mClockView != null) {
                 mClockParent = (ViewGroup) mClockView.getParent();
                 mClockIndex = mClockParent.indexOfChild(mClockView);
@@ -133,22 +115,19 @@ public class QuickStatusBarHeader {
     }
 
     private static void prepareCenterLayout() {
-        if (mClockParent == null) {
+        if (mSystemIcons == null || mClockParent == null) {
             log("Cannot prepare center layout as Clock parent is unknown");
             return;
         }
 
         try {
-            mCenterLayout = new LinearLayout(mViewGroup.getContext());
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    mClockParent.getLayoutParams().height);
+            mCenterLayout = new LinearLayout(mSystemIcons.getContext());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    0, ViewGroup.LayoutParams.MATCH_PARENT);
+            lp.weight = 0.5f;
             mCenterLayout.setLayoutParams(lp);
             mCenterLayout.setGravity(Gravity.CENTER);
-            mCenterLayout.setPaddingRelative(mClockParent.getPaddingStart(),
-                    mClockParent.getPaddingTop(), mClockParent.getPaddingEnd(),
-                    mClockParent.getPaddingBottom());
-            mViewGroup.addView(mCenterLayout);
+            mSystemIcons.addView(mCenterLayout, mSystemIcons.indexOfChild(mClockParent) + 1);
             if (DEBUG_LAYOUT) mCenterLayout.setBackgroundColor(0x4dff0000);
             if (DEBUG) log("Center layout injected");
         } catch (Throwable t) {
@@ -157,15 +136,16 @@ public class QuickStatusBarHeader {
     }
 
     private static void launchClockAction(String uri) {
-        if (mViewGroup == null) return;
+        if (mQsHeader == null) return;
 
         try {
             final Intent intent = Intent.parseUri(uri, 0);
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                mViewGroup.getContext().startActivity(intent);
+                mQsHeader.getContext().startActivity(intent);
                 if (mStatusBar != null) {
-                    XposedHelpers.callMethod(mStatusBar, "animateCollapsePanels");
+                    Object shadeCtrl = XposedHelpers.getObjectField(mStatusBar, "mShadeController");
+                    XposedHelpers.callMethod(shadeCtrl, "animateCollapsePanels");
                 }
             }
         } catch (ActivityNotFoundException e) {
@@ -179,6 +159,7 @@ public class QuickStatusBarHeader {
         try {
             mClockParent.removeView(mClockView);
             mCenterLayout.removeView(mClockView);
+            mSystemIcons.removeView(mClockView);
             switch (mClockPosition) {
                 case DEFAULT:
                     mClockView.setPaddingRelative(mClockPaddingStart,0,mClockPaddingEnd, 0);
@@ -193,17 +174,11 @@ public class QuickStatusBarHeader {
                 case RIGHT:
                     mClockView.setPaddingRelative(mClockPaddingEnd,0,mClockPaddingStart, 0);
                     mClockView.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
-                    if (Utils.isOxygenOsRom()) {
-                        mClockParent.addView(mClockView);
-                    } else {
-                        mCenterLayout.setGravity(Gravity.END);
-                        mCenterLayout.addView(mClockView);
-                    }
+                    mSystemIcons.addView(mClockView);
                     break;
                 case CENTER:
-                    mClockView.setPaddingRelative(0,0,0, 0);
+                    mClockView.setPaddingRelative(0,0,0,0);
                     mClockView.setGravity(Gravity.CENTER);
-                    mCenterLayout.setGravity(Gravity.CENTER);
                     mCenterLayout.addView(mClockView);
                     break;
             }

@@ -533,15 +533,17 @@ public class ModStatusBar {
                     XposedHelpers.findClass(CLASS_STATUSBAR, classLoader);
             final Class<?> expandableNotifRowClass = XposedHelpers.findClass(CLASS_EXPANDABLE_NOTIF_ROW, classLoader);
 
-            QuickStatusBarHeader.init(classLoader);
+            if (mPrefs.getBoolean(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_MASTER_SWITCH, false)) {
+                QuickStatusBarHeader.init(classLoader);
+                QuickStatusBarHeader.setClockLongpressLink(prefs.getString(
+                        GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_LONGPRESS_LINK, null));
+            }
 
             if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_VISUALIZER_ENABLE, false)) {
                 mVisualizerCtrl = new VisualizerController(classLoader, prefs);
                 mStateChangeListeners.add(mVisualizerCtrl);
             }
 
-            QuickStatusBarHeader.setClockLongpressLink(prefs.getString(
-                    GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_LONGPRESS_LINK, null));
             mBrightnessControlEnabled = prefs.getBoolean(
                     GravityBoxSettings.PREF_KEY_STATUSBAR_BRIGHTNESS, false);
             mOngoingNotif = prefs.getString(GravityBoxSettings.PREF_KEY_ONGOING_NOTIFICATIONS, "");
@@ -564,7 +566,10 @@ public class ModStatusBar {
                     mStatusBar = param.thisObject;
                     mContext = (Context) XposedHelpers.getObjectField(mStatusBar, "mContext");
                     mProgressBarCtrl = new ProgressBarController(mContext, mPrefs);
-                    QuickStatusBarHeader.setStatusBar(mStatusBar);
+
+                    if (mPrefs.getBoolean(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_MASTER_SWITCH, false)) {
+                        QuickStatusBarHeader.setStatusBar(mStatusBar);
+                    }
 
                     if (SysUiManagers.AppLauncher != null) {
                         SysUiManagers.AppLauncher.setStatusBar(mStatusBar);
