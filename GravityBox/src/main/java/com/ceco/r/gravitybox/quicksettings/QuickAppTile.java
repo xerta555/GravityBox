@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -79,16 +79,16 @@ public class QuickAppTile extends QsTile {
     private PackageManager mPm;
     private Dialog mDialog;
     private Handler mHandler;
-    private int mId;
+    private final int mId;
 
     private final class AppInfo {
         private String mAppName;
         private Drawable mAppIconDrawable;
         private int mAppIconResId;
         private String mValue;
-        private int mResId;
+        private final int mResId;
         private Intent mIntent;
-        private Resources mResources;
+        private final Resources mResources;
 
         AppInfo(int resId) {
             mResId = resId;
@@ -434,7 +434,7 @@ public class QuickAppTile extends QsTile {
             mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mDialog.setContentView(appView);
             mDialog.setCanceledOnTouchOutside(true);
-            mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_STATUS_BAR_PANEL);
+            mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
             int pf = XposedHelpers.getIntField(mDialog.getWindow().getAttributes(), "privateFlags");
             pf |= 0x00000010;
             XposedHelpers.setIntField(mDialog.getWindow().getAttributes(), "privateFlags", pf);

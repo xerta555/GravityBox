@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,6 +14,8 @@
  */
 package com.ceco.r.gravitybox.quicksettings;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -25,6 +27,7 @@ import android.view.ViewGroup;
 
 import com.ceco.r.gravitybox.GravityBox;
 
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 /**
@@ -32,8 +35,13 @@ import de.robv.android.xposed.XposedHelpers;
  * Registered callback handles method calls defined on the interface 
  */
 public class QsDetailAdapterProxy implements InvocationHandler {
-
+    public static final String TAG = "GB:" + QsDetailAdapterProxy.class.getSimpleName();
     public static final String IFACE_DETAIL_ADAPTER = "com.android.systemui.plugins.qs.DetailAdapter";
+    private static final boolean DEBUG = false;
+
+    private static void log(String message) {
+        XposedBridge.log(TAG + ": " + message);
+    }
 
     public interface Callback {
         CharSequence getTitle();
@@ -73,6 +81,16 @@ public class QsDetailAdapterProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if (DEBUG) {
+            String buf = "Method: isDefault=" + method.isDefault() + "; " + method.getName() + "(";
+            if (args != null) {
+                for (Object arg : args) {
+                    buf += arg + ",";
+                }
+            }
+            buf += ")";
+            log(buf);
+        }
         if (method.getName().equals("getTitle")) {
             return mCallback.getTitle();
         } else if (method.getName().equals("getToggleState")) {
@@ -92,6 +110,17 @@ public class QsDetailAdapterProxy implements InvocationHandler {
             return true;
         } else if (method.getName().equals("showDetailDoneButton")) {
             return true;
+        } else if (method.isDefault()) {
+            Class<?> declaringClass = method.getDeclaringClass();
+            Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.
+                    getDeclaredConstructor(Class.class, int.class);
+            constructor.setAccessible(true);
+            Object result = constructor.newInstance(declaringClass, MethodHandles.Lookup.PRIVATE)
+                    .unreflectSpecial(method, declaringClass)
+                    .bindTo(proxy)
+                    .invokeWithArguments(args == null ? new Object[]{} : args);
+            if (DEBUG) log("Result of default method: " + result);
+            return result;
         } else {
             GravityBox.log("QsDetailAdapterProxy", "Unhandled method: " + method.getName());
             return null;

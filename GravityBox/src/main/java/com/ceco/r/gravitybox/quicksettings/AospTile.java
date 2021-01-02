@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.r.gravitybox.quicksettings;
 
 import java.lang.reflect.Method;
@@ -107,57 +106,90 @@ public abstract class AospTile extends BaseTile implements QsEventListener {
     private void createHooks() {
         try {
             if (DEBUG) log(mKey + ": Creating hooks");
-            ClassLoader cl = mContext.getClassLoader();
+            final boolean isSuperClassBaseTileImpl = mTile.getClass().getSuperclass().getName()
+                    .equals(QsTile.CLASS_BASE_TILE_IMPL);
 
-            mHandleUpdateStateHook = XposedHelpers.findAndHookMethod(
-                    mTile.getClass().getName(), cl,"handleUpdateState",
-                    BaseTile.CLASS_TILE_STATE, Object.class, new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) {
-                    if (mKey.equals(XposedHelpers.getAdditionalInstanceField(
-                            param.thisObject, BaseTile.TILE_KEY_NAME))) {
-                        handleUpdateState(param.args[0], param.args[1]);
-                    }
-                }
-            });
-
-            mHandleClickHook = XposedHelpers.findAndHookMethod(
-                    mTile.getClass().getName(), cl, "handleClick", new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(MethodHookParam param) {
-                    if (mKey.equals(XposedHelpers.getAdditionalInstanceField(
-                            param.thisObject, BaseTile.TILE_KEY_NAME)) &&
-                            onBeforeHandleClick()) {
-                        param.getExtra().putBoolean("returnEarly", true);
-                        param.setResult(null);
-                    }
-                }
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) {
-                    if (!param.getExtra().getBoolean("returnEarly") &&
-                            mKey.equals(XposedHelpers.getAdditionalInstanceField(
+            // handleUpdateState
+            Method m1 = XposedHelpers.findMethodExactIfExists(mTile.getClass(),
+                        "handleUpdateState", BaseTile.CLASS_TILE_STATE, Object.class);
+            if (m1 == null && !isSuperClassBaseTileImpl) {
+                m1 = XposedHelpers.findMethodExactIfExists(mTile.getClass().getSuperclass(),
+                        "handleUpdateState", BaseTile.CLASS_TILE_STATE, Object.class);
+            }
+            if (m1 != null) {
+                mHandleUpdateStateHook = XposedBridge.hookMethod(m1, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        if (mKey.equals(XposedHelpers.getAdditionalInstanceField(
                                 param.thisObject, BaseTile.TILE_KEY_NAME))) {
-                        handleClick();
+                            handleUpdateState(param.args[0], param.args[1]);
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                log(mKey + ": handleUpdateState not found");
+            }
 
-            mSetListeningHook = XposedHelpers.findAndHookMethod(mTile.getClass().getName(), cl,
-                    "handleSetListening",
-                            boolean.class, new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(MethodHookParam param) {
-                    if (mKey.equals(XposedHelpers.getAdditionalInstanceField(
-                            param.thisObject, BaseTile.TILE_KEY_NAME))) {
-                        setListening((boolean)param.args[0]);
+            // handleClick
+            Method m2 = XposedHelpers.findMethodExactIfExists(mTile.getClass(), "handleClick");
+            if (m2 == null && !isSuperClassBaseTileImpl) {
+                m2 = XposedHelpers.findMethodExactIfExists(mTile.getClass().getSuperclass(),
+                        "handleClick");
+            }
+            if (m2 != null) {
+                mHandleClickHook = XposedBridge.hookMethod(m2, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) {
+                        if (mKey.equals(XposedHelpers.getAdditionalInstanceField(
+                                param.thisObject, BaseTile.TILE_KEY_NAME)) &&
+                                onBeforeHandleClick()) {
+                            param.getExtra().putBoolean("returnEarly", true);
+                            param.setResult(null);
+                        }
                     }
-                }
-            });
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        if (!param.getExtra().getBoolean("returnEarly") &&
+                                mKey.equals(XposedHelpers.getAdditionalInstanceField(
+                                        param.thisObject, BaseTile.TILE_KEY_NAME))) {
+                            handleClick();
+                        }
+                    }
+                });
+            } else {
+                log(mKey + ": handleClick not found");
+            }
 
-            Method m = XposedHelpers.findMethodExactIfExists(mTile.getClass().getName(), cl,
+            // handleSetListening
+            Method m3 = XposedHelpers.findMethodExactIfExists(mTile.getClass(),
+                        "handleSetListening", boolean.class);
+            if (m3 == null && !isSuperClassBaseTileImpl) {
+                m3 = XposedHelpers.findMethodExactIfExists(mTile.getClass().getSuperclass(),
+                        "handleSetListening", boolean.class);
+            }
+            if (m3 != null) {
+                mSetListeningHook = XposedBridge.hookMethod(m3, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        if (mKey.equals(XposedHelpers.getAdditionalInstanceField(
+                                param.thisObject, BaseTile.TILE_KEY_NAME))) {
+                            setListening((boolean) param.args[0]);
+                        }
+                    }
+                });
+            } else if (DEBUG) {
+                log(mKey + ": handleSetListening not found - will use QsTileImpl hook");
+            }
+
+            // handleSecondaryClick
+            Method m4 = XposedHelpers.findMethodExactIfExists(mTile.getClass(),
                     "handleSecondaryClick");
-            if (m != null) {
-                mHandleSecondaryClickHook = XposedBridge.hookMethod(m, new XC_MethodHook() {
+            if (m4 == null && !isSuperClassBaseTileImpl) {
+                m4 = XposedHelpers.findMethodExactIfExists(mTile.getClass().getSuperclass(),
+                        "handleSecondaryClick");
+            }
+            if (m4 != null) {
+                mHandleSecondaryClickHook = XposedBridge.hookMethod(m4, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
                         if (isLocked() || handleSecondaryClick()) {
@@ -165,6 +197,8 @@ public abstract class AospTile extends BaseTile implements QsEventListener {
                         }
                     }
                 });
+            } else if (DEBUG) {
+                log(mKey + ": handleSecondaryClick not found - will use QsTileImpl hook");
             }
         } catch (Throwable t) {
             GravityBox.log(TAG, t);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -60,11 +60,11 @@ public class QsTileEventDistributor implements SysUiKeyguardStateMonitor.Listene
         XposedBridge.log(TAG + ": " + message);
     }
 
-    private Object mHost;
+    private final Object mHost;
     private Context mContext;
     @SuppressWarnings("unused")
-    private XSharedPreferences mPrefs;
-    private Map<String,QsEventListener> mListeners;
+    private final XSharedPreferences mPrefs;
+    private final Map<String,QsEventListener> mListeners;
     private String mCreateTileViewTileKey;
     private QsPanel mQsPanel;
 
@@ -128,6 +128,19 @@ public class QsTileEventDistributor implements SysUiKeyguardStateMonitor.Listene
                     final QsEventListener l = mListeners.get(XposedHelpers
                             .getAdditionalInstanceField(param.thisObject, BaseTile.TILE_KEY_NAME));
                     if (l instanceof QsTile) {
+                        l.setListening((boolean)param.args[0]);
+                    }
+                }
+            });
+
+            XposedHelpers.findAndHookMethod(QsTile.CLASS_BASE_TILE_IMPL, cl,
+                    "handleSetListening",
+                    boolean.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) {
+                    final QsEventListener l = mListeners.get(XposedHelpers
+                            .getAdditionalInstanceField(param.thisObject, BaseTile.TILE_KEY_NAME));
+                    if (l instanceof AospTile) {
                         l.setListening((boolean)param.args[0]);
                     }
                 }

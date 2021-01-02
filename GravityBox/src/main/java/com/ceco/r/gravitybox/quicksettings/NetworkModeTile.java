@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.r.gravitybox.quicksettings;
 
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ import com.ceco.r.gravitybox.PhoneWrapper;
 import de.robv.android.xposed.XSharedPreferences;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -52,7 +52,7 @@ public class NetworkModeTile extends QsTile {
         }
     }
 
-    private static NetworkMode[] MODES = new NetworkMode[] {
+    private static final NetworkMode[] MODES = new NetworkMode[] {
             new NetworkMode(0, R.string.network_mode_0, R.drawable.ic_qs_3g2g_on),
             new NetworkMode(1, R.string.network_mode_1, R.drawable.ic_qs_2g_on),
             new NetworkMode(2, R.string.network_mode_2, R.drawable.ic_qs_3g_on),
@@ -79,7 +79,7 @@ public class NetworkModeTile extends QsTile {
     };
 
     private int mNetworkType;
-    private boolean mIsMsim;
+    private final boolean mIsMsim;
     private int mSimSlot = 0;
     private boolean mIsReceiving;
     private List<NetworkMode> mModeList = new ArrayList<>();
@@ -107,16 +107,16 @@ public class NetworkModeTile extends QsTile {
                 new HashSet<>(Arrays.asList("0", "1", "2", "10")));
         List<String> lmodes = new ArrayList<>(smodes);
         Collections.sort(lmodes);
-        int modes[] = new int[lmodes.size()];
+        int[] modes = new int[lmodes.size()];
         for (int i=0; i<lmodes.size(); i++) {
-            modes[i] = Integer.valueOf(lmodes.get(i));
+            modes[i] = Integer.parseInt(lmodes.get(i));
         }
         if (DEBUG) log(getKey() + ": onPreferenceInitialize: modes=" + Arrays.toString(modes));
         setEnabledModes(modes);
 
         if (mIsMsim) {
             try {
-                mSimSlot = Integer.valueOf(mPrefs.getString(
+                mSimSlot = Integer.parseInt(mPrefs.getString(
                         GravityBoxSettings.PREF_KEY_QS_NETWORK_MODE_SIM_SLOT, "0"));
             } catch (NumberFormatException nfe) {
                 log(getKey() + ": Invalid value for SIM Slot preference: " + nfe.getMessage());
@@ -227,7 +227,7 @@ public class NetworkModeTile extends QsTile {
         }
 
         if (mIsMsim) {
-            mState.label += " (" + String.valueOf(mSimSlot+1) + ")";
+            mState.label += " (" + (mSimSlot + 1) + ")";
         }
 
         super.handleUpdateState(state, arg);
@@ -290,9 +290,7 @@ public class NetworkModeTile extends QsTile {
             intent.putExtra(GravityBoxSettings.EXTRA_SIM_SLOT, mSimSlot == 0 ? 1 : 0);
             mContext.sendBroadcast(intent);
         } else {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setClassName("com.android.phone", "com.android.phone.Settings");
-            startSettingsActivity(intent);
+            startSettingsActivity(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
         }
         return true;
     }
@@ -365,9 +363,7 @@ public class NetworkModeTile extends QsTile {
 
         @Override
         public Intent getSettingsIntent() {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setClassName("com.android.phone", "com.android.phone.Settings");
-            return intent;
+            return new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
         }
 
         @Override

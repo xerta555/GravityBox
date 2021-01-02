@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.r.gravitybox.quicksettings;
 
 import java.util.ArrayList;
@@ -51,8 +50,6 @@ public abstract class BaseTile implements QsEventListener, BroadcastMediator.Rec
     public static final String CLASS_BASE_TILE_IMPL = "com.android.systemui.qs.tileimpl.QSTileImpl";
     public static final String CLASS_TILE_STATE = "com.android.systemui.plugins.qs.QSTile.State";
     public static final String CLASS_TILE_VIEW = "com.android.systemui.qs.tileimpl.QSTileView";
-    public static final String CLASS_TILE_VIEW_BASE = "com.android.systemui.qs.tileimpl.QSTileBaseView";
-    public static final String CLASS_SIGNAL_TILE_VIEW = "com.android.systemui.qs.SignalTileView";
     public static final String CLASS_ICON_VIEW = "com.android.systemui.qs.tileimpl.QSIconViewImpl";
     public static final String CLASS_DEPENDENCY = "com.android.systemui.Dependency";
     public static final String CLASS_ACTIVITY_STARTER = "com.android.systemui.plugins.ActivityStarter";
