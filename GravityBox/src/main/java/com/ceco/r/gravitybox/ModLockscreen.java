@@ -716,7 +716,9 @@ public class ModLockscreen {
 
     private static void showBouncer() {
         try {
-            XposedHelpers.callMethod(ModStatusBar.getStatusBar(), "showBouncer", true);
+            final Object kgViewManager = XposedHelpers.getObjectField(ModStatusBar.getStatusBar(),
+                "mStatusBarKeyguardViewManager");
+            XposedHelpers.callMethod(kgViewManager, "showBouncer", true);
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
         }
