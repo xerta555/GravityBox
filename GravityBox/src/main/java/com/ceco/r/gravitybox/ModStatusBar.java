@@ -1371,8 +1371,7 @@ public class ModStatusBar {
 
     public static void startSearchAssist() {
         try {
-            Object assistManager = XposedHelpers.getObjectField(mStatusBar, "mAssistManager");
-            XposedHelpers.callMethod(assistManager, "startAssist", new Bundle());
+            XposedHelpers.callMethod(mStatusBar, "startAssist", new Bundle());
             XposedHelpers.callMethod(mStatusBar, "awakenDreams");
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
