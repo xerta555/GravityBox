@@ -24,7 +24,6 @@ import com.ceco.r.gravitybox.managers.SysUiManagers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.service.notification.StatusBarNotification;
 import android.view.MotionEvent;
 import android.view.View;
@@ -54,8 +53,8 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
         XposedBridge.log(TAG + ": " + message);
     }
 
-    private Context mContext;
-    private XSharedPreferences mPrefs;
+    private final Context mContext;
+    private final XSharedPreferences mPrefs;
     private int mMode;
     private int mModeAuto;
     private int mSizePercent;
@@ -75,10 +74,10 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
     }
 
     private void initPreferences() {
-        mMode = Integer.valueOf(mPrefs.getString(
+        mMode = Integer.parseInt(mPrefs.getString(
                 GravityBoxSettings.PREF_KEY_QUICK_PULLDOWN, "0"));
         mSizePercent = mPrefs.getInt(GravityBoxSettings.PREF_KEY_QUICK_PULLDOWN_SIZE, 15);
-        mModeAuto = Integer.valueOf(mPrefs.getString(
+        mModeAuto = Integer.parseInt(mPrefs.getString(
                 GravityBoxSettings.PREF_KEY_QUICK_SETTINGS_AUTOSWITCH, "0"));
         if (DEBUG) log("initPreferences: mode=" + mMode + "; size%=" + mSizePercent +
                 "; modeAuto=" + mModeAuto);
@@ -103,9 +102,7 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
     }
 
     public static String getQsExpandFieldName() {
-        switch (Build.VERSION.SDK_INT) {
-            default: return "mQsExpandImmediate";
-        }
+        return "mQsExpandImmediate";
     }
 
     private void createHooks() {
@@ -122,6 +119,7 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
                         return;
 
                     final Object host = XposedHelpers.getSurroundingThis(param.thisObject);
+                    final View view = (View) param.args[0];
                     if ((mMode == MODE_OFF && mModeAuto == MODE_AUTO_OFF) ||
                         XposedHelpers.getBooleanField(host, "mBlockTouches") ||
                         XposedHelpers.getBooleanField(host, "mOnlyAffordanceInThisMotion") ||
@@ -135,7 +133,7 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
 
                     final MotionEvent event = (MotionEvent) param.args[1];
                     boolean oneFingerQsOverride = event.getActionMasked() == MotionEvent.ACTION_DOWN
-                            && shouldQuickSettingsIntercept(host, event.getX(), event.getY(), -1)
+                            && shouldQuickSettingsIntercept(host, view, event.getX(), event.getY(), -1)
                             && event.getY(event.getActionIndex()) < 
                                 XposedHelpers.getIntField(host, "mStatusBarMinHeight");
                     if (oneFingerQsOverride) {
@@ -150,8 +148,8 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
         }
     }
 
-    private boolean shouldQuickSettingsIntercept(Object o, float x, float y, float yDiff) {
-        if (!XposedHelpers.getBooleanField(o, "mQsExpansionEnabled")) {
+    private boolean shouldQuickSettingsIntercept(Object host, View view, float x, float y, float yDiff) {
+        if (!XposedHelpers.getBooleanField(host, "mQsExpansionEnabled")) {
             return false;
         }
 
@@ -159,7 +157,7 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
 
         // quick
         if (mMode != MODE_OFF) {
-            final int w = (int) XposedHelpers.callMethod(o, "getMeasuredWidth");
+            final int w = view.getMeasuredWidth();
             float region = (w * (mSizePercent/100f));
             showQsOverride |= (mMode == MODE_RIGHT) ? 
                     (x > w - region) : (mMode == MODE_LEFT) ? (x < region) :
@@ -169,7 +167,7 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
         // auto
         if (mModeAuto != MODE_AUTO_OFF && !showQsOverride) {
             showQsOverride |= (mModeAuto == MODE_AUTO_NONE) ?
-                    !hasNotifications(o) : !hasClearableNotifications(o);
+                    !hasNotifications(host) : !hasClearableNotifications(host);
         }
 
         return showQsOverride;
@@ -177,8 +175,7 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
 
     private Object getNotificationManager(Object o) {
         if (mNotificationManager == null) {
-            mNotificationManager = XposedHelpers.getObjectField(
-                    XposedHelpers.getObjectField(o, "mStatusBar"), "mEntryManager");
+            mNotificationManager = XposedHelpers.getObjectField(o, "mEntryManager");
         }
         return mNotificationManager;
     }
@@ -186,7 +183,7 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
     private boolean hasNotifications(Object o) {
         try {
             List<?> list = (List<?>)XposedHelpers.callMethod(getNotificationManager(o),
-                    "getActiveNotifications");
+                    "getActiveNotificationsForCurrentUser");
             return list.size() > 0;
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
@@ -197,7 +194,7 @@ public class QsQuickPulldownHandler implements BroadcastMediator.Receiver {
     private boolean hasClearableNotifications(Object o) {
         try {
             List<?> list = (List<?>)XposedHelpers.callMethod(getNotificationManager(o),
-                    "getVisibleNotifications");
+                    "getActiveNotificationsForCurrentUser");
             boolean hasClearableNotifications = false;
             for (Object entry : list) {
                 StatusBarNotification sbn = (StatusBarNotification) XposedHelpers.getObjectField(entry, "mSbn");
