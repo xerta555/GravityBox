@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.r.gravitybox;
 
 import java.io.File;
@@ -43,6 +42,7 @@ public class SettingsManager {
     private static final String N_PREFERENCES = "com.ceco.nougat.gravitybox_preferences.xml";
     private static final String O_PREFERENCES = "com.ceco.oreo.gravitybox_preferences.xml";
     private static final String P_PREFERENCES = "com.ceco.pie.gravitybox_preferences.xml";
+    private static final String Q_PREFERENCES = "com.ceco.q.gravitybox_preferences.xml";
 
     public interface FileObserverListener {
         void onFileUpdated(String path);
@@ -251,6 +251,9 @@ public class SettingsManager {
         for (String prefsFileName : prefsFileNames) {
             String bupPath = prefsFileName.endsWith(".xml") ? BACKUP_PATH : BACKUP_PATH + "/files";
             File prefsFile = new File(bupPath, prefsFileName);
+            // try Q preferences if no R prefs file exists
+            if (prefsFileName.equals(prefsFileNames[0]) && !prefsFile.exists())
+                prefsFile = new File(bupPath, Q_PREFERENCES);
             // try P preferences if no Q prefs file exists
             if (prefsFileName.equals(prefsFileNames[0]) && !prefsFile.exists())
                 prefsFile = new File(bupPath, P_PREFERENCES);
