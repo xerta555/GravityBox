@@ -187,8 +187,7 @@ public class TileOrderActivity extends GravityBoxListActivity implements View.On
             return false;
         if (key.equals("gb_tile_torch") && !Utils.hasFlash(mContext))
             return false;
-        if ((key.equals("gb_tile_gps_alt") || key.equals("gb_tile_gps_slimkat")) &&
-                !Utils.hasGPS(mContext))
+        if ((key.equals("gb_tile_gps_alt") || key.equals("gb_tile_gps_slimkat")))
             return false;
         if ((key.equals("aosp_tile_cell") || key.equals("gb_tile_network_mode") ||
                 key.equals("gb_tile_smart_radio")) && Utils.isWifiOnly(mContext))

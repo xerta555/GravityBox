@@ -101,13 +101,13 @@ public class SysUiManagers {
             GravityBox.log(TAG, "Error creating NotificationDataMonitor: ", t);
         }
 
-        if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_QUICK_SETTINGS_ENABLE, false)) {
-            try {
-                GpsMonitor = new SysUiGpsStatusMonitor(context);
-            } catch (Throwable t) {
-                GravityBox.log(TAG, "Error creating GpsStatusMonitor: ", t);
-            }
-        }
+//        if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_QUICK_SETTINGS_ENABLE, false)) {
+//            try {
+//                GpsMonitor = new SysUiGpsStatusMonitor(context);
+//            } catch (Throwable t) {
+//                GravityBox.log(TAG, "Error creating GpsStatusMonitor: ", t);
+//            }
+//        }
 
         if (PhoneWrapper.hasMsimSupport()) {
             try {

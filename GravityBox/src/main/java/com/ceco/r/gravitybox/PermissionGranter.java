@@ -83,11 +83,11 @@ public class PermissionGranter {
                             XposedHelpers.callMethod(ps, "grantInstallPermission", p);
                         }
                         // Add ACCESS_FINE_LOCATION needed by GpsStatusMonitor
-                        if (!grantedPerms.contains(permission.ACCESS_FINE_LOCATION)) {
-                            final Object p = XposedHelpers.callMethod(permissions, "get",
-                                    permission.ACCESS_FINE_LOCATION);
-                            XposedHelpers.callMethod(ps, "grantInstallPermission", p);
-                        }
+//                        if (!grantedPerms.contains(permission.ACCESS_FINE_LOCATION)) {
+//                            final Object p = XposedHelpers.callMethod(permissions, "get",
+//                                    permission.ACCESS_FINE_LOCATION);
+//                            XposedHelpers.callMethod(ps, "grantInstallPermission", p);
+//                        }
                         // Add permissions needed by advanced power menu
                         if (!grantedPerms.contains(permission.REBOOT)) {
                             final Object p = XposedHelpers.callMethod(permissions, "get",
