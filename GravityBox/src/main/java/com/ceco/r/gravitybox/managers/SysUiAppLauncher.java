@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -70,15 +70,15 @@ public class SysUiAppLauncher implements BroadcastMediator.Receiver, SysUiConfig
 
     enum DialogTheme { DEFAULT, LIGHT, DARK }
 
-    private Context mContext;
+    private final Context mContext;
     private Context mGbContext;
-    private Resources mResources;
+    private final Resources mResources;
     private Resources mGbResources;
     private Dialog mDialog;
-    private Handler mHandler;
-    private PackageManager mPm;
-    private List<AppInfo> mAppSlots;
-    private XSharedPreferences mPrefs;
+    private final Handler mHandler;
+    private final PackageManager mPm;
+    private final List<AppInfo> mAppSlots;
+    private final XSharedPreferences mPrefs;
     private Object mStatusBar;
     private DialogTheme mDialogTheme;
     private boolean mIsFirstShow = true;
@@ -87,9 +87,9 @@ public class SysUiAppLauncher implements BroadcastMediator.Receiver, SysUiConfig
         XposedBridge.log(TAG + ": " + message);
     }
 
-    private Runnable mDismissAppDialogRunnable = this::dismissDialog;
+    private final Runnable mDismissAppDialogRunnable = this::dismissDialog;
 
-    private BroadcastReceiver mPackageRemoveReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mPackageRemoveReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (DEBUG) log("Broadcast received: " + intent.toString());
@@ -228,7 +228,7 @@ public class SysUiAppLauncher implements BroadcastMediator.Receiver, SysUiConfig
             mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             mDialog.setContentView(appView);
             mDialog.setCanceledOnTouchOutside(true);
-            mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_STATUS_BAR_PANEL);
+            mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
             int pf = XposedHelpers.getIntField(mDialog.getWindow().getAttributes(), "privateFlags");
             pf |= 0x00000010;
             XposedHelpers.setIntField(mDialog.getWindow().getAttributes(), "privateFlags", pf);
@@ -292,7 +292,7 @@ public class SysUiAppLauncher implements BroadcastMediator.Receiver, SysUiConfig
         }
     }
 
-    private View.OnClickListener mAppOnClick = new View.OnClickListener() {
+    private final View.OnClickListener mAppOnClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             dismissDialog();
@@ -361,7 +361,7 @@ public class SysUiAppLauncher implements BroadcastMediator.Receiver, SysUiConfig
         private String mAppName;
         private Drawable mAppIcon;
         private String mValue;
-        private int mResId;
+        private final int mResId;
         private Intent mIntent;
         private String mPkgName;
         private int mSizeDp;
