@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,6 +14,8 @@
  */
 package com.ceco.r.gravitybox;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -71,10 +73,7 @@ public class ModPowerMenu {
     private static String mRebootConfirmRecoveryStr;
     private static String mRebootConfirmBootloaderStr;
     private static String mExpandedDesktopStr;
-    private static String mExpandedDesktopOnStr;
-    private static String mExpandedDesktopOffStr;
     private static Unhook mRebootActionHook;
-    private static Unhook mRebootActionShowHook;
     private static Object mRebootActionItem;
     private static boolean mRebootActionItemStockExists;
     private static Object mExpandedDesktopAction;
@@ -107,8 +106,6 @@ public class ModPowerMenu {
                    mRecoveryStr = gbContext.getString(R.string.poweroff_recovery);
                    mBootloaderStr = gbContext.getString(R.string.poweroff_bootloader);
                    mExpandedDesktopStr = gbContext.getString(R.string.action_expanded_desktop_title);
-                   mExpandedDesktopOnStr = gbContext.getString(R.string.action_expanded_desktop_on);
-                   mExpandedDesktopOffStr = gbContext.getString(R.string.action_expanded_desktop_off);
 
                    mRebootIcon = gbContext.getDrawable(R.drawable.ic_lock_reboot);
                    mRebootSoftIcon = gbContext.getDrawable(R.drawable.ic_lock_reboot_soft);
@@ -137,10 +134,6 @@ public class ModPowerMenu {
                         if (DEBUG) log("Unhooking previous hook of reboot action item");
                         mRebootActionHook.unhook();
                         mRebootActionHook = null;
-                    }
-                    if (mRebootActionShowHook != null) {
-                        mRebootActionShowHook.unhook();
-                        mRebootActionShowHook = null;
                     }
                 }
 
@@ -217,15 +210,12 @@ public class ModPowerMenu {
                                     "onPress", new XC_MethodReplacement () {
                                 @Override
                                 protected Object replaceHookedMethod(MethodHookParam param) {
-                                    RebootAction.showRebootDialog(ctx);
+                                    if (mRebootAllowOnLockscreen || !isKeyguardLocked(
+                                            (Context) XposedHelpers.getObjectField(mGlobalActionsDialog,
+                                                    "mContext"))) {
+                                        RebootAction.showRebootDialog(ctx);
+                                    }
                                     return null;
-                                }
-                            });
-                            mRebootActionShowHook = XposedHelpers.findAndHookMethod(mRebootActionItem.getClass(),
-                                    "showDuringKeyguard", new XC_MethodReplacement() {
-                                @Override
-                                protected Object replaceHookedMethod(MethodHookParam param) {
-                                    return mRebootAllowOnLockscreen;
                                 }
                             });
                         } else {
@@ -258,16 +248,14 @@ public class ModPowerMenu {
                 protected void beforeHookedMethod(final MethodHookParam param) {
                     prefs.reload();
                     if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_POWERMENU_DISABLE_ON_LOCKSCREEN, false)) {
+                        final Object dialog = XposedHelpers.getObjectField(param.thisObject, "mDialog");
+                        if (dialog != null && (boolean)XposedHelpers.callMethod(dialog, "isShowing"))
+                            return;
                         boolean locked = (Boolean) param.args[0];
                         if (!locked) {
                             // double-check using keyguard manager
-                            try {
-                                Context context = (Context) XposedHelpers.getObjectField(
-                                        param.thisObject, "mContext");
-                                KeyguardManager km = (KeyguardManager) context.getSystemService(
-                                        Context.KEYGUARD_SERVICE);
-                                locked = km.isKeyguardLocked();
-                            } catch (Throwable ignored) { }
+                            locked = isKeyguardLocked((Context) XposedHelpers.getObjectField(
+                                    param.thisObject, "mContext"));
                         }
 
                         if (locked) {
@@ -279,9 +267,19 @@ public class ModPowerMenu {
                     }
                 }
             };
-            XposedBridge.hookAllMethods(globalActionsClass, "showDialog", showDialogHook);
+            XposedBridge.hookAllMethods(globalActionsClass, "showOrHideDialog", showDialogHook);
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
+        }
+    }
+
+    private static boolean isKeyguardLocked(Context ctx) {
+        try {
+            KeyguardManager km = (KeyguardManager) ctx.getSystemService(
+                    Context.KEYGUARD_SERVICE);
+            return km.isKeyguardLocked();
+        } catch (Throwable t) {
+            return false;
         }
     }
 
@@ -409,7 +407,7 @@ public class ModPowerMenu {
         }
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) {
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             String methodName = method.getName();
 
             if (methodName.equals("create")) {
@@ -417,20 +415,20 @@ public class ModPowerMenu {
                 Resources res = mContext.getResources();
                 LayoutInflater li = (LayoutInflater) args[3];
                 int layoutId = res.getIdentifier(
-                        "global_actions_grid_item", "layout", ITEM_LAYOUT_PACKAGE);
+                        "global_actions_grid_item_v2", "layout", ITEM_LAYOUT_PACKAGE);
                 View v = li.inflate(layoutId, (ViewGroup) args[2], false);
 
                 ImageView icon = v.findViewById(res.getIdentifier(
                         "icon", "id", "android"));
-                icon.setImageDrawable(mRebootIcon);
+                if (icon != null) {
+                    icon.setImageDrawable(mRebootIcon);
+                }
 
                 TextView messageView = v.findViewById(res.getIdentifier(
                         "message", "id", "android"));
-                messageView.setText(mRebootStr);
-
-                TextView statusView = v.findViewById(res.getIdentifier(
-                        "status", "id", "android"));
-                statusView.setVisibility(View.GONE);
+                if (messageView != null) {
+                    messageView.setText(mRebootStr);
+                }
 
                 return v;
             } else if (methodName.equals("onPress")) {
@@ -451,6 +449,21 @@ public class ModPowerMenu {
                 return null;
             } else if (methodName.equals("shouldBeSeparated")) {
                 return false;
+            } else if (methodName.equals("getMessageResId")) {
+                return 0;
+            } else if (methodName.equals("getIcon")) {
+                return null;
+            } else if (method.isDefault()) {
+                Class<?> declaringClass = method.getDeclaringClass();
+                Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.
+                        getDeclaredConstructor(Class.class, int.class);
+                constructor.setAccessible(true);
+                Object result = constructor.newInstance(declaringClass, MethodHandles.Lookup.PRIVATE)
+                        .unreflectSpecial(method, declaringClass)
+                        .bindTo(proxy)
+                        .invokeWithArguments(args == null ? new Object[]{} : args);
+                if (DEBUG) log("Result of default method: " + result);
+                return result;
             } else {
                 GravityBox.log(TAG, "RebootAction: Unhandled invocation method: " + methodName);
                 return null;
@@ -460,7 +473,6 @@ public class ModPowerMenu {
 
     private static class ExpandedDesktopAction implements InvocationHandler {
         private Context mContext;
-        private TextView mStatus;
         private Handler mHandler;
 
         public ExpandedDesktopAction() {
@@ -481,18 +493,12 @@ public class ModPowerMenu {
                     ModExpandedDesktop.SETTING_EXPANDED_DESKTOP_STATE, 0) == 1);
         }
 
-        private void updateStatus() {
-            mStatus.setText(isExpandedDesktopOn(mContext) ? 
-                    mExpandedDesktopOnStr : mExpandedDesktopOffStr);
-        }
-
         private void toggleStatus() {
             try {
                 mHandler.postDelayed(() -> {
                     Settings.Global.putInt(mContext.getContentResolver(),
                             ModExpandedDesktop.SETTING_EXPANDED_DESKTOP_STATE,
                             isExpandedDesktopOn(mContext) ? 0 : 1);
-                    updateStatus();
                 }, 200);
             } catch (Throwable t) {
                 GravityBox.log(TAG, t);
@@ -500,7 +506,7 @@ public class ModPowerMenu {
         }
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) {
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             String methodName = method.getName();
 
             if (methodName.equals("create")) {
@@ -510,21 +516,20 @@ public class ModPowerMenu {
                 Resources res = mContext.getResources();
                 LayoutInflater li = (LayoutInflater) args[3];
                 int layoutId = res.getIdentifier(
-                        "global_actions_grid_item", "layout", ITEM_LAYOUT_PACKAGE);
+                        "global_actions_grid_item_v2", "layout", ITEM_LAYOUT_PACKAGE);
                 View v = li.inflate(layoutId, (ViewGroup) args[2], false);
 
                 ImageView icon = v.findViewById(res.getIdentifier(
                         "icon", "id", "android"));
-                icon.setImageDrawable(mExpandedDesktopIcon);
+                if (icon != null) {
+                    icon.setImageDrawable(mExpandedDesktopIcon);
+                }
 
                 TextView messageView = v.findViewById(res.getIdentifier(
                         "message", "id", "android"));
-                messageView.setText(mExpandedDesktopStr);
-
-                mStatus = v.findViewById(res.getIdentifier(
-                        "status", "id", "android"));
-                mStatus.setVisibility(View.GONE);
-                updateStatus();
+                if (messageView != null) {
+                    messageView.setText(mExpandedDesktopStr);
+                }
 
                 return v;
             } else if (methodName.equals("onPress")) {
@@ -544,6 +549,21 @@ public class ModPowerMenu {
                 return null;
             } else if (methodName.equals("shouldBeSeparated")) {
                 return false;
+            } else if (methodName.equals("getMessageResId")) {
+                return 0;
+            } else if (methodName.equals("getIcon")) {
+                return null;
+            } else if (method.isDefault()) {
+                Class<?> declaringClass = method.getDeclaringClass();
+                Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.
+                        getDeclaredConstructor(Class.class, int.class);
+                constructor.setAccessible(true);
+                Object result = constructor.newInstance(declaringClass, MethodHandles.Lookup.PRIVATE)
+                        .unreflectSpecial(method, declaringClass)
+                        .bindTo(proxy)
+                        .invokeWithArguments(args == null ? new Object[]{} : args);
+                if (DEBUG) log("Result of default method: " + result);
+                return result;
             } else {
                 GravityBox.log(TAG, "ExpandedDesktopAction: Unhandled invocation method: " + methodName);
                 return null;
