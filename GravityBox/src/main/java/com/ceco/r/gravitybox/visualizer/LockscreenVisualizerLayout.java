@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -70,8 +70,8 @@ public class LockscreenVisualizerLayout extends AVisualizerLayout
     private boolean mDimHeaderEnabled;
     private boolean mDimControlsEnabled;
     private boolean mDimArtworkEnabled;
-    private PowerManager mPowerManager;
-    private AudioManager mAudioManager;
+    private final PowerManager mPowerManager;
+    private final AudioManager mAudioManager;
 
     private View mScrim;
     private TextClock mClock;
@@ -139,12 +139,12 @@ public class LockscreenVisualizerLayout extends AVisualizerLayout
     public void onCreateView(ViewGroup parent) throws Throwable {
         // find suitable position, put as last if failed
         mPosition = parent.getChildCount();
-        int resId = parent.getResources().getIdentifier("status_bar_container", "id",
+        int resId = parent.getResources().getIdentifier("scrim_behind", "id",
                 parent.getContext().getPackageName());
         if (resId != 0) {
             View v = parent.findViewById(resId);
             if (v != null) {
-                mPosition = parent.indexOfChild(v);
+                mPosition = parent.indexOfChild(v)+1;
             }
         }
         if (DEBUG) log("Computed view position: " + mPosition);

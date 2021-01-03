@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,7 +52,7 @@ public class VisualizerController implements StatusBarStateChangedListener,
     private static final String TAG = "GB:VisualizerController";
     private static final boolean DEBUG = false;
 
-    private static final String CLASS_STATUSBAR_WINDOW_VIEW = "com.android.systemui.statusbar.phone.StatusBarWindowView";
+    private static final String CLASS_NOTIF_SHADE_WINDOW_VIEW = "com.android.systemui.statusbar.phone.NotificationShadeWindowView";
     private static final String CLASS_NAVIGATION_BAR_VIEW = "com.android.systemui.statusbar.phone.NavigationBarView";
     private static final String CLASS_NAVIGATION_BAR_INFLATER_VIEW = "com.android.systemui.statusbar.phone.NavigationBarInflaterView";
     private static final String CLASS_LIGHT_BAR_CONTROLLER = "com.android.systemui.statusbar.phone.LightBarController";
@@ -79,8 +79,8 @@ public class VisualizerController implements StatusBarStateChangedListener,
         boolean isAttached();
     }
 
-    private XSharedPreferences mPrefs;
-    private List<Listener> mListeners;
+    private final XSharedPreferences mPrefs;
+    private final List<Listener> mListeners;
     private boolean mPlaying = false;
     private boolean mActive = false;
     private boolean mIsScreenOn = true;
@@ -160,8 +160,8 @@ public class VisualizerController implements StatusBarStateChangedListener,
 
     private void createHooks(ClassLoader cl) {
         try {
-            XposedHelpers.findAndHookMethod(CLASS_STATUSBAR_WINDOW_VIEW, cl,
-                    "onFinishInflate", new XC_MethodHook() {
+            XposedHelpers.findAndHookMethod(CLASS_NOTIF_SHADE_WINDOW_VIEW, cl,
+                    "onAttachedToWindow", new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                     ViewGroup parent = (ViewGroup) param.thisObject;
