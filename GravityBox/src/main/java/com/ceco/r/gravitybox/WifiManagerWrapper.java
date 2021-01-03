@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,20 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ceco.r.gravitybox;
 
 import de.robv.android.xposed.XposedHelpers;
+
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.ResultReceiver;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Proxy;
 
 public class WifiManagerWrapper {
     private static final String TAG = "GB:WifiManagerWrapper";
@@ -38,8 +39,8 @@ public class WifiManagerWrapper {
     public static final int WIFI_AP_STATE_ENABLED = 13;
     public static final int WIFI_AP_STATE_FAILED = 14;
 
-    private Context mContext;
-    private WifiManager mWifiManager;
+    private final Context mContext;
+    private final WifiManager mWifiManager;
     private WifiApStateChangeListener mApStateChangeListener;
     private BroadcastReceiver mApStateChangeReceiver;
     private WifiStateChangeListener mWifiStateChangeListener;
@@ -159,13 +160,25 @@ public class WifiManagerWrapper {
 
     public void setWifiApEnabled(boolean enable, boolean showToast) {
         try {
-            ConnectivityManager conMan = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-            Object service = XposedHelpers.getObjectField(conMan, "mService");
-            Object tethering = XposedHelpers.getObjectField(service, "mTethering");
+            @SuppressLint("WrongConstant")
+            Object tetherMan = mContext.getSystemService("tethering");
             if (enable) {
-                XposedHelpers.callMethod(tethering, "startTethering", 0, new ResultReceiver(new Handler()), false);
+                Constructor<?> tetherBuilderCtor = XposedHelpers.findConstructorExact(
+                        "android.net.TetheringManager.TetheringRequest.Builder",
+                        mContext.getClassLoader(), int.class);
+                Object builder = tetherBuilderCtor.newInstance(0);
+                Object request = XposedHelpers.callMethod(builder, "build");
+                Constructor<?> executorCtor = XposedHelpers.findConstructorExact(
+                        "com.android.internal.util.ConcurrentUtils.DirectExecutor",
+                        mContext.getClassLoader());
+                Object executor = executorCtor.newInstance();
+                XposedHelpers.callMethod(tetherMan, "startTethering", request,
+                        executor, Proxy.newProxyInstance(mContext.getClassLoader(),
+                                new Class<?>[]{XposedHelpers.findClass(
+                                        tetherMan.getClass().getName() + ".StartTetheringCallback",
+                                        mContext.getClassLoader())}, (proxy, method, args) -> null));
             } else {
-                XposedHelpers.callMethod(tethering, "stopTethering", 0);
+                XposedHelpers.callMethod(tetherMan, "stopTethering", 0);
             }
             if (showToast) {
                 Utils.postToast(mContext, enable ? R.string.hotspot_on :
