@@ -134,7 +134,7 @@ public class ShortcutActivity extends GravityBoxListActivity {
         if (Utils.hasFlash(mContext)) {
             list.add(new TorchShortcut(mContext));
         }
-        list.add(new LocationModeShortcut(mContext));
+        //list.add(new LocationModeShortcut(mContext));
         list.add(new WifiShortcut(mContext));
         list.add(new WifiApShortcut(mContext));
         if (!Utils.isWifiOnly(mContext)) {
