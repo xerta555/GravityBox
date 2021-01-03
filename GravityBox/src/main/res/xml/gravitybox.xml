@@ -444,7 +444,7 @@
 
                 </PreferenceScreen>
 
-                <PreferenceScreen
+                <!--PreferenceScreen
                     android:key="pref_cat_quickrecord_tile"
                     android:title="@string/pref_cat_quickrecord_tile_title" >
 
@@ -466,7 +466,7 @@
                         monitorBoxUnit="h" 
                         android:defaultValue="1" />
 
-                </PreferenceScreen>
+                </PreferenceScreen-->
 
                 <PreferenceScreen 
                     android:key="pref_cat_qs_nm_tile_settings"

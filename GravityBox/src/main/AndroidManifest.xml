@@ -22,7 +22,7 @@
 
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--uses-permission android:name="android.permission.RECORD_AUDIO" /-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -201,13 +201,13 @@
             </intent-filter>
         </service>
 
-        <service android:name="com.ceco.r.gravitybox.RecordingService"
+        <!--service android:name="com.ceco.r.gravitybox.RecordingService"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="gravitybox.intent.action.RECORDING_START" />
                 <action android:name="gravitybox.intent.action.RECORDING_STOP" />
             </intent-filter>
-        </service>
+        </service-->
 
         <service android:name="com.ceco.r.gravitybox.ScreenRecordingService"
             tools:ignore="ExportedService">

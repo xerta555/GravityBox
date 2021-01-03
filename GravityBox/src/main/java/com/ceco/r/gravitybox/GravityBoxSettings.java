@@ -1313,7 +1313,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
         private AppPickerPreference mPrefCustomApp;
         private ListPreference mPrefChargingLed;
         private CheckBoxPreference mPrefProximityWakeIgnoreCall;
-        private ListPreference mPrefQrQuality;
+        //private ListPreference mPrefQrQuality;
         private SeekBarPreference mPrefSrAdaptiveDelay;
         private ListPreference mPrefBbarPosition;
         private ListPreference mPrefSbdpMode;
@@ -1568,7 +1568,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             mPrefChargingLed = (ListPreference) findPreference(PREF_KEY_CHARGING_LED);
             mPrefProximityWakeIgnoreCall = (CheckBoxPreference) findPreference(PREF_KEY_POWER_PROXIMITY_WAKE_IGNORE_CALL); 
 
-            mPrefQrQuality = (ListPreference) findPreference(PREF_KEY_QUICKRECORD_QUALITY);
+            //mPrefQrQuality = (ListPreference) findPreference(PREF_KEY_QUICKRECORD_QUALITY);
 
             mPrefSrAdaptiveDelay = (SeekBarPreference) findPreference(PREF_KEY_SMART_RADIO_ADAPTIVE_DELAY);
 
@@ -1864,7 +1864,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
 
         private void checkPermissions() {
             String[] perms = new String[] { permission.READ_EXTERNAL_STORAGE,
-                    permission.WRITE_EXTERNAL_STORAGE, permission.RECORD_AUDIO };
+                    permission.WRITE_EXTERNAL_STORAGE, /* permission.RECORD_AUDIO */ };
 
             List<String> reqPerms = new ArrayList<>();
             for (String perm : perms) {
@@ -2291,9 +2291,9 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 mPrefChargingLed.setSummary(mPrefChargingLed.getEntry());
             }
 
-            if (key == null || key.equals(PREF_KEY_QUICKRECORD_QUALITY)) {
-                mPrefQrQuality.setSummary(mPrefQrQuality.getEntry());
-            }
+//            if (key == null || key.equals(PREF_KEY_QUICKRECORD_QUALITY)) {
+//                mPrefQrQuality.setSummary(mPrefQrQuality.getEntry());
+//            }
 
             if (key == null || key.equals(PREF_KEY_SMART_RADIO_SCREEN_OFF_DELAY)) {
                 mPrefSrAdaptiveDelay.setEnabled(
