@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Peter Gregus for GravityBox Project (C3C076@xda)
+ * Copyright (C) 2021 Peter Gregus for GravityBox Project (C3C076@xda)
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -68,7 +68,7 @@ public class QsPanel implements BroadcastMediator.Receiver {
         XposedBridge.log(TAG + ": " + message);
     }
 
-    private XSharedPreferences mPrefs;
+    private final XSharedPreferences mPrefs;
     private ViewGroup mQsPanel;
     private int mNumColumns;
     private int mScaleCorrection;
@@ -79,7 +79,7 @@ public class QsPanel implements BroadcastMediator.Receiver {
     private QsTileEventDistributor mEventDistributor;
     @SuppressWarnings("unused")
     private QsQuickPulldownHandler mQuickPulldownHandler;
-    private Map<String, BaseTile> mTiles = new HashMap<>();
+    private final Map<String, BaseTile> mTiles = new HashMap<>();
     private LockedTileIndicator mLockedTileIndicator;
     private LinearColorBar mRamBar;
     private RamBarMode mRamBarMode;
@@ -101,7 +101,7 @@ public class QsPanel implements BroadcastMediator.Receiver {
     }
 
     private void initPreferences() {
-        mNumColumns = Integer.valueOf(mPrefs.getString(
+        mNumColumns = Integer.parseInt(mPrefs.getString(
                 GravityBoxSettings.PREF_KEY_QUICK_SETTINGS_TILES_PER_ROW, "0"));
         mScaleCorrection = mPrefs.getInt(GravityBoxSettings.PREF_KEY_QS_SCALE_CORRECTION, 0);
         mHideBrightness = mPrefs.getBoolean(GravityBoxSettings.PREF_KEY_QUICK_SETTINGS_HIDE_BRIGHTNESS, false);
@@ -384,7 +384,7 @@ public class QsPanel implements BroadcastMediator.Receiver {
                 XposedHelpers.findAndHookMethod(CLASS_BRIGHTNESS_CTRL, classLoader,
                         "registerCallbacks", new XC_MethodHook() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                    protected void afterHookedMethod(MethodHookParam param) {
                         if (DEBUG) log("BrightnessController: registerCallbacks");
                         ImageView icon = (ImageView) XposedHelpers.getObjectField(param.thisObject, "mIcon");
                         if (icon != null) {
@@ -463,7 +463,10 @@ public class QsPanel implements BroadcastMediator.Receiver {
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mRamBar.getLayoutParams();
         int sideMargin = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16,
                 mQsPanel.getResources().getDisplayMetrics()));
-        lp.setMargins(sideMargin, 0, sideMargin, 0);
+        int bottomMargin = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                (mRamBarMode == RamBarMode.TOP && !mHideBrightness ? 0 : 10),
+                mQsPanel.getResources().getDisplayMetrics()));
+        lp.setMargins(sideMargin, 0, sideMargin, bottomMargin);
         mRamBar.setLayoutParams(lp);
         int hPadding = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6,
                 mQsPanel.getResources().getDisplayMetrics()));
