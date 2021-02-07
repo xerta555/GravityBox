@@ -74,6 +74,8 @@ public class ModDialer {
         String[] CLASS_NAMES = new String[] {
                 "com.android.dialer.app.dialpad.DialpadFragment",
                 "com.android.dialer.dialpadview.DialpadFragment",
+                "emy",
+                "egh",
                 "dyv"
         };
         String[] METHOD_NAMES = new String[] { "onResume", "playTone", "onPause" };
@@ -87,7 +89,7 @@ public class ModDialer {
                 if (methodName.equals("onResume") || methodName.equals("onPause")) {
                     m = XposedHelpers.findMethodExactIfExists(clazz, methodName);
                 } else if (methodName.equals("playTone")) {
-                    for (String realMethodName : new String[] { methodName, "a" }) {
+                    for (String realMethodName : new String[] { methodName, "s", "a" }) {
                         m = XposedHelpers.findMethodExactIfExists(clazz, realMethodName,
                             int.class, int.class);
                         if (m != null) break;
@@ -133,6 +135,7 @@ public class ModDialer {
                     int.class, int.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) {
+                    if (DEBUG) log("DialpadFragment: playTone");
                     if (mQuietHours != null &&
                             mQuietHours.isSystemSoundMuted(QuietHours.SystemSound.DIALPAD)) {
                         param.setResult(null);
