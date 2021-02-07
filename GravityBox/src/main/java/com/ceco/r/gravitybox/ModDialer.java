@@ -74,6 +74,7 @@ public class ModDialer {
         String[] CLASS_NAMES = new String[] {
                 "com.android.dialer.app.dialpad.DialpadFragment",
                 "com.android.dialer.dialpadview.DialpadFragment",
+                "emy",
                 "egh",
                 "dyv"
         };
@@ -134,6 +135,7 @@ public class ModDialer {
                     int.class, int.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) {
+                    if (DEBUG) log("DialpadFragment: playTone");
                     if (mQuietHours != null &&
                             mQuietHours.isSystemSoundMuted(QuietHours.SystemSound.DIALPAD)) {
                         param.setResult(null);
