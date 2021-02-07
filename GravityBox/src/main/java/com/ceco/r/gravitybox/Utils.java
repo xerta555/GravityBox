@@ -38,6 +38,7 @@ import android.os.UserHandle;
 import android.os.UserManager;
 import android.os.Vibrator;
 import android.provider.ContactsContract.Contacts;
+import android.provider.Settings;
 import android.telecom.TelecomManager;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -428,6 +429,17 @@ public class Utils {
             return (fpm != null && fpm.isHardwareDetected());
         } catch (Throwable t) {
             GravityBox.log(TAG, "Error checkin for fingerprint support: ", t);
+            return false;
+        }
+    }
+
+    public static boolean isNavbarGestural(Context ctx) {
+        try {
+            int mode = Integer.parseInt(Settings.Secure.getString(
+                    ctx.getContentResolver(), "navigation_mode"));
+            return (mode == 2);
+        } catch (Throwable t) {
+            GravityBox.log(TAG, t);
             return false;
         }
     }
