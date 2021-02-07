@@ -210,7 +210,10 @@ public class BatteryStyleController implements BroadcastMediator.Receiver {
                 0);
         percentTextView.setTextColor(Color.WHITE);
         percentTextView.setVisibility(View.GONE);
-        if (!Utils.isOxygenOsRom() && !Utils.isSamsungRom()) {
+        int taResId = res.getIdentifier("TextAppearance.StatusBar.Clock", "style", PACKAGE_NAME);
+        if (taResId != 0) {
+            percentTextView.setTextAppearance(taResId);
+        } else if (!Utils.isOxygenOsRom() && !Utils.isSamsungRom()) {
             percentTextView.setTypeface(null, Typeface.BOLD);
         }
         mPercentText = new StatusbarBatteryPercentage(percentTextView, mPrefs, this);
