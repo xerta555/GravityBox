@@ -2035,5 +2035,8 @@
 
     <!-- Lockscreen: disable media art -->
     <string name="pref_lockscreen_media_art_disable_title">Отключить обложки</string>
+    <!-- Trusted WiFi: location permission warning -->
+    <string name="wifi_trusted_location_permission_denied">Эта функция требует разрешения на доступ к местоположению
+        для получения списка сетей WiFi</string>
 
 </resources>
