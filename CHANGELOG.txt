@@ -1,3 +1,12 @@
+Changelog 11.0.1 - 07/02/2021
+--------------------------------------
+- Added support for LSPosed module scope feature (auto-whitelist)
+- BatteryPercent: fixed percent text injection not working on some systems
+- BatteryPercent: follow status bar clock appearance
+- Navbar: avoid cursor control keys in gestural navbar
+- Dialer: adjusted for compatibility with the latest Google Dialer
+- Updated Russian translations (thanks to gaich)
+
 Changelog 11.0.0-beta-1 - 04/01/2021
 --------------------------------------
 - Initial beta release for Android 11
