@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="module_scope">
+        <item>android</item>
+        <item>com.android.systemui</item>
+        <item>com.android.server.telecom</item>
+        <item>com.android.providers.downloads</item>
+        <item>com.android.dialer</item>
+        <item>com.google.android.dialer</item>
+        <item>com.android.phone</item>
+        <item>com.android.incallui</item>
+        <item>com.google.android.inputmethod.latin</item>
+    </string-array>
+</resources>
