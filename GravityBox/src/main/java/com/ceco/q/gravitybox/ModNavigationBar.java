@@ -710,19 +710,11 @@ public class ModNavigationBar {
         }
     }
 
-    private static boolean isNavbarModeGestural() {
-        try {
-            return XposedHelpers.getIntField(mNavigationBarView, "mNavBarMode") == 2;
-        } catch (Throwable t) {
-            GravityBox.log(TAG, t);
-            return false;
-        }
-    }
-
     private static void setCustomKeyVisibility() {
         try {
             final int disabledFlags = XposedHelpers.getIntField(mNavigationBarView, "mDisabledFlags");
-            final boolean visible = mCustomKeyEnabled && !isNavbarModeGestural() &&
+            final boolean visible = mCustomKeyEnabled &&
+                    !Utils.isNavbarGestural(mNavigationBarView.getContext()) &&
                     (disabledFlags & STATUS_BAR_DISABLE_RECENT) == 0;
             for (NavbarViewInfo navbarViewInfo : mNavbarViewInfo) {
                 if (navbarViewInfo == null) continue;
@@ -834,7 +826,8 @@ public class ModNavigationBar {
             final int iconHints = XposedHelpers.getIntField(mNavigationBarView, "mNavigationIconHints");
             final int disabledFlags = XposedHelpers.getIntField(mNavigationBarView, "mDisabledFlags");
             final boolean visible = (disabledFlags & STATUS_BAR_DISABLE_RECENT) == 0 &&
-                    (iconHints & NAVIGATION_HINT_BACK_ALT) != 0;
+                    (iconHints & NAVIGATION_HINT_BACK_ALT) != 0 &&
+                    !Utils.isNavbarGestural(mNavigationBarView.getContext());
             if (visible == mDpadKeysVisible)
                 return;
             mDpadKeysVisible = visible;
