@@ -17,18 +17,20 @@ package com.ceco.oreo.gravitybox;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import android.Manifest.permission;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.FileObserver;
+import android.util.Log;
 import android.widget.Toast;
-import com.ceco.oreo.gravitybox.R;
 
 public class SettingsManager {
     private static final String BACKUP_PATH = Environment.getExternalStorageDirectory() + "/GravityBox/backup";
@@ -52,21 +54,40 @@ public class SettingsManager {
     private WorldReadablePrefs mPrefsTuner;
     private FileObserver mFileObserver;
     private List<FileObserverListener> mFileObserverListeners;
+    private String mPreferenceDir;
 
     private SettingsManager(Context context) {
-        mContext = Utils.USE_DEVICE_PROTECTED_STORAGE && !context.isDeviceProtectedStorage() ? 
+        mContext = !context.isDeviceProtectedStorage() ?
                 context.createDeviceProtectedStorageContext() : context;
         mFileObserverListeners = new ArrayList<>();
-        mPrefsMain =  new WorldReadablePrefs(mContext, mContext.getPackageName() + "_preferences");
+        mPrefsMain =  new WorldReadablePrefs(mContext, getPreferenceDir(), mContext.getPackageName() + "_preferences");
         mFileObserverListeners.add(mPrefsMain);
-        mPrefsLedControl = new WorldReadablePrefs(mContext, "ledcontrol");
+        mPrefsLedControl = new WorldReadablePrefs(mContext, getPreferenceDir(), "ledcontrol");
         mFileObserverListeners.add(mPrefsLedControl);
-        mPrefsQuietHours = new WorldReadablePrefs(mContext, "quiet_hours");
+        mPrefsQuietHours = new WorldReadablePrefs(mContext, getPreferenceDir(), "quiet_hours");
         mFileObserverListeners.add(mPrefsQuietHours);
-        mPrefsTuner = new WorldReadablePrefs(mContext, "tuner");
+        mPrefsTuner = new WorldReadablePrefs(mContext, getPreferenceDir(), "tuner");
         mFileObserverListeners.add(mPrefsTuner);
 
         registerFileObserver();
+    }
+
+    public String getPreferenceDir() {
+        if (mPreferenceDir == null) {
+            try {
+                SharedPreferences prefs = mContext.getSharedPreferences("dummy", Context.MODE_PRIVATE);
+                prefs.edit().putBoolean("dummy", false).commit();
+                Field f = prefs.getClass().getDeclaredField("mFile");
+                f.setAccessible(true);
+                mPreferenceDir = new File(((File) f.get(prefs)).getParent()).getAbsolutePath();
+                Log.d("GravityBox", "Preference folder: " + mPreferenceDir);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                Log.e("GravityBox", "Could not determine preference folder path. Returning default.");
+                e.printStackTrace();
+                mPreferenceDir = mContext.getDataDir() + "/shared_prefs";
+            }
+        }
+        return mPreferenceDir;
     }
 
     public static synchronized SettingsManager getInstance(Context context) {
@@ -117,7 +138,7 @@ public class SettingsManager {
                 "tuner.xml"
         };
         for (String prefsFileName : prefsFileNames) {
-            File prefsFile = new File(mContext.getDataDir() + "/shared_prefs/" + prefsFileName);
+            File prefsFile = new File(getPreferenceDir(), prefsFileName);
             if (prefsFile.exists()) {
                 File prefsDestFile = new File(BACKUP_PATH + "/" + prefsFileName);
                 try {
@@ -240,7 +261,7 @@ public class SettingsManager {
             if (prefsFileName.equals(prefsFileNames[0]) && !prefsFile.exists())
                 prefsFile = new File(BACKUP_PATH + "/" + LP_PREFERENCES);
             if (prefsFile.exists()) {
-                File prefsDestFile = new File(mContext.getDataDir() + "/shared_prefs/" + prefsFileName);
+                File prefsDestFile = new File(getPreferenceDir(), prefsFileName);
                 try {
                     Utils.copyFile(prefsFile, prefsDestFile);
                     prefsDestFile.setReadable(true, false);
@@ -382,7 +403,7 @@ public class SettingsManager {
     }
 
     private void registerFileObserver() {
-        mFileObserver = new FileObserver(mContext.getDataDir() + "/shared_prefs",
+        mFileObserver = new FileObserver(getPreferenceDir(),
                 FileObserver.ATTRIB | FileObserver.CLOSE_WRITE) {
             @Override
             public void onEvent(int event, String path) {

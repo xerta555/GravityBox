@@ -1478,9 +1478,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             }
             
             mPrefs = SettingsManager.getInstance(getActivity()).getMainPrefs();
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
             addPreferencesFromResource(R.xml.gravitybox);
 
             AppPickerPreference.sPrefsFragment = this;

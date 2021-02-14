@@ -27,7 +27,6 @@ import android.widget.Toast;
 import com.ceco.oreo.gravitybox.GravityBoxActivity;
 import com.ceco.oreo.gravitybox.R;
 import com.ceco.oreo.gravitybox.SettingsManager;
-import com.ceco.oreo.gravitybox.Utils;
 
 import java.util.Locale;
 
@@ -97,9 +96,7 @@ public class TunerDetailActivity extends GravityBoxActivity {
             super.onCreate(savedInstanceState);
 
             getPreferenceManager().setSharedPreferencesName("tuner");
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
 
             addPreferencesFromResource(R.xml.tuner_detail_activity_prefs);
             mPrefOverridden = (SwitchPreference) findPreference(PREF_KEY_OVERRIDE);

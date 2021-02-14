@@ -18,7 +18,6 @@ package com.ceco.oreo.gravitybox.ledcontrol;
 import com.ceco.oreo.gravitybox.R;
 import com.ceco.oreo.gravitybox.GravityBoxActivity;
 import com.ceco.oreo.gravitybox.SettingsManager;
-import com.ceco.oreo.gravitybox.Utils;
 import com.ceco.oreo.gravitybox.WorldReadablePrefs;
 
 import android.content.Intent;
@@ -46,9 +45,7 @@ public class ActiveScreenActivity extends GravityBoxActivity {
             super.onCreate(savedInstanceState);
 
             getPreferenceManager().setSharedPreferencesName("ledcontrol");
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
             mPrefs = SettingsManager.getInstance(getActivity()).getLedControlPrefs();
             addPreferencesFromResource(R.xml.led_control_active_screen_settings);
 

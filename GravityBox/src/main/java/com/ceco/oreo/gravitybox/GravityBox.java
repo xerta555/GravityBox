@@ -66,16 +66,24 @@ public class GravityBox implements IXposedHookZygoteInit, IXposedHookLoadPackage
         }
 
         MODULE_PATH = startupParam.modulePath;
-        if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
+        if (XposedBridge.getXposedVersion() < 93) {
             prefs = new XSharedPreferences(prefsFileProt);
             uncPrefs = new XSharedPreferences(uncPrefsFileProt);
             qhPrefs = new XSharedPreferences(qhPrefsFileProt);
             tunerPrefs = new XSharedPreferences(tunerPrefsFileProt);
         } else {
             prefs = new XSharedPreferences(PACKAGE_NAME);
+            prefs.makeWorldReadable();
+            prefs.reload();
             uncPrefs = new XSharedPreferences(PACKAGE_NAME, "ledcontrol");
+            uncPrefs.makeWorldReadable();
+            uncPrefs.reload();
             qhPrefs = new XSharedPreferences(PACKAGE_NAME, "quiet_hours");
+            qhPrefs.makeWorldReadable();
+            qhPrefs.reload();
             tunerPrefs = new XSharedPreferences(PACKAGE_NAME, "tuner");
+            tunerPrefs.makeWorldReadable();
+            tunerPrefs.reload();
         }
         LOG_ERRORS = prefs.getBoolean(GravityBoxSettings.PREF_KEY_LOG_ERRORS, false);
 
@@ -95,6 +103,7 @@ public class GravityBox implements IXposedHookZygoteInit, IXposedHookLoadPackage
             XposedBridge.log("GB:Android SDK: " + Build.VERSION.SDK_INT);
             XposedBridge.log("GB:Android Release: " + Build.VERSION.RELEASE);
             XposedBridge.log("GB:ROM: " + Build.DISPLAY);
+            XposedBridge.log("GB:Preferences: " + prefs.getFile().getParent());
             XposedBridge.log("GB:Error logging: " + LOG_ERRORS);
         }
 

@@ -28,7 +28,6 @@ import android.widget.TextView;
 import com.ceco.oreo.gravitybox.GravityBoxActivity;
 import com.ceco.oreo.gravitybox.R;
 import com.ceco.oreo.gravitybox.SettingsManager;
-import com.ceco.oreo.gravitybox.Utils;
 import com.ceco.oreo.gravitybox.WorldReadablePrefs;
 import com.ceco.oreo.gravitybox.managers.TunerManager;
 
@@ -97,9 +96,7 @@ public class TunerMainActivity extends GravityBoxActivity {
             super.onCreate(savedInstanceState);
 
             getPreferenceManager().setSharedPreferencesName("tuner");
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
             addPreferencesFromResource(R.xml.tuner_main_activity_prefs);
         }
 

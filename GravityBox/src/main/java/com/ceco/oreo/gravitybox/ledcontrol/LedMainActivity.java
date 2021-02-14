@@ -17,7 +17,6 @@ package com.ceco.oreo.gravitybox.ledcontrol;
 
 import com.ceco.oreo.gravitybox.R;
 import com.ceco.oreo.gravitybox.GravityBoxActivity;
-import com.ceco.oreo.gravitybox.Utils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,9 +70,7 @@ public class LedMainActivity extends GravityBoxActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-                getPreferenceManager().setStorageDeviceProtected();
-            }
+            getPreferenceManager().setStorageDeviceProtected();
             addPreferencesFromResource(R.xml.led_control_main_activity_prefs);
         }
 

@@ -22,7 +22,6 @@ import java.util.HashSet;
 
 import com.ceco.oreo.gravitybox.R;
 import com.ceco.oreo.gravitybox.ProgressBarController;
-import com.ceco.oreo.gravitybox.Utils;
 import com.ceco.oreo.gravitybox.ledcontrol.LedSettings.ActiveScreenMode;
 import com.ceco.oreo.gravitybox.ledcontrol.LedSettings.HeadsUpMode;
 import com.ceco.oreo.gravitybox.ledcontrol.LedSettings.LedMode;
@@ -126,9 +125,7 @@ public class LedSettingsFragment extends PreferenceFragment implements OnPrefere
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Utils.USE_DEVICE_PROTECTED_STORAGE) {
-            getPreferenceManager().setStorageDeviceProtected();
-        }
+        getPreferenceManager().setStorageDeviceProtected();
         addPreferencesFromResource(R.xml.led_control_settings);
 
         mColorPref = (ColorPickerPreference) findPreference(PREF_KEY_LED_COLOR);

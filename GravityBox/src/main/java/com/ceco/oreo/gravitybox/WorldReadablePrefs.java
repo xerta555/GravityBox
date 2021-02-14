@@ -44,9 +44,11 @@ public class WorldReadablePrefs implements SharedPreferences,
     private EditorWrapper mEditorWrapper;
     private boolean mSelfAttrChange;
     private Handler mHandler;
+    private String mPreferenceDir;
 
-    public WorldReadablePrefs(Context ctx, String prefsName) {
+    public WorldReadablePrefs(Context ctx, String prefsDir, String prefsName) {
         mContext = ctx;
+        mPreferenceDir = prefsDir;
         mPrefsName = prefsName;
         mPrefs = ctx.getSharedPreferences(mPrefsName, 0);
         mHandler = new Handler();
@@ -122,7 +124,7 @@ public class WorldReadablePrefs implements SharedPreferences,
 
     private void maybePreCreateFile() {
         try {
-            File sharedPrefsFolder = new File(mContext.getDataDir().getAbsolutePath() + "/shared_prefs");
+            File sharedPrefsFolder = new File(mPreferenceDir);
             if (!sharedPrefsFolder.exists()) {
                 sharedPrefsFolder.mkdir();
                 sharedPrefsFolder.setExecutable(true, false);
@@ -140,7 +142,7 @@ public class WorldReadablePrefs implements SharedPreferences,
     }
 
     private void fixPermissions(boolean force) {
-        File sharedPrefsFolder = new File(mContext.getDataDir().getAbsolutePath() + "/shared_prefs");
+        File sharedPrefsFolder = new File(mPreferenceDir);
         if (sharedPrefsFolder.exists()) {
             sharedPrefsFolder.setExecutable(true, false);
             sharedPrefsFolder.setReadable(true, false);
