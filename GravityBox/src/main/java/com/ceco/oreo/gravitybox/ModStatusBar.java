@@ -310,7 +310,7 @@ public class ModStatusBar {
             mSbContents = mStatusBarView
                     .findViewById(res.getIdentifier("status_bar_contents", "id", PACKAGE_NAME));
 
-            if (mPrefs.getBoolean(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_MASTER_SWITCH, true)) {
+            if (mPrefs.getBoolean(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_MASTER_SWITCH, false)) {
                 // find statusbar clock
                 TextView clock = mIconArea.findViewById(
                         res.getIdentifier("clock", "id", PACKAGE_NAME));

@@ -1038,7 +1038,7 @@
                     android:key="pref_sb_clock_masterswitch"
                     android:title="@string/pref_masterswitch_title"
                     android:summary="@string/pref_sb_clock_masterswitch_summary"
-                    android:defaultValue="true" />
+                    android:defaultValue="false" />
 
                 <CheckBoxPreference 
                     android:key="pref_clock_hide"
