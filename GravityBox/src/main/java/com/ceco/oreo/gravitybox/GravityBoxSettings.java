@@ -1751,10 +1751,6 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
 
             mPrefTuner = findPreference(PREF_TUNER);
 
-            // Remove EdXposed unsupported preferences
-            Preference pEdXp = findPreference(PREF_KEY_SIGNAL_CLUSTER_HPLUS);
-            if (pEdXp != null) mPrefCatSignalCluster.removePreference(pEdXp);
-
             // Disable features not applicable to 8.1 / 8.0
             if (Build.VERSION.SDK_INT >= 27) {
                 // Navbar auto fade keys

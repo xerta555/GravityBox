@@ -14,6 +14,7 @@
  */
 package com.ceco.oreo.gravitybox;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -38,6 +39,8 @@ import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.telephony.TelephonyManager;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +55,8 @@ public class StatusbarSignalCluster implements BroadcastSubReceiver, IconManager
     protected static XSharedPreferences sPrefs;
 
     // HSPA+
-    protected static int sQsHpResId;
-    protected static int sSbHpResId;
-    protected static int[][] DATA_HP;
-    protected static int[] QS_DATA_HP;
+    protected static int sQsHpResId = ResourceProxy.getFakeResId("ic_qs_signal_hp");
+    protected static int sSbHpResId = ResourceProxy.getFakeResId("stat_sys_data_fully_connected_hp");
 
     protected ContainerType mContainerType;
     protected LinearLayout mView;
@@ -173,40 +174,6 @@ public class StatusbarSignalCluster implements BroadcastSubReceiver, IconManager
             }
         }
     } 
-
-    // EdXposed unsupported
-    /*
-    public static void initResources(XSharedPreferences prefs, InitPackageResourcesParam resparam) {
-        XModuleResources modRes = XModuleResources.createInstance(GravityBox.MODULE_PATH, resparam.res);
-
-        if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_SIGNAL_CLUSTER_HPLUS, false) &&
-                !Utils.isMtkDevice() && !Utils.isOxygenOsRom()) {
-            sQsHpResId = XResources.getFakeResId(modRes, R.drawable.ic_qs_signal_hp);
-            sSbHpResId = XResources.getFakeResId(modRes, R.drawable.stat_sys_data_fully_connected_hp);
-    
-            resparam.res.setReplacement(sQsHpResId, modRes.fwd(R.drawable.ic_qs_signal_hp));
-            resparam.res.setReplacement(sSbHpResId, modRes.fwd(R.drawable.stat_sys_data_fully_connected_hp));
-    
-            DATA_HP = new int[][] {
-                    { sSbHpResId, sSbHpResId, sSbHpResId, sSbHpResId },
-                    { sSbHpResId, sSbHpResId, sSbHpResId, sSbHpResId }
-            };
-            QS_DATA_HP = new int[] { sQsHpResId, sQsHpResId };
-            if (DEBUG) log("H+ icon resources initialized");
-
-            if (Utils.isMotoXtDevice()) {
-                resparam.res.setReplacement(ModStatusBar.PACKAGE_NAME, "bool",
-                        "config_hspap_data_distinguishable", true);
-            }
-        }
-
-        String lteStyle = prefs.getString(GravityBoxSettings.PREF_KEY_SIGNAL_CLUSTER_LTE_STYLE, "DEFAULT");
-        if (!lteStyle.equals("DEFAULT")) {
-            resparam.res.setReplacement(ModStatusBar.PACKAGE_NAME, "bool", "config_show4GForLTE",
-                    lteStyle.equals("4G"));
-        }
-    }
-    */
 
     public static StatusbarSignalCluster create(ContainerType containerType,
             LinearLayout view, XSharedPreferences prefs) throws Throwable {
@@ -386,8 +353,6 @@ public class StatusbarSignalCluster implements BroadcastSubReceiver, IconManager
                 "com.android.systemui.statusbar.policy.MobileSignalController", 
                 mView.getContext().getClassLoader());
 
-        // EdXposed unsupported
-        /*
         if (sPrefs.getBoolean(GravityBoxSettings.PREF_KEY_SIGNAL_CLUSTER_HPLUS, false) &&
                 !Utils.isMtkDevice() && !Utils.isOxygenOsRom()) {
             try {
@@ -423,7 +388,6 @@ public class StatusbarSignalCluster implements BroadcastSubReceiver, IconManager
                 GravityBox.log(TAG, "updateDataNetType", t);
             }
         }
-        */
 
         if (Utils.isMotoXtDevice() && sPrefs.getBoolean(
                 GravityBoxSettings.PREF_KEY_SIGNAL_CLUSTER_AOSP_MOBILE_TYPE, false)) {

@@ -132,7 +132,9 @@ public class SystemWideResources {
         // SystemUI resources
         resourceNames = new ArrayList<>(Arrays.asList(
                 "rounded_corner_content_padding",
-                "config_disableMenuKeyInLockScreen"
+                "config_disableMenuKeyInLockScreen",
+                "config_hspap_data_distinguishable",
+                "config_show4GForLTE"
         ));
         if (tunerPrefs.getBoolean(TunerMainActivity.PREF_KEY_ENABLED, false) &&
                 !tunerPrefs.getBoolean(TunerMainActivity.PREF_KEY_LOCKED, false)) {
@@ -143,7 +145,9 @@ public class SystemWideResources {
                 resourceNames,
                 new ArrayList<>(Arrays.asList(
                         ResourceProxy.getFakeResId("ic_audio_notification"),
-                        ResourceProxy.getFakeResId("ic_audio_notification_mute")))) {
+                        ResourceProxy.getFakeResId("ic_audio_notification_mute"),
+                        ResourceProxy.getFakeResId("ic_qs_signal_hp"),
+                        ResourceProxy.getFakeResId("stat_sys_data_fully_connected_hp")))) {
             @Override
             public boolean onIntercept(ResourceProxy.ResourceSpec resourceSpec) {
                 // Advanced tuning has priority
@@ -169,6 +173,20 @@ public class SystemWideResources {
                             return true;
                         }
                         break;
+                    case "config_hspap_data_distinguishable":
+                        if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_SIGNAL_CLUSTER_HPLUS, false) &&
+                                Utils.isMotoXtDevice()) {
+                            resourceSpec.value = true;
+                            return true;
+                        }
+                        break;
+                    case "config_show4GForLTE":
+                        String lteStyle = prefs.getString(GravityBoxSettings.PREF_KEY_SIGNAL_CLUSTER_LTE_STYLE, "DEFAULT");
+                        if (!lteStyle.equals("DEFAULT")) {
+                            resourceSpec.value = lteStyle.equals("4G");
+                            return true;
+                        }
+                        break;
                 }
                 return false;
             }
@@ -179,6 +197,10 @@ public class SystemWideResources {
                     return gbContext.getDrawable(R.drawable.ic_audio_notification);
                 } else if (fakeResId == ResourceProxy.getFakeResId("ic_audio_notification_mute")) {
                     return gbContext.getDrawable(R.drawable.ic_audio_notification_mute);
+                } else if (fakeResId == ResourceProxy.getFakeResId("ic_qs_signal_hp")) {
+                    return gbContext.getDrawable(R.drawable.ic_qs_signal_hp);
+                } else if (fakeResId == ResourceProxy.getFakeResId("stat_sys_data_fully_connected_hp")) {
+                    return gbContext.getDrawable(R.drawable.stat_sys_data_fully_connected_hp);
                 }
                 return null;
             }
