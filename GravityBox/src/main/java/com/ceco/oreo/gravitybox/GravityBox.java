@@ -116,33 +116,6 @@ public class GravityBox implements IXposedHookZygoteInit, IXposedHookLoadPackage
         ModTelephony.initZygote(prefs);
     }
 
-    // EdXposed unsupported
-    /*
-    @Override
-    public void handleInitPackageResources(InitPackageResourcesParam resparam) {
-        if (Build.VERSION.SDK_INT < 26 || Build.VERSION.SDK_INT > 27) {
-            return;
-        }
-
-        if (resparam.packageName.equals(ModStatusBar.PACKAGE_NAME)) {
-            ModStatusBar.initResources(prefs, tunerPrefs, resparam);
-        }
-
-        if (resparam.packageName.equals(ModSettings.PACKAGE_NAME)) {
-            ModSettings.initPackageResources(prefs, resparam);
-        }
-
-        if (resparam.packageName.equals(ModLockscreen.PACKAGE_NAME)) {
-            ModLockscreen.initResources(prefs, resparam);
-        }
-
-        if (resparam.packageName.equals(ModQsTiles.PACKAGE_NAME) &&
-                prefs.getBoolean(GravityBoxSettings.PREF_KEY_QUICK_SETTINGS_ENABLE, false)) {
-            ModQsTiles.initResources(resparam);
-        }
-    }
-    */
-
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) {
         if (Build.VERSION.SDK_INT < 26 || Build.VERSION.SDK_INT > 27) {
@@ -209,10 +182,6 @@ public class GravityBox implements IXposedHookZygoteInit, IXposedHookLoadPackage
 
         if (lpparam.packageName.equals(ModPowerMenu.PACKAGE_NAME)) {
             ModPowerMenu.init(prefs, lpparam.classLoader);
-        }
-
-        if (lpparam.packageName.equals(ModSettings.PACKAGE_NAME)) {
-            ModSettings.init(prefs, lpparam.classLoader);
         }
 
         if (lpparam.packageName.equals(ModVolumePanel.PACKAGE_NAME)) {

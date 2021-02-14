@@ -36,17 +36,6 @@ public class ModQsTiles {
     @SuppressWarnings("unused")
     private static QsDetailItems mQsDetailItems;
 
-    // EdXposed unsupported
-    /*
-    public static void initResources(final InitPackageResourcesParam resparam) {
-        if (Utils.isXperiaDevice()) {
-            try {
-                resparam.res.setReplacement(PACKAGE_NAME, "integer", "config_maxToolItems", 60);
-            } catch (Throwable ignore) {}
-        }
-    }
-    */
-
     public static void init(final XSharedPreferences prefs, final ClassLoader classLoader) {
         if (DEBUG) log("init");
 
