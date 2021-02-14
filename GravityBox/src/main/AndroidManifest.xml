@@ -17,8 +17,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ceco.oreo.gravitybox"
-    android:versionCode="8531"
-    android:versionName="8.5.3.1-edxposed" >
+    android:versionCode="8600"
+    android:versionName="8.6.0" >
 
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
