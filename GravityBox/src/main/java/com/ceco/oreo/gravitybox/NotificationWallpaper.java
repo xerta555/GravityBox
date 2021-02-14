@@ -63,8 +63,8 @@ class NotificationWallpaper implements BroadcastSubReceiver,
         mBackupBg = mNotificationPanelView.getBackground();
 
         Context gbContext = Utils.getGbContext(mContext);
-        mNotifBgImagePathPortrait = gbContext.getFilesDir() + "/notifwallpaper";
-        mNotifBgImagePathLandscape = gbContext.getFilesDir() + "/notifwallpaper_landscape";
+        mNotifBgImagePathPortrait = prefs.getFile().getParent() + "/notifwallpaper";
+        mNotifBgImagePathLandscape = prefs.getFile().getParent() + "/notifwallpaper_landscape";
 
         initPreferences(prefs);
         createHooks();
