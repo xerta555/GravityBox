@@ -89,7 +89,7 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
 
     public StatusbarClock(XSharedPreferences prefs) {
         mClockShowDate = prefs.getString(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_DATE, "disabled");
-        mClockShowDow = Integer.valueOf(
+        mClockShowDow = Integer.parseInt(
                 prefs.getString(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_DOW, "0"));
         mAmPmHide = prefs.getBoolean(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_AMPM_HIDE, false);
         mClockHidden = prefs.getBoolean(GravityBoxSettings.PREF_KEY_STATUSBAR_CLOCK_HIDE, false);
@@ -161,7 +161,7 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
             }
         });
 
-        hookUpdateClock();
+        hookGetSmallTime();
     }
 
     public ClockPosition getCurrentPosition() {
@@ -233,16 +233,15 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
         setClockVisibility(true);
     }
 
-    private void hookUpdateClock() {
+    private void hookGetSmallTime() {
         try {
-            mHooks.add(XposedHelpers.findAndHookMethod(mClock.getClass(), "updateClock", new XC_MethodHook() {
+            mHooks.add(XposedHelpers.findAndHookMethod(mClock.getClass(), "getSmallTime", new XC_MethodHook() {
                 @SuppressLint("SimpleDateFormat")
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
-                    TextView thisClock = (TextView) param.thisObject;
                     // is this a status bar Clock instance?
                     // yes, if it contains our additional sbClock field
-                    if (DEBUG) log("updateClock() called. mAmPmHide=" + mAmPmHide);
+                    if (DEBUG) log("getSmallTime() called. mAmPmHide=" + mAmPmHide);
                     boolean isStatusbarClock = (XposedHelpers.getAdditionalInstanceField(param.thisObject, "sbClock") != null);
                     if (DEBUG) log("Is statusbar clock: " + isStatusbarClock);
                     // hide and finish if sb clock hidden
@@ -252,13 +251,9 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
                         }
                         return;
                     }
-                    // do nothing if clocktext is null
-                    if (thisClock.getText() == null) {
-                        return;
-                    }
                     Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
                     boolean is24 = DateFormat.is24HourFormat(mClock.getContext());
-                    String clockText = thisClock.getText().toString();
+                    String clockText = param.getResult().toString();
                     if (DEBUG) log("Original clockText: '" + clockText + "'");
                     // generate fresh base time text if seconds enabled
                     if (mShowSeconds && isStatusbarClock) {
@@ -322,7 +317,7 @@ public class StatusbarClock implements BroadcastMediator.Receiver {
                         }
                     }
                     if (DEBUG) log("Final clockText: '" + sb + "'");
-                    thisClock.setText(sb);
+                    param.setResult(sb);
                 }
             }));
         } catch (Throwable t) {
