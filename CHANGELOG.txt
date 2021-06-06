@@ -1,3 +1,16 @@
+Changelog 11.0.3 - 06/06/2021
+--------------------------------------
+- Improved compatibility with OxygenOS (OP7Pro, OOS 11.0.1.1)
+--- Clock: fixed positioning in Status Bar Header
+--- Battery Style: fixed layout in Status Bar Header
+--- Lockscreen: fixed application bar (Shortcuts)
+--- Lockscreen: fixed Direct Unlock and Smart Unlock
+--- Dialer: adjusted for compatibility (call recording, etc.)
+- StatusBar: improved brightness control
+- Dialer: adjusted for compatibility with the latest Google Dialer
+- Fixed "Force LTR" feature (thanks to Y-T-G)
+- Updated Turkish translations (thanks to Fatih Firinci)
+
 Changelog 11.0.2 - 07/03/2021
 --------------------------------------
 - Clock: reverted to old hooking strategy for better compatibility
