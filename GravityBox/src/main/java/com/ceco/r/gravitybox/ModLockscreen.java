@@ -452,7 +452,8 @@ public class ModLockscreen {
                     ViewGroup kgStatusView = (ViewGroup) XposedHelpers.getObjectField(
                             param.thisObject, "mKeyguardStatusView");
                     Resources res = kgStatusView.getResources();
-                    int containerId = res.getIdentifier("keyguard_status_area", "id", PACKAGE_NAME);
+                    String containerName = Utils.isOxygenOsRom() ? "status_view_container" : "keyguard_status_area";
+                    int containerId = res.getIdentifier(containerName, "id", PACKAGE_NAME);
                     if (containerId != 0) {
                         ViewGroup container = kgStatusView.findViewById(containerId);
                         if (Utils.isSamsungRom()) {
