@@ -423,19 +423,17 @@ public class ModLockscreen {
                         return;
                     }
 
-                    if (!mKgMonitor.isTrustManaged()) {
+                    if (mKgMonitor.isLocked()) {
                         if (mDirectUnlock != DirectUnlock.OFF) {
                             mUnlockHandler.sendEmptyMessageDelayed(MSG_DIRECT_UNLOCK, 300);
                         }
                     } else if (mSmartUnlock) {
                         mKgMonitor.registerListener(mKgStateListener);
-                        if (!mKgMonitor.isLocked()) {
-                            // previous state is insecure so we rather wait a second as smart lock can still
-                            // decide to make it secure after a while. Seems to be necessary only for
-                            // on-body detection. Other smart lock methods seem to always start with secured state
-                            if (DEBUG) log("onScreenTurnedOn: Scheduling smart unlock");
-                            mUnlockHandler.sendEmptyMessageDelayed(MSG_SMART_UNLOCK, 1000);
-                        }
+                        // previous state is insecure so we rather wait a second as smart lock can still
+                        // decide to make it secure after a while. Seems to be necessary only for
+                        // on-body detection. Other smart lock methods seem to always start with secured state
+                        if (DEBUG) log("onScreenTurnedOn: Scheduling smart unlock");
+                        mUnlockHandler.sendEmptyMessageDelayed(MSG_SMART_UNLOCK, 1000);
                     }
                 }
             });
