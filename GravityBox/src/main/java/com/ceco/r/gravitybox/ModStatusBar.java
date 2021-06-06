@@ -78,7 +78,7 @@ public class ModStatusBar {
     private static final boolean DEBUG = false;
     private static final boolean DEBUG_LAYOUT = false;
 
-    private static final float BRIGHTNESS_CONTROL_PADDING = 0.15f;
+    private static final float BRIGHTNESS_CONTROL_PADDING = 0.2f;
     private static final int BRIGHTNESS_CONTROL_LONG_PRESS_TIMEOUT = 750; // ms
     private static final int BRIGHTNESS_CONTROL_LINGER_THRESHOLD = 20;
     private static final float BRIGHTNESS_ADJ_RESOLUTION = 100;
@@ -147,6 +147,8 @@ public class ModStatusBar {
     private static int mInitialTouchX;
     private static int mInitialTouchY;
     private static int BRIGHTNESS_ON = 255;
+    private static float mPrevBrightness = -1f;
+    private static float mPrevBrightnessAuto = -1f;
 
     private static List<StatusBarStateChangedListener> mStateChangeListeners =
             new ArrayList<>();
@@ -371,8 +373,7 @@ public class ModStatusBar {
             Class<?> powerManagerClass = XposedHelpers.findClass(CLASS_POWER_MANAGER,
                     mContext.getClassLoader());
             Resources res = mContext.getResources();
-            mMinBrightness = res.getInteger(res.getIdentifier(
-                    "config_screenBrightnessSettingMinimum", "integer", "android"));
+            mMinBrightness = 0;
             mPeekHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 84,
                     res.getDisplayMetrics());
             BRIGHTNESS_ON = XposedHelpers.getStaticIntField(powerManagerClass, "BRIGHTNESS_ON");
@@ -1304,20 +1305,26 @@ public class ModStatusBar {
                 adj = Math.max(adj, -1);
                 adj = Math.min(adj, 1);
                 final float val = adj;
-                XposedHelpers.callMethod(getDisplayManager(), "setTemporaryAutoBrightnessAdjustment", val);
-                AsyncTask.execute(() ->
-                        XposedHelpers.callStaticMethod(Settings.System.class, "putFloatForUser",
-                        mContext.getContentResolver(),"screen_auto_brightness_adj", val, -2));
+                if (mPrevBrightnessAuto != val) {
+                    mPrevBrightnessAuto = val;
+                    XposedHelpers.callMethod(getDisplayManager(), "setTemporaryAutoBrightnessAdjustment", val);
+                    AsyncTask.execute(() ->
+                            XposedHelpers.callStaticMethod(Settings.System.class, "putFloatForUser",
+                                    mContext.getContentResolver(), "screen_auto_brightness_adj", val, -2));
+                }
             } else {
                 int newBrightness = mMinBrightness + Math.round(value *
                         (BRIGHTNESS_ON - mMinBrightness));
                 newBrightness = Math.min(newBrightness, BRIGHTNESS_ON);
                 newBrightness = Math.max(newBrightness, mMinBrightness);
                 final int val = newBrightness;
-                XposedHelpers.callMethod(getDisplayManager(), "setTemporaryBrightness", val);
-                AsyncTask.execute(() ->
-                        XposedHelpers.callStaticMethod(Settings.System.class, "putIntForUser",
-                        mContext.getContentResolver(),Settings.System.SCREEN_BRIGHTNESS, val, -2));
+                if (mPrevBrightness != val) {
+                    mPrevBrightness = val;
+                    XposedHelpers.callMethod(getDisplayManager(), "setTemporaryBrightness", val);
+                    AsyncTask.execute(() ->
+                            XposedHelpers.callStaticMethod(Settings.System.class, "putIntForUser",
+                                    mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, val, -2));
+                }
             }
         } catch (Throwable t) {
             GravityBox.log(TAG, t);
