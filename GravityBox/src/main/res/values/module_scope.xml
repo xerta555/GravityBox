@@ -10,5 +10,6 @@
         <item>com.android.phone</item>
         <item>com.android.incallui</item>
         <item>com.google.android.inputmethod.latin</item>
+        <item>com.oneplus.dialer</item>
     </string-array>
 </resources>

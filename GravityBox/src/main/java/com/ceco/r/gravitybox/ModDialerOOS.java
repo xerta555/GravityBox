@@ -31,10 +31,10 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 public class ModDialerOOS {
-    public static final String PACKAGE_NAME_DIALER = "com.android.dialer";
+    public static final String PACKAGE_NAME_DIALER = "com.oneplus.dialer";
     public static final String CLASS_DIALER_SETTINGS_ACTIVITY = "com.android.dialer.oneplus.activity.OPDialerSettingsActivity";
     public static final String CLASS_IN_CALL_ACTIVITY = "com.android.incallui.InCallActivity";
-    public static final String CLASS_DIALPAD_FRAGMENT = "com.android.dialer.dialpadview.DialpadFragment";
+    public static final String CLASS_DIALPAD_FRAGMENT = "com.android.dialer.dialpadview.OPDialerDialpadFragment";
     private static final String TAG = "GB:ModDialerOOS";
     private static final boolean DEBUG = false;
 
@@ -91,7 +91,7 @@ public class ModDialerOOS {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
                     if (DEBUG) log("DialpadFragment: onResume");
-                    Context ctx = ((android.app.Fragment) param.thisObject).getContext();
+                    Context ctx = (Context) XposedHelpers.callMethod(param.thisObject, "getActivity");
                     ctx.registerReceiver(mBroadcastReceiver,
                             new IntentFilter(QuietHoursActivity.ACTION_QUIET_HOURS_CHANGED));
                     Intent i = new Intent(QuietHoursActivity.ACTION_QUIET_HOURS_CHANGED);
@@ -106,13 +106,13 @@ public class ModDialerOOS {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
                     if (DEBUG) log("DialpadFragment: onPause");
-                    Context ctx = ((android.app.Fragment) param.thisObject).getContext();
+                    Context ctx = (Context) XposedHelpers.callMethod(param.thisObject, "getActivity");
                     ctx.unregisterReceiver(mBroadcastReceiver);
                 }
             });
 
             XposedHelpers.findAndHookMethod(CLASS_DIALPAD_FRAGMENT, classLoader,
-                    "playTone", int.class, int.class, new XC_MethodHook() {
+                    "c", int.class, int.class, new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) {
                     if (DEBUG) log("DialpadFragment: playTone");
