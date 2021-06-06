@@ -1935,15 +1935,15 @@ Devam ederseniz, kendi sorumluluğunuz altındadır ve herhangi bir destek bekle
     <string name="pref_sb_max_notif_icons_summary">Durum çubuğundaki görünür bildirim simgeleri sayısındaki kısıtlamayı kaldırmayı dener</string>
 
     <!-- Link ringtone & notifications volumes -->
-    <string name="pref_link_volumes_title">Zil sesi ve bildirim seslerini birleştir</string>
+    <string name="pref_link_volumes_title">Zil sesi &amp; bildirim seslerini birleştir</string>
 
     <!-- Expanded volume panel -->
     <string name="pref_volume_panel_expanded_title">Genişletilmiş ses paneli</string>
     <string name="pref_volume_panel_expanded_summary">O anda etkin olmasalar bile, tüm genel akış türleri için ses kaydırıcılarını gösterir</string>
 
     <!-- Link/unlink audio stream volumes -->
-    <string name="volumes_linked">Sesler birleştirildi</string>
-    <string name="volumes_unlinked">Sesler ayrıldı</string>
+    <string name="volumes_linked">Sesleri birleştir</string>
+    <string name="volumes_unlinked">Sesleri ayır</string>
 
     <!-- Link ringtone & system volumes -->
     <string name="pref_link_ringer_system_volumes_title">Zil sesi &amp; sistem seslerini birleştir</string>
