@@ -62,6 +62,7 @@ public class ModDialer {
         final String[] CLASS_NAMES = new String[] {
                 "com.android.dialer.app.dialpad.DialpadFragment",
                 "com.android.dialer.dialpadview.DialpadFragment",
+                "dxh",
                 "dqc",
                 "emy",
                 "egh",
@@ -71,7 +72,7 @@ public class ModDialer {
             Class<?> clazz = XposedHelpers.findClassIfExists(className, cl);
             if (clazz == null) continue;
             if (DEBUG) log("resolvePlayToneMethod: found class=" + className);
-            for (String realMethodName : new String[] { "playTone", "be", "s", "a" }) {
+            for (String realMethodName : new String[] { "playTone", "bm", "be", "s", "a" }) {
                 Method m = XposedHelpers.findMethodExactIfExists(clazz, realMethodName,
                     int.class, int.class);
                 if (m == null) continue;
