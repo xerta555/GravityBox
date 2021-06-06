@@ -25,8 +25,8 @@ import de.robv.android.xposed.XposedHelpers;
 public class ModViewConfig {
     private static final String TAG = "GB:ModViewConfig";
     private static final String CLASS_ACTIONBAR_POLICY = "com.android.internal.view.ActionBarPolicy";
-    private static final String CLASS_ACTIVITY_MANAGER_SERVICE = "com.android.server.am.ActivityManagerService";
-    private static final String CLASS_ACTIVITY_RECORD = "com.android.server.am.ActivityRecord";
+    private static final String CLASS_ACTIVITY_TASK_MANAGER_SERVICE = "com.android.server.wm.ActivityTaskManagerService";
+    private static final String CLASS_ACTIVITY_RECORD = "com.android.server.wm.ActivityRecord";
 
     public static void initAndroid(final XSharedPreferences prefs, final ClassLoader classLoader) {
         try {
@@ -45,7 +45,7 @@ public class ModViewConfig {
 
         try {
             if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_FORCE_LTR_DIRECTION, false)) {
-                final Class<?> activityManagerSvcClass = XposedHelpers.findClass(CLASS_ACTIVITY_MANAGER_SERVICE, classLoader);
+                final Class<?> activityManagerSvcClass = XposedHelpers.findClass(CLASS_ACTIVITY_TASK_MANAGER_SERVICE, classLoader);
                     XposedHelpers.findAndHookMethod(activityManagerSvcClass, "updateConfigurationLocked", 
                             Configuration.class, CLASS_ACTIVITY_RECORD, boolean.class, boolean.class,
                             int.class, boolean.class, new XC_MethodHook() {
