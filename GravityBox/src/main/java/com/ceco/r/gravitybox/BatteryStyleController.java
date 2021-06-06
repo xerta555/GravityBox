@@ -139,7 +139,7 @@ public class BatteryStyleController implements BroadcastMediator.Receiver {
         mBatteryPercentTextEnabledSb = prefs.getBoolean(
                 GravityBoxSettings.PREF_KEY_BATTERY_PERCENT_TEXT_STATUSBAR, false);
         mBatteryPercentTextEnabledSbHeader = prefs.getBoolean(
-                GravityBoxSettings.PREF_KEY_BATTERY_PERCENT_TEXT_STATUSBAR_HEADER, false);
+                GravityBoxSettings.PREF_KEY_BATTERY_PERCENT_TEXT_STATUSBAR_HEADER, false) && !Utils.isOxygenOsRom();
         mBatteryPercentTextKgMode = KeyguardMode.valueOf(prefs.getString(
                 GravityBoxSettings.PREF_KEY_BATTERY_PERCENT_TEXT_KEYGUARD, "DEFAULT"));
         mBatteryPercentTextOnRight = "RIGHT".equals(prefs.getString(
@@ -152,8 +152,7 @@ public class BatteryStyleController implements BroadcastMediator.Receiver {
         ColorStateList headerFillColor = null;
 
         int bIconIndex = mSystemIcons.getChildCount();
-        int bIconMarginStart = gbRes.getDimensionPixelSize(R.dimen.circle_battery_padding_left);
-        int bIconMarginEnd = gbRes.getDimensionPixelSize(R.dimen.circle_battery_padding_right);
+        ViewGroup.LayoutParams bLayoutParams = null;
 
         // determine fill color in header
         if (mContainerType == ContainerType.HEADER) {
@@ -171,19 +170,20 @@ public class BatteryStyleController implements BroadcastMediator.Receiver {
                 res.getIdentifier(batteryResName, "id", PACKAGE_NAME));
         if (stockBatteryView != null) {
             bIconIndex = mSystemIcons.indexOfChild(stockBatteryView);
-            bIconMarginStart = ((MarginLayoutParams) stockBatteryView.getLayoutParams()).getMarginStart();
-            bIconMarginEnd = ((MarginLayoutParams) stockBatteryView.getLayoutParams()).getMarginEnd();
+            bLayoutParams = stockBatteryView.getLayoutParams();
             mStockBattery = new StatusbarBattery(stockBatteryView);
         }
 
         // inject circle battery view
         mCircleBattery = new CmCircleBattery(mContext, this);
-        LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        lParams.gravity = Gravity.CENTER_VERTICAL;
-        lParams.setMarginStart(bIconMarginStart);
-        lParams.setMarginEnd(bIconMarginEnd);
-        mCircleBattery.setLayoutParams(lParams);
+        if (bLayoutParams != null) {
+            mCircleBattery.setLayoutParams(bLayoutParams);
+        } else {
+            LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                    LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            lParams.gravity = Gravity.CENTER_VERTICAL;
+            mCircleBattery.setLayoutParams(lParams);
+        }
         mCircleBattery.setVisibility(View.GONE);
         if (mContainerType == ContainerType.HEADER) {
             mCircleBattery.setOnClickListener(v -> startPowerUsageSummary());
@@ -196,7 +196,7 @@ public class BatteryStyleController implements BroadcastMediator.Receiver {
 
         // inject percent text 
         TextView percentTextView = new TextView(mContext);
-        lParams = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
             LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         percentTextView.setLayoutParams(lParams);
         percentTextView.setPadding(
@@ -456,7 +456,7 @@ public class BatteryStyleController implements BroadcastMediator.Receiver {
             }
             if (intent.hasExtra(GravityBoxSettings.EXTRA_BATTERY_PERCENT_TEXT_STATUSBAR_HEADER)) {
                 mBatteryPercentTextEnabledSbHeader = intent.getBooleanExtra(
-                        GravityBoxSettings.EXTRA_BATTERY_PERCENT_TEXT_STATUSBAR_HEADER, false);
+                        GravityBoxSettings.EXTRA_BATTERY_PERCENT_TEXT_STATUSBAR_HEADER, false) && !Utils.isOxygenOsRom();
                 if (DEBUG) log("mBatteryPercentTextEnabledSbHeader changed to: " + mBatteryPercentTextEnabledSbHeader);
             }
             if (intent.hasExtra(GravityBoxSettings.EXTRA_BATTERY_PERCENT_TEXT_KEYGUARD)) {

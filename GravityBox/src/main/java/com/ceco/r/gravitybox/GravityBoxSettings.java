@@ -1321,6 +1321,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
         private ListPreference mPrefBatteryTileTempUnit;
         private EditTextPreference mPrefPowerCameraVp;
         private Preference mPrefTuner;
+        private PreferenceScreen mPrefCatBatteryPercentText;
 
         private String mSearchQuery;
         private int mDonateUrlResId;
@@ -1347,6 +1348,7 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
             // Force update tile service components
             TileOrderActivity.updateServiceComponents(getActivity());
 
+            mPrefCatBatteryPercentText = (PreferenceScreen) findPreference(PREF_CAT_KEY_BATTERY_PERCENT_TEXT);
             mBatteryStyle = (ListPreference) findPreference(PREF_KEY_BATTERY_STYLE);
             mPrefBatteryPercentSize = (ListPreference) findPreference(PREF_KEY_BATTERY_PERCENT_TEXT_SIZE);
             mPrefBatteryPercentStyle = (ListPreference) findPreference(PREF_KEY_BATTERY_PERCENT_TEXT_STYLE);
@@ -1668,6 +1670,8 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                     lp.setEntries(actionEntries);
                     lp.setEntryValues(actionEntryValues);
                 }
+                p = findPreference(PREF_KEY_BATTERY_PERCENT_TEXT_STATUSBAR_HEADER);
+                if (p != null) mPrefCatBatteryPercentText.removePreference(p);
             } else {
                 Preference p = findPreference(PREF_KEY_OOS_CALL_RECORDING);
                 if (p != null) mPrefCatPhoneTelephony.removePreference(p);
