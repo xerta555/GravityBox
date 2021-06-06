@@ -1156,6 +1156,10 @@ public class ModStatusBar {
     }
 
     private static void setClockPositionHeader(StatusbarClock.ClockPosition position) {
+        if (Utils.isOxygenOsRom() && (position == StatusbarClock.ClockPosition.LEFT ||
+                position == StatusbarClock.ClockPosition.RIGHT)) {
+            position = StatusbarClock.ClockPosition.DEFAULT;
+        }
         QuickStatusBarHeader.setClockPosition(position);
     }
 

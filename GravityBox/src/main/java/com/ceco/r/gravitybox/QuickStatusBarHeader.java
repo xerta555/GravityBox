@@ -37,7 +37,7 @@ public class QuickStatusBarHeader {
     }
 
     private static ViewGroup mQsHeader;
-    private static LinearLayout mSystemIcons;
+    private static ViewGroup mSystemIcons;
     private static Object mStatusBar;
     private static String mClockLongpressLink;
     private static LinearLayout mCenterLayout;
@@ -47,6 +47,7 @@ public class QuickStatusBarHeader {
     private static int mClockPaddingStart;
     private static int mClockPaddingEnd;
     private static int mClockGravity;
+    private static ViewGroup.LayoutParams mClockLayoutParams;
     private static StatusbarClock.ClockPosition mClockPosition = StatusbarClock.ClockPosition.DEFAULT;
 
     static void init(ClassLoader classLoader) {
@@ -83,7 +84,11 @@ public class QuickStatusBarHeader {
                         mSystemIcons = mQsHeader.findViewById(sysIconsResId);
                     }
                     prepareHeaderTimeView();
-                    prepareCenterLayout();
+                    if (Utils.isOxygenOsRom()) {
+                        prepareCenterLayoutOos();
+                    } else {
+                        prepareCenterLayout();
+                    }
                     if (mClockPosition != StatusbarClock.ClockPosition.DEFAULT) {
                         moveClockToPosition();
                     }
@@ -103,11 +108,13 @@ public class QuickStatusBarHeader {
                 mClockPaddingStart = mClockView.getPaddingStart();
                 mClockPaddingEnd = mClockView.getPaddingEnd();
                 mClockGravity = mClockView.getGravity();
+                mClockLayoutParams = mClockView.getLayoutParams();
                 mClockView.setLongClickable(true);
                 mClockView.setOnLongClickListener(v -> {
                     launchClockAction(mClockLongpressLink);
                     return true;
                 });
+                if (DEBUG_LAYOUT) mClockView.setBackgroundColor(0x4d00ff00);
             }
         } catch (Throwable t) {
             GravityBox.log(TAG, "Error setting long-press handler on mClockView:", t);
@@ -128,6 +135,26 @@ public class QuickStatusBarHeader {
             mCenterLayout.setLayoutParams(lp);
             mCenterLayout.setGravity(Gravity.CENTER);
             mSystemIcons.addView(mCenterLayout, mSystemIcons.indexOfChild(mClockParent) + 1);
+            if (DEBUG_LAYOUT) mCenterLayout.setBackgroundColor(0x4dff0000);
+            if (DEBUG) log("Center layout injected");
+        } catch (Throwable t) {
+            GravityBox.log(TAG, "Error injecting center layout:", t);
+        }
+    }
+
+    private static void prepareCenterLayoutOos() {
+        if (mSystemIcons == null) {
+            log("Cannot prepare center layout as SystemIcons container is unknown");
+            return;
+        }
+
+        try {
+            mCenterLayout = new LinearLayout(mSystemIcons.getContext());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            mCenterLayout.setLayoutParams(lp);
+            mCenterLayout.setGravity(Gravity.CENTER);
+            mSystemIcons.addView(mCenterLayout);
             if (DEBUG_LAYOUT) mCenterLayout.setBackgroundColor(0x4dff0000);
             if (DEBUG) log("Center layout injected");
         } catch (Throwable t) {
@@ -164,6 +191,7 @@ public class QuickStatusBarHeader {
                 case DEFAULT:
                     mClockView.setPaddingRelative(mClockPaddingStart,0,mClockPaddingEnd, 0);
                     mClockView.setGravity(mClockGravity);
+                    mClockView.setLayoutParams(mClockLayoutParams);
                     mClockParent.addView(mClockView, mClockIndex);
                     break;
                 case LEFT:

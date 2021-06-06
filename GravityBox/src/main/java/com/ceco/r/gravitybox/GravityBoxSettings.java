@@ -1655,6 +1655,19 @@ public class GravityBoxSettings extends GravityBoxActivity implements GravityBox
                 if (p != null) mPrefCatQsTileSettings.removePreference(p);
                 p = findPreference(PREF_KEY_STATUSBAR_HIDE_VIBRATE_ICON);
                 if (p != null) mPrefCatStatusbar.removePreference(p);
+                ListPreference lp = (ListPreference) findPreference(PREF_KEY_STATUSBAR_CLOCK_POSITION_HEADER);
+                if (lp != null) {
+                    List<CharSequence> actEntries = new ArrayList<>(Arrays.asList(lp.getEntries()));
+                    List<CharSequence> actEntryValues = new ArrayList<>(Arrays.asList(lp.getEntryValues()));
+                    actEntries.remove(getString(R.string.clock_pos_left));
+                    actEntries.remove(getString(R.string.clock_pos_right));
+                    actEntryValues.remove("LEFT");
+                    actEntryValues.remove("RIGHT");
+                    CharSequence[] actionEntries = actEntries.toArray(new CharSequence[actEntries.size()]);
+                    CharSequence[] actionEntryValues = actEntryValues.toArray(new CharSequence[actEntryValues.size()]);
+                    lp.setEntries(actionEntries);
+                    lp.setEntryValues(actionEntryValues);
+                }
             } else {
                 Preference p = findPreference(PREF_KEY_OOS_CALL_RECORDING);
                 if (p != null) mPrefCatPhoneTelephony.removePreference(p);
