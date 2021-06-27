@@ -82,6 +82,7 @@ public class Utils {
     private static Boolean mIsOxygenOs7Rom = null;
     private static Boolean mIsOxygenOs7ProRom = null;
     private static Boolean mIsOxygenOs7TRom = null;
+    private static Boolean mIsOxygenOs9RRom = null;
     private static Boolean mIsFileBasedEncrypted = null;
 
     // Device features
@@ -233,7 +234,7 @@ public class Utils {
         if (mIsOxygenOsRom == null) {
             String version = SystemPropertyProvider.get("ro.oxygen.version", "0");
             mIsOxygenOsRom = version != null && !version.isEmpty() &&  !"0".equals(version);
-            mIsOxygenOsRom |= isOxygenOs7Rom() || isOxygenOs7ProRom() || isOxygenOs7TRom();
+            mIsOxygenOsRom |= isOxygenOs7Rom() || isOxygenOs7ProRom() || isOxygenOs7TRom() || isOxygenOs9RRom();
         }
         return mIsOxygenOsRom;
     }
@@ -260,6 +261,14 @@ public class Utils {
                     Build.DISPLAY != null && Build.DISPLAY.startsWith("HD19");
         }
         return mIsOxygenOs7TRom;
+    }
+
+    public static boolean isOxygenOs9RRom() {
+        if (mIsOxygenOs9RRom == null) {
+            mIsOxygenOs9RRom = "OnePlus".equals(Build.MANUFACTURER) &&
+                    Build.DISPLAY != null && Build.DISPLAY.startsWith("LE21");
+        }
+        return mIsOxygenOs9RRom;
     }
 
     public static boolean hasOnePlusScreenRefreshControl() {
