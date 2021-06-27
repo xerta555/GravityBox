@@ -1,3 +1,9 @@
+Changelog 11.0.4 - 27/06/2021
+--------------------------------------
+- Application launcher: fixed crash when launching apps on OxygenOS
+- Properly identify OnePlus 9R as device running OxygenOS ROM
+--- should improve compatibility significantly
+
 Changelog 11.0.3 - 06/06/2021
 --------------------------------------
 - Improved compatibility with OxygenOS (OP7Pro, OOS 11.0.1.1)
