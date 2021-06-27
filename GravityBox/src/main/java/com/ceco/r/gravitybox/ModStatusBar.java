@@ -572,10 +572,6 @@ public class ModStatusBar {
                         QuickStatusBarHeader.setStatusBar(mStatusBar);
                     }
 
-                    if (SysUiManagers.AppLauncher != null) {
-                        SysUiManagers.AppLauncher.setStatusBar(mStatusBar);
-                    }
-
                     prepareLayoutKeyguard();
                     if (prefs.getBoolean(GravityBoxSettings.PREF_KEY_BATTERY_TWEAKS_ENABLED, true)) {
                         prepareBatteryStyle(ContainerType.KEYGUARD);

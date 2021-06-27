@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.ceco.r.gravitybox.BitmapUtils;
 import com.ceco.r.gravitybox.ColorUtils;
+import com.ceco.r.gravitybox.ModStatusBar;
 import com.ceco.r.gravitybox.R;
 import com.ceco.r.gravitybox.GravityBox;
 import com.ceco.r.gravitybox.GravityBoxSettings;
@@ -79,7 +80,6 @@ public class SysUiAppLauncher implements BroadcastMediator.Receiver, SysUiConfig
     private final PackageManager mPm;
     private final List<AppInfo> mAppSlots;
     private final XSharedPreferences mPrefs;
-    private Object mStatusBar;
     private DialogTheme mDialogTheme;
     private boolean mIsFirstShow = true;
 
@@ -172,10 +172,6 @@ public class SysUiAppLauncher implements BroadcastMediator.Receiver, SysUiConfig
         if (intent.getAction().equals(ACTION_SHOW_APP_LAUCNHER)) {
             showDialog();
         }
-    }
-
-    public void setStatusBar(Object statusBar) {
-        mStatusBar = statusBar;
     }
 
     private boolean dismissDialog() {
@@ -326,21 +322,21 @@ public class SysUiAppLauncher implements BroadcastMediator.Receiver, SysUiConfig
             }
         // otherwise start activity dismissing keyguard
         } else {
-            if (mStatusBar != null) {
-                try {
-                    XposedHelpers.callMethod(mStatusBar, "postStartActivityDismissingKeyguard", intent, 0);
-                } catch (Throwable t) {
-                    GravityBox.log(TAG, t);
-                }
-            } else {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                Constructor<?> uhConst = XposedHelpers.findConstructorExact(UserHandle.class, int.class);
-                UserHandle uh = (UserHandle) uhConst.newInstance(-2);
-                if (opts != null) {
-                    XposedHelpers.callMethod(context, "startActivityAsUser", intent, opts.toBundle(), uh);
+            try {
+                if (ModStatusBar.getStatusBar() != null) {
+                    XposedHelpers.callMethod(ModStatusBar.getStatusBar(), "postStartActivityDismissingKeyguard", intent, 0);
                 } else {
-                    XposedHelpers.callMethod(context, "startActivityAsUser", intent, uh);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Constructor<?> uhConst = XposedHelpers.findConstructorExact(UserHandle.class, int.class);
+                    UserHandle uh = (UserHandle) uhConst.newInstance(-3);
+                    if (opts != null) {
+                        XposedHelpers.callMethod(context, "startActivityAsUser", intent, opts.toBundle(), uh);
+                    } else {
+                        XposedHelpers.callMethod(context, "startActivityAsUser", intent, uh);
+                    }
                 }
+            } catch (Throwable t) {
+                GravityBox.log(TAG, t);
             }
         }
     }
