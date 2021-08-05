@@ -63,6 +63,23 @@
                 android:order="5"
                 android:dependency="pref_lockscreen_bg_blur_effect" />
 
+            <CheckBoxPreference
+                android:key="pref_lockscreen_media_blur_effect"
+                android:title="@string/pref_lockscreen_media_blur_effect_title"
+                android:defaultValue="false"
+                android:order="6"
+                android:dependency="pref_lockscreen_media_art_disable" />
+
+            <com.ceco.r.gravitybox.preference.SeekBarPreference
+                android:key="pref_lockscreen_media_blur_intensity"
+                android:title="@string/pref_lockscreen_media_blur_intensity_title"
+                minimum="1"
+                maximum="25"
+                interval="1"
+                android:defaultValue="14"
+                android:order="7"
+                android:dependency="pref_lockscreen_media_blur_effect" />
+
             <com.ceco.r.gravitybox.preference.SeekBarPreference
                 android:key="pref_lockscreen_bg_opacity"
                 android:title="@string/pref_lockscreen_bg_opacity_title"
@@ -227,7 +244,8 @@
             <CheckBoxPreference
                 android:key="pref_lockscreen_media_art_disable"
                 android:title="@string/pref_lockscreen_media_art_disable_title"
-                android:defaultValue="false" />
+                android:defaultValue="false"
+                android:disableDependentsState="true" />
 
         </PreferenceCategory>
 
