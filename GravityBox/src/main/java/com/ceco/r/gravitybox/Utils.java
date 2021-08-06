@@ -82,6 +82,7 @@ public class Utils {
     private static Boolean mIsOxygenOs7Rom = null;
     private static Boolean mIsOxygenOs7ProRom = null;
     private static Boolean mIsOxygenOs7TRom = null;
+    private static Boolean mIsOxygenOs8TRom = null;
     private static Boolean mIsOxygenOs9RRom = null;
     private static Boolean mIsFileBasedEncrypted = null;
 
@@ -234,7 +235,7 @@ public class Utils {
         if (mIsOxygenOsRom == null) {
             String version = SystemPropertyProvider.get("ro.oxygen.version", "0");
             mIsOxygenOsRom = version != null && !version.isEmpty() &&  !"0".equals(version);
-            mIsOxygenOsRom |= isOxygenOs7Rom() || isOxygenOs7ProRom() || isOxygenOs7TRom() || isOxygenOs9RRom();
+            mIsOxygenOsRom |= isOxygenOs7Rom() || isOxygenOs7ProRom() || isOxygenOs7TRom() || isOxygenOs8TRom() ||isOxygenOs9RRom();
         }
         return mIsOxygenOsRom;
     }
@@ -261,6 +262,14 @@ public class Utils {
                     Build.DISPLAY != null && Build.DISPLAY.startsWith("HD19");
         }
         return mIsOxygenOs7TRom;
+    }
+
+    public static boolean isOxygenOs8TRom() {
+        if (mIsOxygenOs8TRom == null) {
+            mIsOxygenOs8TRom = "OnePlus".equals(Build.MANUFACTURER) &&
+                    Build.DISPLAY != null && Build.DISPLAY.startsWith("KB20");
+        }
+        return mIsOxygenOs8TRom;
     }
 
     public static boolean isOxygenOs9RRom() {
