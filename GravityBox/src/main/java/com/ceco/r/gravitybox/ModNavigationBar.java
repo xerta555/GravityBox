@@ -15,6 +15,7 @@
 package com.ceco.r.gravitybox;
 
 import java.io.File;
+import java.lang.reflect.Method;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -24,6 +25,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.Region;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -89,6 +92,8 @@ public class ModNavigationBar {
     // Navbar dimensions
     private static int mNavbarHeight;
     private static int mNavbarWidth;
+    private static int[] mTmpPosition = new int[2];
+    private static Rect mTmpBounds = new Rect();
 
     // Custom key
     private enum CustomKeyIconStyle { SIX_DOT, THREE_DOT, TRANSPARENT, CUSTOM }
@@ -413,6 +418,14 @@ public class ModNavigationBar {
                     if (mHideImeSwitcher) {
                         hideImeSwitcher();
                     }
+                    if (mDpadKeysVisible) {
+                        Method m = XposedHelpers.findMethodExactIfExists(navbarViewClass, "notifyActiveTouchRegions");
+                        if (m != null) {
+                            try {
+                                m.invoke(param.thisObject);
+                            } catch (Exception ignore) { }
+                        }
+                    }
                 }
             });
         } catch (Throwable t) {
@@ -531,6 +544,44 @@ public class ModNavigationBar {
         } catch (Throwable t) {
             GravityBox.log(TAG, "Error hooking setButtonVisibility:", t);
         }
+
+        try {
+            Method mtdGetButtonLocations = XposedHelpers.findMethodExactIfExists(navbarViewClass,
+                    "getButtonLocations", boolean.class, boolean.class);
+            if (mtdGetButtonLocations != null) {
+                XposedBridge.hookMethod(mtdGetButtonLocations, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        if (!mDpadKeysVisible) return;
+                        boolean inScreen = (boolean) param.args[1];
+                        Region region = (Region) XposedHelpers.getObjectField(param.thisObject, "mTmpRegion");
+                        for (NavbarViewInfo info : mNavbarViewInfo) {
+                            if (info.dpadLeft.getVisibility() == View.VISIBLE) {
+                                updateButtonLocation(info.dpadLeft, region, inScreen);
+                            }
+                            if (info.dpadRight.getVisibility() == View.VISIBLE) {
+                                updateButtonLocation(info.dpadRight, region, inScreen);
+                            }
+                        }
+                        param.setResult(region);
+                    }
+                });
+            }
+        } catch (Throwable t) {
+            GravityBox.log(TAG, "Error hooking updateButtonLocation:", t);
+        }
+    }
+
+    private static void updateButtonLocation(View view, Region region, boolean inScreen) {
+        if (inScreen) {
+            XposedHelpers.callMethod(view, "getBoundsOnScreen", mTmpBounds);
+        } else {
+            view.getLocationInWindow(mTmpPosition);
+            mTmpBounds.set(mTmpPosition[0], mTmpPosition[1],
+                    mTmpPosition[0] + view.getWidth(),
+                    mTmpPosition[1] + view.getHeight());
+        }
+        region.op(mTmpBounds, Region.Op.UNION);
     }
 
     private static void logChildren(ViewGroup parent) {
@@ -826,8 +877,7 @@ public class ModNavigationBar {
             final int iconHints = XposedHelpers.getIntField(mNavigationBarView, "mNavigationIconHints");
             final int disabledFlags = XposedHelpers.getIntField(mNavigationBarView, "mDisabledFlags");
             final boolean visible = (disabledFlags & STATUS_BAR_DISABLE_RECENT) == 0 &&
-                    (iconHints & NAVIGATION_HINT_BACK_ALT) != 0 &&
-                    !Utils.isNavbarGestural(mNavigationBarView.getContext());
+                    (iconHints & NAVIGATION_HINT_BACK_ALT) != 0;
             if (visible == mDpadKeysVisible)
                 return;
             mDpadKeysVisible = visible;
