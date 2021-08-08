@@ -1,3 +1,11 @@
+Changelog 11.0.5 - 08/08/2021
+--------------------------------------
+- Lockscreen: added option to blur media artwork on lockscreen (thanks to robbins)
+- Navbar: allow cursor control keys in gestural navbar
+- Dialer: adjusted for compatibility with the latest Google Dialer
+- Properly identify OnePlus 8T as device running OxygenOS ROM (thanks to F-i-f)
+--- should improve compatibility significantly
+
 Changelog 11.0.4 - 27/06/2021
 --------------------------------------
 - Application launcher: fixed crash when launching apps on OxygenOS
