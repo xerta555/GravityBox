@@ -248,6 +248,16 @@ public class ModLockscreen {
                         if (DEBUG)
                             log("finishUpdateMediaMetaData: showing custom background");
                     }
+                    if (hasMediaArtwork && state != StatusBarState.SHADE && mKgMonitor.isInteractive() &&
+                            mPrefs.getBoolean(GravityBoxSettings.PREF_KEY_LOCKSCREEN_MEDIA_BLUR_EFFECT, false)) {
+                        mCustomBg = BitmapUtils.blurBitmap(mContext, (Bitmap) param.args[2],
+                                mPrefs.getInt(GravityBoxSettings.PREF_KEY_LOCKSCREEN_MEDIA_BLUR_INTENSITY, 14));
+                        backDrop.animate().cancel();
+                        backDropBack.animate().cancel();
+                        backDropBack.setImageBitmap(mCustomBg);
+                        backDrop.setVisibility(View.VISIBLE);
+                        backDrop.animate().alpha(1f);
+                    }
                 }
             });
         } catch (Throwable t) {

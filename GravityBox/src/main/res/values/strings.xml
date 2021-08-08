@@ -719,6 +719,9 @@
     <!-- Lockscreen: custom background blur effect -->
     <string name="pref_lockscreen_bg_blur_effect_title">Blur effect</string>
 
+    <!-- Lockscreen: custom media artwork blur effect -->
+    <string name="pref_lockscreen_media_blur_effect_title">Media artwork blur effect</string>
+
     <!-- Force overflow menu button -->
     <string name="pref_force_overflow_menu_button_title">Force overflow menu button</string>
     <string name="pref_force_overflow_menu_button_summary">Requires reboot</string>
@@ -783,6 +786,9 @@
 
     <!-- Blur effect intensity -->
     <string name="pref_lockscreen_bg_blur_intensity_title">Blur effect intensity</string>
+
+    <!-- Media artwork blur effect intensity -->
+    <string name="pref_lockscreen_media_blur_intensity_title">Media artwork blur effect intensity</string>
 
     <!-- Smart radio: independent delay for screen off power save event -->
     <string name="pref_smart_radio_screen_off_delay_title">Delayed power save</string>
